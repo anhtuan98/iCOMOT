@@ -15,14 +15,17 @@
 
         <title>iCOMOT by tuwiendsg</title>
 
-	<!-- This is used for floating the menu -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- This is used for floating the menu -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        
+        <script type="text/javascript" src="resources/jquery.magnifier.js">
+            
         <script type="text/javascript">
 
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var top = $('#navibar').offset().top - parseFloat($('#navibar').css('marginTop').replace(/auto/, 100));
 
-                $(window).scroll(function(event) {
+                $(window).scroll(function (event) {
                     // what the y position of the scroll is
                     var y = $(this).scrollTop();
 
@@ -53,7 +56,8 @@
                         <li><div id="currentNav"><a href="./index.html" id="homenav">Home</a></div>
                             <ul>
                                 <li><a href="#introduction">What is iCOMOT</a>
-                                 <li><a href="#features"  >Features</a></li>
+                                <li><a href="#features"  >Features</a></li>
+                                <li><a href="#usecaseiot"  >IoT cloud system use case</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -79,7 +83,8 @@
                 <li><div id="horizontalNavCurrentNav"><a href="./index.html" id="homenav">Home</a></div>
                     <ul>
                         <li><a href="#introduction"  >What is iCOMOT</a>
-                         <li><a href="#features"  >Features</a></li>
+                        <li><a href="#features"  >Features</a></li>
+                        <li><a href="#usecaseiot"  >IoT cloud system use case</a></li>
                     </ul>
                 </li>
             </ul>
@@ -101,29 +106,75 @@
                     <p> <font size="2">Note: From here onwards we will refer to services and cloud applications with the same "services" term.  </font></p>
 
                     <p>iCOMOT provides an easy to use integration layer for managing various aspects of elastic cloud services. In particular, iCOMOT relies on <a href="https://github.com/tuwiendsg/SALSA">SALSA</a> for deploying the description to virtualized infrastructures (e.g., OpenStack, Docker), <a href="https://github.com/tuwiendsg/MELA">MELA</a> for cloud service monitoring and analysis, <a href="http://www.infosys.tuwien.ac.at/research/viecom/SYBL">rSYBL</a> for run-time control of elastic cloud services, and <a href="https://github.com/tuwiendsg/GovOps">GovOps</a> for governance and operations in software-defined IoT cloud systems. The whole toolset is depicted in Figure 1.</p>
-									
-					<center>
-	                <figure style="" width="50%">
-                            <img src="images/iCOMOT/unifiedView.png" alt="iCOMOT" width="50%"  />
+
+                    <center>
+                        <figure  width="50%">
+                            <img title="Click to enlarge" src="images/iCOMOT/unifiedView.png" alt="iCOMOT" width="50%" class="magnify" />
                             <figcaption>Figure 1: iCOMOT toolset</figcaption>
                         </figure>
-						</center>
-					<h1><a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>iCOMOT features</h1>
-					<p>
-					Through iCOMOT service stakeholders (e.g., service developers, service providers) can manage the full lifecycle of the service. Service stakeholders can:
-					
-					<h2>Deploy the service</h2> 
-					iCOMOT deploys the service using <a href="https://github.com/tuwiendsg/SALSA">SALSA</a>, a tool for complex services deployment and configuration. SALSA configures the various software stacks necessary for the service software artifacts to run in cloud environments. SALSA can run with various cloud providers (<a href="http://www.flexiant.com/flexiant-cloud-orchestrator/">Flexiant Cloud Orchestrator</a>, <a href="http://www.openstack.org/">OpenStack</a>-based private clouds, <a href="http://www.stratuslab.eu/">StratusLab</a>), or under multiple layers of <a href="https://www.docker.com/">Docker</a> platform, for simulating cloud environments.
-					<h2>Monitor and understand the service</h2>
-					iCOMOT monitors and analyzes the service using <a href="https://github.com/tuwiendsg/MELA">MELA</a> , a tool capable of analyzing elasticity of the service in relation to elasticity requirements specified by the service provider, and service structure, thus bridging the gap between virtual resources elasticity and service elasticity, at various abstraction levels.
-					<h2>Control the service</h2>
-					iCOMOT controls the service by using <a href="http://www.infosys.tuwien.ac.at/research/viecom/SYBL">rSYBL</a>, a tool which considers monitoring and analysis information coming from MELA, and elasticity requirements information from service provider, for various levels of abstraction, for generating elasticity control plans using both application-level and resource-level actions. The elasticity control plans are enforced with the help of SALSA. After enforcement, the service structure and used virtual resources is also synchronized with MELA, for sharing the service model and having a good understanding of the service elasticity behavior.
-                                        <h2>Execute Operational Governance Processes in software-defined IoT cloud systems</h2>
-					<p>
-                                         iCOMOT provides through <a href="https://github.com/tuwiendsg/GovOps">GovOps</a> a mediation layer that enables users to interact with software-defined IoT cloud systems in a conceptually centralized fashion, without explicitly worrying about the underlying IoT gateways or other IoT devices.	
-					</p>
-				</section>
-				 
+                    </center>
+
+                    <h1><a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>iCOMOT features</h1>
+                    <p>
+                        Through iCOMOT service stakeholders (e.g., service developers, service providers) can manage the full lifecycle of the service. Service stakeholders can:
+
+                    <h2>Deploy the service</h2> 
+                    iCOMOT deploys the service using <a href="https://github.com/tuwiendsg/SALSA">SALSA</a>, a tool for complex services deployment and configuration. SALSA configures the various software stacks necessary for the service software artifacts to run in cloud environments. SALSA can run with various cloud providers (<a href="http://www.flexiant.com/flexiant-cloud-orchestrator/">Flexiant Cloud Orchestrator</a>, <a href="http://www.openstack.org/">OpenStack</a>-based private clouds, <a href="http://www.stratuslab.eu/">StratusLab</a>), or under multiple layers of <a href="https://www.docker.com/">Docker</a> platform, for simulating cloud environments.
+                    <h2>Monitor and understand the service</h2>
+                    iCOMOT monitors and analyzes the service using <a href="https://github.com/tuwiendsg/MELA">MELA</a> , a tool capable of analyzing elasticity of the service in relation to elasticity requirements specified by the service provider, and service structure, thus bridging the gap between virtual resources elasticity and service elasticity, at various abstraction levels.
+                    <h2>Control the service</h2>
+                    iCOMOT controls the service by using <a href="http://www.infosys.tuwien.ac.at/research/viecom/SYBL">rSYBL</a>, a tool which considers monitoring and analysis information coming from MELA, and elasticity requirements information from service provider, for various levels of abstraction, for generating elasticity control plans using both application-level and resource-level actions. The elasticity control plans are enforced with the help of SALSA. After enforcement, the service structure and used virtual resources is also synchronized with MELA, for sharing the service model and having a good understanding of the service elasticity behavior.
+                    <h2>Execute Operational Governance Processes in software-defined IoT cloud systems</h2>
+                    <p>
+                        iCOMOT provides through <a href="https://github.com/tuwiendsg/GovOps">GovOps</a> a mediation layer that enables users to interact with software-defined IoT cloud systems in a conceptually centralized fashion, without explicitly worrying about the underlying IoT gateways or other IoT devices.	
+                    </p>
+
+
+
+                    <h1><a name="usecaseiot" class="anchor" href="#usecaseiot"><span class="octicon octicon-link"></span></a>IoT cloud system use case</h1>
+                    <p>
+
+                        iCOMOT provides support for system developers and providers to manage different configurations of an IoT cloud  system. 
+                        Figure 2 is a configuration of a Sensor-Data-as-A-Service which includes several sensors
+                        that can be deployed and controlled at runtime (e.g., activated, deactivated, and reading rate changed).
+                        Such a configuration can be used to deploy emulated sensors as well as to control real sensors. 
+                    </p>
+                    <center>
+                        <figure   width="50%">
+                            <img title="Click to enlarge" src="images/iCOMOT/sensordataasaservice.png" alt="iCOMOT" width="50%"  class="magnify"/>
+                            <figcaption>Figure 2: Sensor-Data-as-A-Service configuration</figcaption>
+                        </figure>
+                    </center>
+
+                    <p>  
+                        Figure 3 is a configuration of cloud offered services and IoT gateways, allowing IoT sensors connect and send their data, which is further
+                        process in the cloud. As IoT sensors and cloud services are usually offered by different providers, deploy such heterogeneous IoT configurations,
+                        we have to deal with multi-level software stack configuration and control.
+                    </p> 
+                    <center>
+                        <figure  width="50%">
+                            <img title="Click to enlarge" src="images/iCOMOT/clouddeployment.png" alt="iCOMOT" width="50%" class="magnify" />
+                            <figcaption>Figure 3: Configuration of cloud offered services and IoT gateways</figcaption>
+                        </figure>
+                    </center>
+                    <p>
+                        Figure 4 shows a snapshot of high-level elasticity properties in an end-to-end view: from the entire
+                        IoT cloud system, to specific topologies of service units and to individual units. For example, the cost the
+                        company has to pay for the software layer can be, on-the-fly, determined from cost impact of various
+                        gateways, data services, load balancers, etc., based on their complex dependencies and load. 
+                    </p>
+                    <center>
+                        <figure   width="50%">
+                            <img title="Click to enlarge" src="images/iCOMOT/mela-iotcloud.png" alt="iCOMOT" width="50%" class="magnify" />
+                            <figcaption>Figure 3: End-to-end high-level elasticity properties </figcaption>
+                        </figure>
+                    </center>
+
+                </section>
+
+
+
+
             </div>
         </div>
     </body>
