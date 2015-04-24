@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <link type="text/css" rel="stylesheet" href="stylesheets/stylesheet.css"/>
+        <script type="text/javascript" src="javascripts/d3.js"></script>
+        <script type="text/javascript" src="javascripts/d3.layout.js"></script>
+        <script type="text/javascript" src="javascripts/genDescription.js"></script>
+        <style type="text/css">
+
+
+            .node circle {
+                cursor: pointer;
+                fill: #fff;
+                stroke: steelblue;
+                stroke-width: 1.5px;
+            }
+
+            .node text {
+                font-size: 11px;
+            }
+
+            path.link {
+                fill: none;
+                stroke: #ccc;
+                stroke-width: 1.5px;
+            }
+
+        </style>
+    </head>
+    <body>
+
+
+
+        <header>
+                        <div class="inner">
+                <h1>iCOMOT</h1>
+                <h2>Architecting and Developing Elastic IoT Cloud Platforms </h2>
+                <!--<a href="https://github.com/tuwiendsg/iCOMOT" class="button"><small>View project on </small> GitHub</a>-->
+            </div>
+
+            <aside id="navibar">
+
+                <div id="nav">
+                    <ul>
+                        <li><div id="currentNav"><a href="./index.html" id="homenav">Home</a></div>
+                            <ul>
+                                <li><a href="./SALSACapabilities.html">SALSA Capabilities</a>
+                                <li><a href="./rSYBLCapabilities.html">rSYBL Capabilities</a></li>
+                                <li><a href="./MELACapabilities.html">MELA Capabilities</a></li>
+                                <li><a href="./GovOpsCapabilities.html">Gov Ops Capabilities</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </br></br></br>
+                    <p class="repo-owner" style="width:300px"><a href="https://github.com/tuwiendsg/MELA"></a> Maintained and distributed by </br>
+                        <a href="http://www.infosys.tuwien.ac.at/">Distributed Systems Group</a> 
+                        <a href="http://www.infosys.tuwien.ac.at/"> <img src="images/dsgComplet.png" height="70px" width="300px"></a> 
+
+                        <a href="http://www.tuwien.ac.at/">Vienna University of Technology</a>
+                        <a href="http://www.tuwien.ac.at/"> <img src="images/TU_logo.png" height="70px" width="300px"></a>
+                    </p>
+                </div>
+            </aside>
+
+
+
+
+
+        </header>
+
+        <div id="horizontalNav">
+            <ul>
+                <li><div id="horizontalNavCurrentNav"><a href="./index.html" id="homenav">Home</a></div>
+                    <ul>
+                               <li><a href="./SALSACapabilities.html">SALSA Capabilities</a>
+                                <li><a href="./rSYBLCapabilities.html">rSYBL Capabilities</a></li>
+                                <li><a href="./MELACapabilities.html">MELA Capabilities</a></li>
+                                <li><a href="./GovOpsCapabilities.html">Gov Ops Capabilities</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div id="content-wrapper">
+
+
+
+            <div class="inner clearfix">
+
+
+                <section id="main-content">
+                    <h1><a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>rSYBL capabilities</h1>
+                    <p><ul><li>Click on desired capability to navigate</li></ul></p>
+                    <center>
+                        <div id="body"></div>
+                        <figure >
+                            <figcaption>Figure 1: MELA Capabilities</figcaption>
+                        </figure>
+                    </center>
+
+                    <p></p>                  
+
+
+                    <div id="description"></div>
+
+
+
+
+                </section>
+
+
+
+
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+
+        var m = [20, 120, 20, 120],
+                    w = 1280 - m[1] - m[3],
+                    h = 300 - m[0] - m[2],
+                    i = 0,
+                    root;
+ 
+            generateDescription(m, w, h, i, root, "body", "description", "./resources/melaCapabilities.json");
+
+        </script>
+
+
+    </body>
+</html>
+

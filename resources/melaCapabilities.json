@@ -1,0 +1,38 @@
+{
+    "name": "MELA Capabilities",
+    "children": [
+        {
+            "name": "Monitoring level",
+            "description":"",
+            "children": [
+                {
+                    "name": "Capture data",
+                    "description":"Lets the user specify a direct action to be executed under a certain condition. For example, Scale Out when response time > 30s would be expressed as: </br> <em>STRATEGY CASE availability>99%: SCALE_OUT</em></br> ,in the case an eforcement adapter understanding scale out is provided" 
+
+                },
+                {
+                    "name": "Structure data",
+                    "description":"" 
+                },
+                {
+                    "name": "Get service health",
+                    "description":"" 
+                }
+            ]
+        },
+        {
+            "name": "Configuration level",
+             "description":"",
+            "children": [
+                {
+                    "name": "Configure data source",
+                     "description":"" 
+                },
+                {
+                    "name": "Configure monitoring interval",
+                     "description":"" 
+                }
+            ]
+        }
+    ]
+}

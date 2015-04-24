@@ -1,0 +1,30 @@
+{
+    "name": "GovOps Capabilities",
+    "children": [
+        {
+            "name": "Management level",
+            "description":"",
+            "children": [
+                {
+                    "name": "View sensors by type",
+                    "description":"Lets the user seee details about the sensors managed by GovOps, with respect to type and ... <a href=\"http://128.130.172.199:8080/APIManager/governanceScope/globalScope\">http://128.130.172.199:8080/APIManager/governanceScope/globalScope </a>" 
+
+                }
+            ]
+        },
+        {
+            "name": "Sensor level",
+             "description":" You can also embed HTML here, as long as it is on one line, and all \"\" are escaped. For example </br> <center><figure  width=\"50%\"><img title=\"Click to enlarge\" src=\"images/iCOMOT/clouddeployment.png\" alt=\"iCOMOT\" width=\"50%\" class=\"magnify\" /><figcaption>Figure 3: Configuration of cloud offered services and IoT gateways</figcaption></figure></center>",
+            "children": [
+                {
+                    "name": "Start/Stop sensor",
+                     "description":"" 
+                },
+                {
+                    "name": "Enforce custom sensor capabilityl",
+                     "description":"" 
+                }
+            ]
+        }
+    ]
+}
