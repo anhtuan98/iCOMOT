@@ -234,7 +234,7 @@
 
                     <p>
                         Built and ready to use versions of iCOMOT are available in our <a
-                            href="http://128.130.172.215/repository/">Software Repository</a>.
+                            href="http://128.130.172.215/iCOMOTTutorial/">Software Repository</a>.
                         The repository also contains the software artifacts for the elastic
                         service used in the Demo.
                     </p>
@@ -252,8 +252,8 @@
                     <p>For deploying iCOMOT follow the next steps:</p>
                     <pre><code> $ mkdir Demo
  $ cd Demo
- $ wget http://128.130.172.215/repository/files/iCOMOTCompactPlatform/installiCOMOT.sh
- $ bash installiCOMOT.sh</code></pre>
+ $ wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/install_iCOMOT.sh
+ $ bash install_iCOMOT.sh</code></pre>
 
                     <p>A prompt will appear and ask for a publicly accessible IP of the machine on which iCOMOT is deployed to be specified. This is used to correctly configure the 
                         web-based iCOMOT Dashboard.<p>
@@ -276,8 +276,8 @@ Please select 1(No) if this is the local machine, 2(Yes) if this is a separate m
                     <p>For uninstalling iCOMOT, please run the uninstallation script
                         for the respective deployment</p>
 
-                    <pre><code> # wget http://128.130.172.215/repository/files/iCOMOTCompactPlatform/uninstalliCOMOT.sh
- # bash ./uninstalliCOMOT.sh</code></pre>
+                    <pre><code> # wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/uninstall_iCOMOT.sh
+ # bash ./uninstall_iCOMOT.sh</code></pre>
 
                     <div>
                         </br> 
@@ -374,7 +374,7 @@ In this Demo study, we will focus on the case the predictive maintenance company
                         <a name="runExample" class="anchor"
                            href="#runExample"><span class="octicon octicon-link"></span></a>
                         <h3>b. Run the programming elasticity example</h3>
-                        <p>Input the publicly accessible IP of iCOMOT (i.e., of the machine iCOMOT is deployed on) in ./src/at/ac/tuwien/dsg/cloudcom/elasticityDemo/HelloElasticity and run the provided example:</p>  
+                        <p>Input the publicly accessible IP of iCOMOT (i.e., of the machine iCOMOT is deployed on) in ./src/at/ac/tuwien/dsg/icomot/examples, choose the ElasticIoTPlatform, change the IP of the controller to the one provided during iCOMOT deployment, and run the provided example:</p>  
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
                                 <img src="images/iCOMOT/demo/programElasticService2.png"
@@ -386,7 +386,7 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
                         <div id="codeDescription">
                             <h3>Expand for detailed explanation of the elasticity
-                                concepts captured by the provided example</h3>
+                                concepts captured by the used API</h3>
                             <div style="overflow-x: scroll;font-size: small;">
                                 <ol>
                                     <li>
@@ -424,7 +424,7 @@ In this Demo study, we will focus on the case the predictive maintenance company
                                             location of the software repository holding our artifacts, in
                                             this case our own repository.</p> <pre class="prettyprint"
                                                                                style="background-color: white;">
-              String salsaRepo = "http://128.130.172.215/repository/files/HelloElasticity/";
+              String salsaRepo = "http://128.130.172.215/iCOMOTTutorial/files/HelloElasticity/";
                                         </pre></li>
 
                                     <li><p>As deploying an elastic service can imply
@@ -537,18 +537,18 @@ In this Demo study, we will focus on the case the predictive maintenance company
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
                                 <img src="images/iCOMOT/demo/visualizeDemoInSalsa.png"
-                                     alt="Select Hello Elasticity service in Deployment and Management Tab"
+                                     alt="Select service in Deployment and Management Tab"
                                      width="100%" />
-                                <figcaption>Figure 5: Selecting Hello Elasticity service in Deployment and Management Tab</figcaption>
+                                <figcaption>Figure 5: Selecting  service in Deployment and Management Tab</figcaption>
                             </figure>
                         </center>
 
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
                                 <img src="images/iCOMOT/demo/visualizeDemoInSalsa2.png"
-                                     alt="Select Hello Elasticity service in Deployment and Management Tab"
+                                     alt="Select service in Deployment and Management Tab"
                                      width="100%" />
-                                <figcaption>Figure 6: Monitoring deployment progress of Hello Elasticity service</figcaption>
+                                <figcaption>Figure 6: Monitoring deployment progress of service</figcaption>
                             </figure>
                         </center>
 
@@ -560,7 +560,7 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
                         <ul>      
                             <li> Open iCOMOT Web and select the Elasticity Monitoring tab </li>                        
-                            <li> Select the Hello Elasticity service from the monitored services list</li>
+                            <li> Select the service from the monitored services list</li>
                         </ul>
 
                         <center>
@@ -593,7 +593,7 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
                         <ul>      
                             <li> Open iCOMOT Web and select the Control tab</li>                        
-                            <li> Select the Hello Elasticity service from the monitored services drop-down list</li>
+                            <li> Select the service from the monitored services drop-down list</li>
                         </ul>
 
 
