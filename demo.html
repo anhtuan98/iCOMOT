@@ -31,7 +31,13 @@
 
         <script>
             $(function() {
-                $("#codeDescription").accordion({
+                $("#codeDescription1").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+			$(function() {
+                $("#codeDescription2").accordion({
                     active: false,
                     collapsible: true
                 });
@@ -324,24 +330,6 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <h2>
                             <a name="javaDevPerspective" class="anchor"
                                href="#runtimeElasticity"><span class="octicon octicon-link"></span></a>1. Program
@@ -384,9 +372,13 @@ In this Demo study, we will focus on the case the predictive maintenance company
                             </figure>
                         </center>
 
-                        <div id="codeDescription">
-                            <h3>Expand for detailed explanation of the elasticity
-                                concepts captured by the used API</h3>
+                        <div>
+							<h3>Service Description</h3>
+							<p>The service which is to be managed by iCOMOT can be described and managed at 
+								runtime through our iCOMOT API. Initially, the developer can specify (i) structural and deployment 
+								description, and (2) elasticity control requirements. </p>
+							<div id="codeDescription1">
+                            <h4>  Structural and deployment description through iCOMOT API.</h4>
                             <div style="overflow-x: scroll;font-size: small;">
                                 <ol>
                                     <li>
@@ -478,28 +470,6 @@ In this Demo study, we will focus on the case the predictive maintenance company
                                             .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop"));
                                         </pre></li>
 
-
-                                    <li><p>To be elastic, units can have strategies or
-                                            constraints associated, which will be used to control the
-                                            units' runtime behavior. While in the following we focus on
-                                            strategies, which are imperative commands specifying what
-                                            elasticity capability to enforce when, we also support
-                                            constraints, which only state the desired behavior, and the
-                                            controller must find automatically the best capability to
-                                            enforce. For the latter case additional information is
-                                            required, such as effect of enforcing each capability.</p> <pre
-                                            class="prettyprint" style="background-color: white;">
-	       ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                                            .controlledBy(
-                                            //WHEN responseTime < 500 ms  AND avgThroughput < 50 : SCALE IN
-                                            Strategy("EP_ST1")
-		                                    .when(Constraint.MetricConstraint("EP_ST1_CO1", new Metric("responseTime", "ms")).lessThan("500"))
-		                                    .and(Constraint.MetricConstraint("EP_ST1_CO2", new Metric("avgThroughput", "#")).lessThan("50"))
-		                                    .enforce(scaleInEventProcessing)
-                                        </pre></li>
-
-
-
                                     <li><p>Individual units can be grupped in higher level
                                             constructus, called topologies</p> <pre class="prettyprint"
                                                                                 style="background-color: white;">
@@ -508,9 +478,6 @@ In this Demo study, we will focus on the case the predictive maintenance company
                                             , loadbalancerDocker, eventProcessingDocker, privateVM
                                             );
                                         </pre></li>
-
-
-
                                     <li><p>The deployment order must be specified, to
                                             understand what is hosted on what</p> <pre class="prettyprint"
                                                                                    style="background-color: white;">
@@ -524,9 +491,50 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
                                 </ol>
                             </div>
-
+							</div>
                         </div>
+						<div id="codeDescription2">
+                            <h4>Elasticity requirements description</h4>
+							 <div style="overflow-x: scroll;font-size: small;">
+							<p>To be elastic, units can have strategies or
+                                            constraints associated, which will be used to control the
+                                            units' runtime behavior. While in the following we focus on
+                                            strategies, which are imperative commands specifying what
+                                            elasticity capability to enforce when, we also support
+                                            constraints, which only state the desired behavior, and the
+                                            controller must find automatically the best capability to
+                                            enforce. For the latter case additional information is
+                                            required, such as effect of enforcing each capability.</p> 
+											<pre
+                                            class="prettyprint" style="background-color: white;">
+	    eventProcessingUnit. // scale in when response time and average throughput are low
+			controlledBy(Strategy("EP_ST1")
+				.when(Constraint.MetricConstraint("EP_ST1_CO1", new Metric("responseTime", "ms")).lessThan("100"))
+				.and(Constraint.MetricConstraint("EP_ST1_CO2", new Metric("avgThroughput", "operations/s")).lessThan("200"))
+				.enforce(ElasticityCapability.ScaleIn())
+			).  // scale out when response time and average throughput are high
+			controlledBy(Strategy("EP_ST2")
+				.when(Constraint.MetricConstraint("EP_ST2_CO1", new Metric("responseTime", "ms")).greaterThan("100"))
+				.and(Constraint.MetricConstraint("EP_ST2_CO2", new Metric("avgThroughput", "operations/s")).greaterThan("200"))
+				.enforce(ElasticityCapability.ScaleOut())
+			). // cost less than 400 for the EventProcessingServiceUnit
+			constrainedBy(Constraint.MetricConstraint("EP_CO3", new Metric("cost", "$")).lessThan("400"));
 
+
+		localProcessingUnit. // scale in when the data sending rate is low
+			controlledBy(Strategy("LPT_ST1").when(Constraint.MetricConstraint("LPT_ST1_CO1", new Metric("avgBufferSize", "#")).lessThan("50"))
+				.enforce(ElasticityCapability.ScaleIn()));
+		localProcessingUnit. // scale out when the data sending rate is high
+			controlledBy(Strategy("LPT_ST2").when(Constraint.MetricConstraint("LPT_ST2_CO1", new Metric("avgBufferSize", "#")).greaterThan("50"))
+				.enforce(ElasticityCapability.ScaleOut()));
+		dataEndTopology. // scale out when the cpu usage on the entire topology is too high
+			 controlledBy(Strategy("EP_ST3")
+				.when(Constraint.MetricConstraint("DET_CO1", new Metric("cpuUsage", "%")).lessThan("80"))
+				.enforce(ElasticityCapability.ScaleOut())
+				);
+											</pre>
+							</div>
+							</div>
 			</br></br>
                         <a name="salsaView" class="anchor"
                            href="#salsaView"><span class="octicon octicon-link"></span></a>
@@ -629,7 +637,7 @@ $ python ./load.py LOAD_BALANCER_IP </code></pre>, by replacing LOAD_BALANCER_IP
                                 <figcaption>Figure 10: Applying load on the elastic service</figcaption>
                             </figure>
                         </center>
-
+						
 </br>
  <p>Note: If the default values of the load script are not enough to trigger scaling actions, the script takes four additional arguments: [minimum # of requests], [maximum # of requests], [number of iterations with same # of requests ], [requests change value]. </p>
                         <p>If needed, please use all load parameters as in the example below:</p>
@@ -720,7 +728,45 @@ $ python ./load.py LOAD_BALANCER_IP </code></pre>, by replacing LOAD_BALANCER_IP
                                 <figcaption>Figure 15: Investigating Elasticity Space for Event Processing Unit</figcaption>
                             </figure>
                         </center>
-                        
+                        <h2>8. Runtime elasticity and governance management with iCOMOT</h2>
+						<div id="codeDescription3">
+                            <h3>Pause control while manual checks are performed</h3>
+							 <div style="overflow-x: scroll;font-size: small;">
+							 <p>
+                                                                                 
+							 The controller can be paused (equivalent to breakpoints when testing) and resumed, 
+							 for analyzing better the behavior of both the controller and the 
+							 service. </p>
+							 <pre class="prettyprint"  style="background-color: white;">
+			//pause control
+			iCOMOTorchestrator.pauseControl(serviceTemplate);
+			//resume control
+			iCOMOTorchestrator.resumeControl(serviceTemplate);
+							 </pre>
+							 
+							 </div>
+							 </div>
+							<div id="codeDescription4">
+                            <h3>Modify, during runtime, service behavior from elasticity control and governance perspective</h3>
+							 <div style="overflow-x: scroll;font-size: small;">
+							 <p>
+                             The example bellow shows code excerpt for emergency scenarios, where (i) the acceptable cost is increased,
+							 (ii) the sensors are diversified (i.e., new sensors are added), and (iii) the sensors have the update monitoring frequency 
+							 set to 1 second for the analytic systems to be able to process fresh information.                                                 
+							  </p>
+							 <pre class="prettyprint"  style="background-color: white;">
+			//modify requirement EP_CO3 on cost, to approve bigger cost for current situation
+			eventProcessingUnit.constrainedBy(Constraint.MetricConstraint("EP_CO3", new Metric("cost", "$")).lessThan("900"));
+			iCOMOTorchestrator.updateServiceReqsOrStruct(serviceTemplate);
+							
+			//start new sensors of type FM5300 and specify the monitoring frequency at 1 second 
+			ServiceUnit sensor = new ServiceUnit("Sensor").ofType("FM5300");
+			iCOMOTorchestrator.enforceCapabilityOnClassOfUnits(sensor, iCOMOTOrchestrator.SensorCapability.START);
+			iCOMOTorchestrator.enforceCapabilityOnClassOfUnits(sensor, iCOMOTOrchestrator.SensorCapability.UPDATE_MON_FREQ, "1");
+							 </pre>
+							 
+							 </div>
+							 </div> 
 
                       <h3>
                         <a name="publications" class="anchor" href="#DemoFlowVideo"><span
@@ -728,7 +774,7 @@ $ python ./load.py LOAD_BALANCER_IP </code></pre>, by replacing LOAD_BALANCER_IP
                     </h3>
 
                     <iframe width="680" height="410" src="http://www.youtube.com/embed/kF92unRjvp8" frameborder="0" allowfullscreen></iframe>
-
+		
 </br> </br>
                     <h1>
                         <a name="publications" class="anchor" href="#publications"><span
