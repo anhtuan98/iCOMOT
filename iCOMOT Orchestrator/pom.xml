@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+<groupId>at.ac.tuwien.dsg.icomot</groupId>
+	<artifactId>icomot-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>iCOMOT-Orchestrator</artifactId>
+    <packaging>jar</packaging>
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+    <name>iCOMOT Orchestrator</name>
+    <dependencies>
+
+<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+       
+        <dependency>
+            <groupId>at.ac.tuwien.dsg.comot</groupId>  
+            <artifactId>comot-fluent-client</artifactId>  
+            <version>0.0.1-SNAPSHOT</version> 
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>at.ac.tuwien.dsg.comot</groupId>  
+            <artifactId>comot-fluent-common</artifactId>  
+            <version>0.0.1-SNAPSHOT</version> 
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>at.ac.tuwien.dsg.comot</groupId>  
+            <artifactId>comot-fluent-platform</artifactId>  
+            <version>0.0.1-SNAPSHOT</version> 
+            <type>jar</type>
+        </dependency>
+        
+
+    </dependencies>
+     <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+           
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7</version>
+                <configuration>
+                    <transformers>
+                        <transformer
+                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <manifestEntries>
+                                <Main-Class>at.ac.tuwien.dsg.cloudcom.elasticitytutorial.HelloElasticity</Main-Class>
+                            </manifestEntries>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.handlers</resource>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.schemas</resource>
+                        </transformer>
+                    </transformers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>  
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <target>
+                                <copy todir="${basedir}/target/config">
+                                    <fileset dir="${basedir}/config" includes="**/*" />
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+     </build>
+</project>
