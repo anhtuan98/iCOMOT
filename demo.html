@@ -561,6 +561,31 @@ In this Demo study, we will focus on the case the predictive maintenance company
                         </center>
 
                         </br> </br>
+                        
+                        
+                        <a name="eliseView" class="anchor"
+                           href="#eliseView"><span class="octicon octicon-link"></span></a>
+                         <h2>3. Query capabilities of sensors</h2>
+                         <ul>      
+                            <li> Use the <b>elise-client</b> to query capabilities of all sensors </li>  
+											<pre><code>~$ elise-client DEVICE
+Querying: {"category":"DEVICE","rules":[],"hasCapabilities":[]}
+Query done, result:
+[
+ A list of sensor with properties and capabilities.
+]</code></pre>
+                                                  
+                            
+                            <li> Query sensors from a specific topology</li>
+<pre><code>~$ elise-client DEVICE serviceID:EQUAL:sensorTopo1 </code></pre>                            
+                            
+                        </ul>
+                         
+		
+                        
+                        
+                        
+                        
  
                         <a name="melaView" class="anchor"
                            href="#melaView"><span class="octicon octicon-link"></span></a>
