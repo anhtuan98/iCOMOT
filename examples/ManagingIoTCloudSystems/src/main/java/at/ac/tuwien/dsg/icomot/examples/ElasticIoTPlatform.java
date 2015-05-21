@@ -1,5 +1,7 @@
 package at.ac.tuwien.dsg.icomot.examples;
 
+import at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate;
+import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.MiscArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.SingleScriptArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.BASHAction.BASHAction;
 import at.ac.tuwien.dsg.comot.common.model.Capability;
@@ -33,7 +35,8 @@ public class ElasticIoTPlatform {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String salsaRepo = "http://128.130.172.215/iCOMOTTutorial/files/ElasticIoTPlatform/";
+        String platformRepo = "http://128.130.172.215/iCOMOTTutorial/files/ElasticIoTPlatform/";
+        String miscRepo = "http://128.130.172.215/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
@@ -60,18 +63,19 @@ public class ElasticIoTPlatform {
 
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
-                //software artifacts needed for unit deployment   = script to deploy Cassandra
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deployCassandraSeed.sh"))
+                //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraSeed.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
-                .exposes(Capability.Variable("DataController_IP_information"))
-                ;
+                .exposes(Capability.Variable("DataController_IP_information"));
 
         ElasticityCapability dataNodeUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability dataNodeUnitScaleOut = ElasticityCapability.ScaleOut();
 
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deployCassandraNode.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraNode.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
                 //.provides(dataNodeUnitScaleIn, dataNodeUnitScaleOut)
@@ -84,21 +88,22 @@ public class ElasticIoTPlatform {
                         .when(Constraint.MetricConstraint("DN_ST2_CO1", new Metric("cpuUsage", "%")).greaterThan("80"))
                         .enforce(dataNodeUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop"))
-                ;
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop"));
 
         //add the service units belonging to the event processing topology
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployMoM.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability eventProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
 
         //add the service units belonging to the event processing topology
         ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deployEventProcessing.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployEventProcessing.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "DaaS-1.0.tar.gz"))
                 //event processing must register in Load Balancer, so it needs the IP
                 .requires(Requirement.Variable("EventProcessingUnit_LoadBalancer_IP_Req"))
                 //event processing also needs to querry the Data Controller to access data
@@ -116,21 +121,19 @@ public class ElasticIoTPlatform {
                         .and(Constraint.MetricConstraint("EP_ST2_CO2", new Metric("avgThroughput", "operations/s")).greaterThan("200"))
                         .enforce(eventProcessingUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop"))
-                ;
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop"));
 
         //add the service units belonging to the event processing topology
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deployLoadBalancer.sh"))
-                ;
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployLoadBalancer.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(salsaRepo + "/IoT/installApacheMQ.sh"))
-                ;
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");
@@ -140,8 +143,9 @@ public class ElasticIoTPlatform {
                 .requires(Requirement.Variable("brokerIp_Requirement"))
                 .requires(Requirement.Variable("loadBalancerIp_Requirement"))
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
-                .deployedBy(SingleScriptArtifact(salsaRepo + "/IoT/install-local-analysis-service.sh"))
-                ;
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployLocalAnalysis.sh"))
+                .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
+                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"));
 
         //Describe a Data End service topology containing the previous 2 software service units
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
@@ -234,8 +238,11 @@ public class ElasticIoTPlatform {
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
 
         orchestrator.deployAndControl(serviceTemplate);
+        
+        //only to deploy
+        //orchestrator.deploy(serviceTemplate);
 
         //for updating anything
-//        orchestrator.controlExisting(serviceTemplate);
+        //orchestrator.controlExisting(serviceTemplate);
     }
 }

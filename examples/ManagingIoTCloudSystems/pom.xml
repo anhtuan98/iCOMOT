@@ -45,14 +45,7 @@
         </dependency>
     
     </dependencies>
-
-   <!-- <repositories>
-        <repository>
-            <id>infosys-repo</id>
-            <url>http://www.infosys.tuwien.ac.at/research/viecom/mvn</url>
-        </repository>
-    </repositories> -->
-    
+ 
     <build>
         <plugins>
             
@@ -118,5 +111,36 @@
             </plugin>
         </plugins>
     </build>   
-    
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo.infosys.tuwien.ac.at/artifactory/comot</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>http://repo.infosys.tuwien.ac.at/artifactory/comot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>http://repo.infosys.tuwien.ac.at/artifactory/plugins-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>snapshots</id>
+            <url>http://repo.infosys.tuwien.ac.at/artifactory/plugins-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
