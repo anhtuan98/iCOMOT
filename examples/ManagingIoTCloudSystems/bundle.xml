@@ -14,7 +14,7 @@
                 </fileSet>
                 <fileSet>
                         <directory>${project.basedir}/../config/</directory>
-                        <outputDirectory>/src</outputDirectory>
+                        <outputDirectory>/config</outputDirectory>
                 </fileSet>
                 <fileSet>
                         <directory>${project.basedir}/../</directory>
