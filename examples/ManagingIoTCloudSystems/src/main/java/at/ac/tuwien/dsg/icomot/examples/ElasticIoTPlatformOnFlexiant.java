@@ -16,6 +16,8 @@ import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingS
 import at.ac.tuwien.dsg.comot.common.model.Requirement;
 import at.ac.tuwien.dsg.comot.common.model.CloudService;
 import static at.ac.tuwien.dsg.comot.common.model.CloudService.ServiceTemplate;
+import at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification;
+import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.FlexiantSmall;
 import at.ac.tuwien.dsg.comot.common.model.ElasticityCapability;
 import at.ac.tuwien.dsg.comot.common.model.LifecyclePhase;
 import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
@@ -30,49 +32,55 @@ import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class ElasticIoTPlatform {
+public class ElasticIoTPlatformOnFlexiant {
 
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://128.130.172.215/iCOMOTTutorial/files/ElasticIoTPlatform/";
+        String platformRepo = "http://109.231.121.57/ElasticIoTPlatform/";
         String miscRepo = "http://128.130.172.215/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
-                .providedBy(OpenstackSmall()
+                .providedBy(FlexiantSmall()
                         //OS image having JDK and Ganglia preinstalled, for faster deploy time
-                        .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c")
-                        //list of software to add on ubuntu using apt-get
-//                        .addSoftwarePackage("openjdk-7-jre")
-//                        .addSoftwarePackage("ganglia-monitor")
-//                        .addSoftwarePackage("gmetad")
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                //list of software to add on ubuntu using apt-get
+                //                        .addSoftwarePackage("openjdk-7-jre")
+                //                        .addSoftwarePackage("ganglia-monitor")
+                //                        .addSoftwarePackage("gmetad")
                 );
 
         OperatingSystemUnit dataNodeVM = OperatingSystemUnit("DataNodeUnitVM")
-                .providedBy(OpenstackMicro()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         //finally, we define Vm types for event processing
         OperatingSystemUnit loadbalancerVM = OperatingSystemUnit("LoadBalancerUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         OperatingSystemUnit eventProcessingVM = OperatingSystemUnit("EventProcessingUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         OperatingSystemUnit localProcessingVM = OperatingSystemUnit("LocalProcessingUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         OperatingSystemUnit mqttQueueVM = OperatingSystemUnit("MqttQueueVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         OperatingSystemUnit momVM = OperatingSystemUnit("MoMVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
+                );
 
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
@@ -251,10 +259,9 @@ public class ElasticIoTPlatform {
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("128.130.172.230");
 
         orchestrator.deployAndControl(serviceTemplate);
-        
+
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
-
         //for updating anything
         //orchestrator.controlExisting(serviceTemplate);
     }
