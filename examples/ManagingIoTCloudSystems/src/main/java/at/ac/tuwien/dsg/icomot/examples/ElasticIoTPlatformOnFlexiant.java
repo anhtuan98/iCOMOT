@@ -256,7 +256,7 @@ public class ElasticIoTPlatformOnFlexiant {
                 )
                 .withDefaultMetrics();
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("128.130.172.230");
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
 
         orchestrator.deployAndControl(serviceTemplate);
 
