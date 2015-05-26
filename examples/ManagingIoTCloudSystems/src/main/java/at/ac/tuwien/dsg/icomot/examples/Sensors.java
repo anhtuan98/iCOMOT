@@ -93,8 +93,9 @@ public class Sensors {
         String tosca = toscaBuilder.toXml(serviceTemplate);
         System.out.println(tosca);
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
-
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator( "");
+        orchestrator.withRsyblPort(8280);
+        orchestrator.withSalsaPort(8380);
         orchestrator.deploy(serviceTemplate);
     }
 }

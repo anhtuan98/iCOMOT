@@ -21,8 +21,9 @@ public class ChangeSensorMonFrequency {
 
         ServiceUnit sensor = new ServiceUnit("Sensor").ofType("FM5300");
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
-
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("");
+																									        orchestrator.withGovOpsPort(8080);
+																									        orchestrator.withGovOpsIP("128.130.172.199");
         orchestrator.enforceCapabilityOnClassOfUnits(sensor, SensorCapability.START);
         orchestrator.enforceCapabilityOnClassOfUnits(sensor, SensorCapability.UPDATE_MON_FREQ, "1");
             

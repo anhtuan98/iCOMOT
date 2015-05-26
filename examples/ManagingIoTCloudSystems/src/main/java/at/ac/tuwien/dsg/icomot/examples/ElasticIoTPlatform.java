@@ -80,7 +80,7 @@ public class ElasticIoTPlatform {
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraSeed.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
-                .exposes(Capability.Variable("DataController_IP_information"));
+                .exposes(Capability.Variable("DataController_IP_information")).withMinInstances(0);;
 
         ElasticityCapability dataNodeUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability dataNodeUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -101,14 +101,14 @@ public class ElasticIoTPlatform {
                         .when(Constraint.MetricConstraint("DN_ST2_CO1", new Metric("cpuUsage", "%")).greaterThan("80"))
                         .enforce(dataNodeUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop"));
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop")).withMinInstances(0);;
 
         //add the service units belonging to the event processing topology
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployMoM.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz"));
+                .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz")).withMinInstances(0);;
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability eventProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -134,19 +134,19 @@ public class ElasticIoTPlatform {
                         .and(Constraint.MetricConstraint("EP_ST2_CO2", new Metric("avgThroughput", "operations/s")).greaterThan("200"))
                         .enforce(eventProcessingUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop"));
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop")).withMinInstances(0);;
 
         //add the service units belonging to the event processing topology
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployLoadBalancer.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz"));
+                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz")).withMinInstances(0);;
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh")).withMinInstances(0);;
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");
@@ -158,7 +158,7 @@ public class ElasticIoTPlatform {
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployLocalAnalysis.sh"))
                 .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"));
+                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz")).withMinInstances(0);;
 
         //Describe a Data End service topology containing the previous 2 software service units
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
@@ -248,7 +248,7 @@ public class ElasticIoTPlatform {
                 )
                 .withDefaultMetrics();
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("");
 
         orchestrator.deployAndControl(serviceTemplate);
         
