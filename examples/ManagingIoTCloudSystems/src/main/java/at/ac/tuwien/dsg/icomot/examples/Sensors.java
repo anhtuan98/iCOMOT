@@ -5,6 +5,8 @@
  */
 package at.ac.tuwien.dsg.icomot.examples;
 
+import java.util.Map;
+
 import at.ac.tuwien.dsg.comot.api.ToscaDescriptionBuilder;
 import at.ac.tuwien.dsg.comot.api.ToscaDescriptionBuilderImpl;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.DockerFileArtifact;
@@ -30,6 +32,8 @@ import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import at.ac.tuwien.dsg.comot.common.model.SoftwareNode;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
 import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
+import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 
 /**
  * This example simulates sensors and gateways, which send data to the Cloud IOT
@@ -53,7 +57,7 @@ public class Sensors {
 
         OperatingSystemUnit gatewayVM = OperatingSystemUnit("gatewayVM")
                 .providedBy(OpenstackSmall()
-                       .withBaseImage("7ac2cc53-2301-40d7-a030-910d72f552ff") // this image includes docker, faster spin up
+                        .withBaseImage("7ac2cc53-2301-40d7-a030-910d72f552ff") // this image includes docker, faster spin up
                 );
 
         DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
@@ -64,7 +68,7 @@ public class Sensors {
 
         ServiceUnit sensorUnit = SingleSoftwareUnit("sensorUnit")
                 .requires(Requirement.Variable("brokerIp_Requirement"))
-                .deployedBy(SingleScriptArtifact( salsaRepo + "deploySensorUnit.sh"))
+                .deployedBy(SingleScriptArtifact(salsaRepo + "deploySensorUnit.sh"))
                 .withLifecycleAction(LifecyclePhase.UNDEPLOY, new BASHAction("decommission"))
                 .withMaxColocatedInstances(1);
 
@@ -93,9 +97,40 @@ public class Sensors {
         String tosca = toscaBuilder.toXml(serviceTemplate);
         System.out.println(tosca);
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator( "");
-        orchestrator.withRsyblPort(8280);
-        orchestrator.withSalsaPort(8380);
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+        // added to make it easier to run as jar from cmd line
+ 		{
+ 			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+ 			for (Arg key : argsMap.keySet()) {
+ 				switch (key) {
+ 				case ORCHESTRATOR_IP:
+ 					orchestrator.withIP(argsMap.get(key));
+ 					break;
+ 				case SALSA_IP:
+ 					orchestrator.withSalsaIP(argsMap.get(key));
+ 					break;
+ 				case SALSA_PORT:
+ 					orchestrator.withSalsaPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				case rSYBL_IP:
+ 					orchestrator.withRsyblIP(argsMap.get(key));
+ 					break;
+ 				case rSYBL_PORT:
+ 					orchestrator.withRsyblPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				case GovOps_IP:
+ 					orchestrator.withGovOpsIP(argsMap.get(key));
+ 					break;
+ 				case GovOps_PORT:
+ 					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				}
+ 			}
+ 		}
+ 		
         orchestrator.deploy(serviceTemplate);
     }
 }

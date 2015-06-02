@@ -1,5 +1,7 @@
 package at.ac.tuwien.dsg.icomot.examples;
 
+import java.util.Map;
+
 import at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.MiscArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.SingleScriptArtifact;
@@ -26,6 +28,8 @@ import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
 import static at.ac.tuwien.dsg.comot.common.model.Strategy.Strategy;
 import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
+import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 
 /**
  * This example deploys an elastic IOT platform running in the cloud
@@ -43,7 +47,7 @@ public class ElasticIoTPlatformOnFlexiant {
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
                 .providedBy(FlexiantSmall()
-                        //OS image having JDK and Ganglia pre-installed, for faster deploy time
+                        //OS image having JDK and Ganglia preinstalled, for faster deploy time
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
                 //list of software to add on ubuntu using apt-get
                 //                        .addSoftwarePackage("openjdk-7-jre")
@@ -54,44 +58,41 @@ public class ElasticIoTPlatformOnFlexiant {
         OperatingSystemUnit dataNodeVM = OperatingSystemUnit("DataNodeUnitVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         //finally, we define Vm types for event processing
         OperatingSystemUnit loadbalancerVM = OperatingSystemUnit("LoadBalancerUnitVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         OperatingSystemUnit eventProcessingVM = OperatingSystemUnit("EventProcessingUnitVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         OperatingSystemUnit localProcessingVM = OperatingSystemUnit("LocalProcessingUnitVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         OperatingSystemUnit mqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         OperatingSystemUnit momVM = OperatingSystemUnit("MoMVM")
                 .providedBy(FlexiantSmall()
                         .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                		);
+                );
 
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
                 //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraSeed.sh"))
-                .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo+ "apache-cassandra-1.2.6-bin.tar.gz"))
                 .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
-                .exposes(Capability.Variable("DataController_IP_information")
-                		).withMinInstances(0);
+                .exposes(Capability.Variable("DataController_IP_information"));
 
         ElasticityCapability dataNodeUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability dataNodeUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -99,8 +100,6 @@ public class ElasticIoTPlatformOnFlexiant {
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraNode.sh"))
-                .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo+ "apache-cassandra-1.2.6-bin.tar.gz"))
                 .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
@@ -114,14 +113,13 @@ public class ElasticIoTPlatformOnFlexiant {
                         .when(Constraint.MetricConstraint("DN_ST2_CO1", new Metric("cpuUsage", "%")).greaterThan("80"))
                         .enforce(dataNodeUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop")
-                		).withMinInstances(0);;
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service joinRing stop"));
 
         //add the service units belonging to the event processing topology
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployMoM.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
@@ -148,20 +146,19 @@ public class ElasticIoTPlatformOnFlexiant {
                         .and(Constraint.MetricConstraint("EP_ST2_CO2", new Metric("avgThroughput", "operations/s")).greaterThan("200"))
                         .enforce(eventProcessingUnitScaleOut)
                 )
-                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop")).withMinInstances(0);;
+                .withLifecycleAction(LifecyclePhase.STOP, BASHAction("sudo service event-processing stop"));
 
         //add the service units belonging to the event processing topology
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployLoadBalancer.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz")).withMinInstances(0);;
+                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "installApacheMQ.sh")).withMinInstances(0);
-        
+                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -173,9 +170,7 @@ public class ElasticIoTPlatformOnFlexiant {
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
                 .deployedBy(SingleScriptArtifact(platformRepo + "deployLocalAnalysis.sh"))
                 .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"))
-                .withMinInstances(0);
-                ;
+                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"));
 
         //Describe a Data End service topology containing the previous 2 software service units
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
@@ -265,13 +260,45 @@ public class ElasticIoTPlatformOnFlexiant {
                 )
                 .withDefaultMetrics();
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("");
-        orchestrator.withRsyblPort(8280);
-        orchestrator.withSalsaPort(8380);
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+        // added to make it easier to run as jar from cmd line
+ 		{
+ 			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+ 			for (Arg key : argsMap.keySet()) {
+ 				switch (key) {
+ 				case ORCHESTRATOR_IP:
+ 					orchestrator.withIP(argsMap.get(key));
+ 					break;
+ 				case SALSA_IP:
+ 					orchestrator.withSalsaIP(argsMap.get(key));
+ 					break;
+ 				case SALSA_PORT:
+ 					orchestrator.withSalsaPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				case rSYBL_IP:
+ 					orchestrator.withRsyblIP(argsMap.get(key));
+ 					break;
+ 				case rSYBL_PORT:
+ 					orchestrator.withRsyblPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				case GovOps_IP:
+ 					orchestrator.withGovOpsIP(argsMap.get(key));
+ 					break;
+ 				case GovOps_PORT:
+ 					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+ 							.get(key)));
+ 					break;
+ 				}
+ 			}
+ 		}
+ 		
+        orchestrator.controlExisting(serviceTemplate);
 
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
         //for updating anything
-        orchestrator.controlExisting(serviceTemplate);
+        //orchestrator.controlExisting(serviceTemplate);
     }
 }
