@@ -95,11 +95,11 @@
                                 <li><a href="#installing">Deploying iCOMOT</a></li>
                                 <li><a href="#runtimeElasticity">Demo</a>
                                     <ul>
-                                        <li><a href="#javaDevPerspective">Programming</a></li>
-                                        <li><a href="#salsaView">Deploying</a></li>
-                                        <li><a href="#melaView">Monitoring</a></li>
-                                        <li><a href="#rSYBLView">Controlling</a></li>
-                                        <li><a href="#metricsCompositionView">Elasticity analysis</a></li>
+                                        <li><a href="#javaDevPerspective">Programming elasticity</a></li>
+                                        <li><a href="#runExample">Elastic IoT Platform</a></li>
+                                        <li><a href="#govOpsControlJava">IoT Sensors</a></li>
+                                        <li><a href="#elasticity">Run-time Elasticity</a></li>
+                                        <li><a href="#elandgovmanagement">Control and Governance</a></li>
                                         <li><a href="#DemoFlowVideo">Demo flow video</a></li>
                                     </ul>
                                 </li>
@@ -138,11 +138,12 @@
                                 <li><a href="#installing">Deploying iCOMOT</a></li>
                                 <li><a href="#runtimeElasticity">Demo</a>
                                     <ul>
-                                        <li><a href="#javaDevPerspective">Programming</a></li>
-                                        <li><a href="#salsaView">Deploying</a></li>
-                                        <li><a href="#melaView">Monitoring</a></li>
-                                        <li><a href="#rSYBLView">Controlling</a></li>
-                                        <li><a href="#metricsCompositionView">Elasticity analysis</a></li>
+                                        <li><a href="#javaDevPerspective">Programming elasticity</a></li>
+                                        <li><a href="#runExample">Elastic IoT Platform</a></li>
+                                        <li><a href="#govOpsControlJava">IoT Sensors</a></li>
+                                        <li><a href="#elasticity">Run-time Elasticity</a></li>
+                                        <li><a href="#elandgovmanagement">Control and Governance</a></li>
+                                        <li><a href="#DemoFlowVideo">Demo flow video</a></li>
                                     </ul>
                                 </li>
 				<li><a href="#publications">Publications</a>
@@ -287,8 +288,7 @@ Please select 1(No) if this is the local machine, 2(Yes) if this is a separate m
 
                     <div>
                         </br> 
-                        <p>If deployment is successful, the iCOMOT Dashboard should be
-                            accessible as below:</p>
+                        <p>If deployment is successful, the iCOMOT Dashboard should be  accessible as below:</p>
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
                                 <img src="images/iCOMOT/demo/iCOMOTDashboardOverview.png"  alt="iCOMOT Dashboard" />
@@ -642,117 +642,113 @@ Query done, result:
                         <p> If required, a user can change the supplied elasticity requirements during run-time, using one of the supported editing formats.</p>
 
                       </br> 
-                        <a name="loadServiceView" class="anchor"
-                           href="#loadServiceView"><span class="octicon octicon-link"></span></a>
-                        <h2>5. Simulate service workload</h2>
+                        <a name="sensorsJavaView" class="anchor"
+                           href="#sensorsJavaView"><span class="octicon octicon-link"></span></a>
+                        <h2>5. Deploy simulated IoT Sensors</h2>
 
-                        <ul>      
-                            <li>  Open a terminal to the iCOMOT machine, and from the folder in which iCOMOT was deployed </li>                        
-                            <li> Run  <pre><code>$ cd ./WorkloadGenerator
-$ python ./load.py LOAD_BALANCER_IP </code></pre>, by replacing LOAD_BALANCER_IP with the IP of the single
-                                instance of the LoadBalancerUnit reported in MELA</li>
-                        </ul>
+                        <p>As for the ElasticIoTPlatform, we have prepared a Java description of a topology of IoT sensors to be deployed in the cloud, in ./src/at/ac/tuwien/dsg/icomot/examples/Sensors. Change the IP of the controller to the one provided during iCOMOT deployment, and run the provided example.</p>  </p> 
 
                        
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/load.png"
-                                     alt="Apply load on the elastic service"
+                                <img src="images/iCOMOT/demo/runSensors.png"
+                                     alt="Deploy IoT Sensors"
                                      width="100%" />
-                                <figcaption>Figure 10: Applying load on the elastic service</figcaption>
+                                <figcaption>Figure 10: Deploying IoT Sensors</figcaption>
                             </figure>
                         </center>
-						
-</br>
- <p>Note: If the default values of the load script are not enough to trigger scaling actions, the script takes four additional arguments: [minimum # of requests], [maximum # of requests], [number of iterations with same # of requests ], [requests change value]. </p>
-                        <p>If needed, please use all load parameters as in the example below:</p>
-                        <pre><code> $ python ./load.py LOAD_BALANCER_IP 300 500 5 1 #will issue 5 times 300 requests, then 5 times 301, and so on, until 500, from which it will decrease </code></pre>
+				
+
+                       <a name="sensorsSALSAView" class="anchor"
+                           href="#sensorsSALSAView"><span class="octicon octicon-link"></span></a>
+                        <h2>5. View and manage the simulated IoT Sensors in COMOT</h2>
+
+                         <p> Open iCOMOT Web and select the iCOMOT Web UI Deployment and Management Tab, from which select the Sensors </p>
+
+
+                        <center>
+                            <figure style="border: 1px solid #d2d2d2; width:70%">
+                                <img src="images/iCOMOT/demo/visualizeSensorsInSalsa.png"
+                                     alt="Select service in Deployment and Management Tab"
+                                     width="100%" />
+                                <figcaption>Figure 11: Selecting IoT Sensors in Deployment and Management Tab</figcaption>
+                            </figure>
+                        </center>
+
+                       
+                      <p> Sensors are managed by GovOps. To see that sensor registered in GovOps automatically open iCOMOT Web and select GovOps tab. This will display the registered sensors, and their properties, such as type. </p>
  
-                     </br>
-                        <a name="scaleOutActionView" class="anchor"
-                           href="#scaleOutActionView"><span class="octicon octicon-link"></span></a>
-                        <h2>5. Observe elasticity actions</h2>
+
+                       <center>
+                            <figure style="border: 1px solid #d2d2d2; width:70%">
+                                <img src="images/iCOMOT/demo/visualizeSensorsInGovOps.png"
+                                     alt="Visualize sensor in GovOps"
+                                     width="100%" />
+                                <figcaption>Figure 12: Visualizing Sensors in GovOps</figcaption>
+                            </figure>
+                        </center>
+
+                        <p> Additional sensors can be deployed using iCOMOT. </p>
+
+                         <center>
+                            <figure style="border: 1px solid #d2d2d2; width:70%">
+                                <img src="images/iCOMOT/demo/deployingSensorsInSalsa.png"
+                                     alt="Select service in Deployment and Management Tab"
+                                     width="100%" />
+                                <figcaption>Figure 13: Deploying more sensors </figcaption>
+                            </figure>
+                        </center>
+ 
+                        <center>
+                            <figure style="border: 1px solid #d2d2d2; width:70%">
+                                <img src="images/iCOMOT/demo/visualizeSensorsInSalsa2.png"
+                                     alt="Select service in Deployment and Management Tab"
+                                     width="100%" />
+                                <figcaption>Figure 14: Visualizing the newly deployed sensors</figcaption>
+                            </figure>
+                        </center>
+				
+			
+ 
+                        <a name="govOpsControlJava" class="anchor"
+                           href="#govOpsControlJava"><span class="octicon octicon-link"></span></a>
+                        <h2>6. Control sensors</h2>
 
 
 
-                        <p> The load will lead to the specified requirements on responseTime &lt; 1 s and totalPendingRequests &lt; 10 to be violated, leading to scale out actions</p>
+                        <p> Sensors can have capabilities, which we can enforce through iCOMO. In this case we have the ability to start/stop sensors, and change the sensor monitoring rate. For this we have provided a JAVA API, used for updating the sensor monitoring requency to 1 second in ./src/at/ac/tuwien/dsg/icomot/examples/ChangeSensorMonFrequency </p>
 
 
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/scaleOutInMELA.png"
+                                <img src="images/iCOMOT/demo/manageSensorsJava.png"
                                      alt="Scaling out the elastic service"
                                      width="100%" />
-                                <figcaption>Figure 11: Scaling out the elastic service</figcaption>
+                                <figcaption>Figure 15: Managing sensors with iCOMOT</figcaption>
                             </figure>
                         </center>
 
-                         </br>
-                        <p> The action progress can be monitored in iCOMOT web in the Deployment and Management tab</p>
+                      <a name="elasticity" class="anchor"
+                           href="#elasticity"><span class="octicon octicon-link"></span></a>
+                        <h2>7. Run-time Elasticity of IoT Cloud Platform</h2>
+
+                        <p> Due to the inchrease in the number and update rate of sensors, the load on the elastic ito cloud platform inchreases, triggering a scale out action due to avg buffer size requirements. The scale out can be visualized in the Elasticity Monitoring tab.</p>
+
 
                         <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/scaleOutInSalsa.png"
+                                <img src="images/iCOMOT/demo/scalingOut.png"
                                      alt="Scaling out the elastic service"
                                      width="100%" />
-                                <figcaption>Figure 12: Scaling out the elastic service progress in Deployment and Management</figcaption>
+                                <figcaption>Figure 16: Scaling out the Elastic IoT Cloud Platform</figcaption>
                             </figure>
                         </center>
 
-
-                         </br> </br>
-                        <a name="metricsCompositionView" class="anchor"
-                           href="#metricsCompositionView"><span class="octicon octicon-link"></span></a>
-                        <h2>6. Visualize metric composition and structuring after scale out</h2>
-
-
-                        <p> In general, elastic cloud sevices can re-configure and scale  individual units or the whole service at run-time, due to various elasticity requirements.
-                            As unit instances running in virtual containers such as virtual machines, or Docker are created/destroyed dynamically at run-time,
-                            if monitoring information is associated only with each virtual machine, it will be lost during scale-in operations which destroy the containers.</p>
-                        <p>Thus, we use metric composition to associate monitoring information with the service structure, and select only the metrics we consider important for
-                            the elasticity of the service</p> 
-
-                        <p>To see how metric are aggregated in this example, click or double click on the gray icon near any metric. 
-                            The need to aggregate metrics is more visible when more instances of the Event Processing Unit are running. </p
-
-                        <center>
-                            <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/melaMetrics1.png"
-                                     alt="Metrisc composition"
-                                     width="100%" />
-                                <figcaption>Figure 13: Metrics composition</figcaption>
-                            </figure>
-                        </center>
-
-                        </br> </br>
-                        <a name="elasticitySpaceView" class="anchor"
-                           href="#relasticitySpaceView"><span class="octicon octicon-link"></span></a>
-                        <h2>7. Visualize service Elasticity Space</h2>
-
-
-                        <p>In the Elasticity Monitoring tab, click on the component icon below the Event Processing Unit name, and select <i>Elasticity Space</i> from the dialog.  </p> 
-
-                        <center>
-                            <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/spaceMELA2.png"
-                                     alt="Opening Service Elasticity Space for Event Processing Uni"
-                                     width="100%" />
-                                <figcaption>Figure 14: Selecting Elasticity Space for Event Processing Uni</figcaption>
-                            </figure>
-                        </center>
-                        </br> </br>
-
-                        <p>Increase the size of the space window by clicking on the maximize button, and investigate the historical monitoring information recorded for each of the
-                            selected metrics for the particular unit </p> 
-
-                        <center>
-                            <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/demo/spaceMELA3.png"
-                                     alt="Investigating Service Elasticity Space for Event Processing Unit"
-                                     width="100%" />
-                                <figcaption>Figure 15: Investigating Elasticity Space for Event Processing Unit</figcaption>
-                            </figure>
-                        </center>
+                         
+       
+                      <a name="elandgovmanagement" class="anchor"
+                           href="#elandgovmanagement"><span class="octicon octicon-link"></span></a>
+                         
                         <h2>8. Runtime elasticity and governance management with iCOMOT</h2>
 						<div id="codeDescription3">
                             <h3>Pause control while manual checks are performed</h3>
@@ -797,16 +793,15 @@ $ python ./load.py LOAD_BALANCER_IP </code></pre>, by replacing LOAD_BALANCER_IP
                         <a name="publications" class="anchor" href="#DemoFlowVideo"><span
                                 class="octicon octicon-link"></span></a>Demo flow video
                     </h3>
+                   <iframe width="680" height="410" src="https://www.youtube.com/embed/dzNYnifo4YM" frameborder="0" allowfullscreen></iframe>
 
-                    <iframe width="680" height="410" src="http://www.youtube.com/embed/kF92unRjvp8" frameborder="0" allowfullscreen></iframe>
-		
 </br> </br>
                     <h1>
                         <a name="publications" class="anchor" href="#publications"><span
                                 class="octicon octicon-link"></span></a>Publications
                     </h1>
 
-			<p>Please find below relevant publications with respect to rSYBL, MELA and SALSA </p>	
+			<p>Please find below relevant publications with respect to rSYBL, MELA, SALSA, and GovOps </p>	
 			<h2>rSYBL</h2>
                         <ul>
                               <li>
@@ -830,6 +825,10 @@ Services", 6th International Conference on Cloud Computing Technology and Scienc
                         <ul>
                              <li>Duc-Hung Le, Hong-Linh Truong, Georgiana Copil, Stefan Nastic and Schahram Dustdar, "SALSA: a Framework for Dynamic Configuration
 of Cloud Services", 6th International Conference on Cloud Computing Technology and Science, 15-18 December 2014, Singapore, "accepted"</li>
+                        </ul>
+                        <h2>GovOps</h2>
+                        <ul>
+                            <li>Stefan Nastic, Michael Vögler, Christian Inzinger, Hong-Linh Truong, and Schahram Dustdar, "rtGovOps: A Runtime Framework for Governance in Large-scale Software-defined IoT Cloud Systems", 3rd IEEE International Conference on Mobile Cloud Computing, Services, and Engineering, Mar 30 – Apr 3, 2015, San Francisco, CA, USA. </li>
                         </ul>
 
 
