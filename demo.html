@@ -570,13 +570,19 @@ In this Demo study, we will focus on the case the predictive maintenance company
                            href="#eliseView"><span class="octicon octicon-link"></span></a>
                          <h2>3. Query capabilities of sensors</h2>
                          <ul>      
-                            <li> Use the <b>elise-client</b> to query capabilities of all sensors </li>  
+                            <li> Use the <b>elise-client</b> to query capabilities of all sensors. The command is available after install the iCOMOT platform. </li>  
 											<pre><code>~$ elise-client DEVICE
-Querying: {"category":"DEVICE","rules":[],"hasCapabilities":[]}
-Query done, result:
-[
- A list of sensor with properties and capabilities.
-]</code></pre>
+ELISE is collecting information ... -
+ 
+Query: {"category":"DEVICE","rules":[],"hasCapabilities":[]}
+Query UUID: ec9e2bad-b136-454e-8517-5b1d929c0d6c
+Status of the query:
+ 
+"10.0.0.8:8580":"DONE"
+
+Press a key to get the result (not spacebar/return/specials)...
+
+[A json of service instances' properties and capabilities]</code></pre>
                                                   
                             
                             <li> Query sensors from a specific topology</li>
