@@ -41,7 +41,7 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class Sensors {
+public class SensorTopology_GPS {
 
     public static void main(String[] args) {
 
