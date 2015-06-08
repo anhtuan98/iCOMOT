@@ -240,8 +240,8 @@ echo "Do you want to install DOCKER to run your application on this machine?"
 echo "The installation will require root previledge and ~800MB for docker image"
 select yn in "Yes" "No"; do
     case $yn in
+        No ) echo "ok. Docker is not installed."; break;;
         Yes ) configureDocker; break;;
-        No ) exit;;
     esac
 done
 
@@ -252,7 +252,7 @@ sudo -S cp icomot-services /etc/init.d/icomot-services
 sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
 
-echo -e "iCOMOT deployed. Please run: \033[1mSome sudo service icomot-services start|stop \033[1mSome" 
+echo -e "iCOMOT deployed. Please run: sudo service icomot-services start|stop " 
 echo " "
 
 
