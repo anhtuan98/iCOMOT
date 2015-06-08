@@ -202,7 +202,7 @@
                                         Provides high performance, but at high memory usage
                                     </li>
                                     <li>
-                                        Minimum 4GB RAM, Recommended 6
+                                        Minimum 4GB RAM, Recommended 6GB
                                     </li>
                                 </ul>
 
@@ -257,9 +257,8 @@
                         deployment version</p>
 
                     <p>For deploying iCOMOT follow the next steps:</p>
-                    <pre><code> $ mkdir Demo
- $ cd Demo
- $ wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/install_iCOMOT.sh
+                    <pre><code> $ git clone https://github.com/tuwiendsg/iCOMOT.git
+ $ cd iCOMOT/bin
  $ bash install_iCOMOT.sh</code></pre>
 
                     <p>A prompt will appear and ask for a publicly accessible IP of the machine on which iCOMOT is deployed to be specified. This is used to correctly configure the 
@@ -269,24 +268,34 @@ Please select 1(No) if this is the local machine, 2(Yes) if this is a separate m
  1) Yes
  2) No
  3) Quit
- $? 1 [please enter 1 if the Demo is run on local machine]
+ $? 1 [please enter 1 if the Tutorial is run on local machine]
  $? 2 [please enter 2 if the machine is a remote one, i.e., not accessible as "localhost"]
  Please enter a PUBLICLY ACCESSIBLE IP for this machine to setup iCOMOT Dashboard accordingly
  10.0.0.X [if 2 was selected, please enter instead of "10.0.0.X" the public IP of the machine]
  ...
  [ installation progress will be reported ]
  ...
- Waiting for iCOMOT Dashboard to start
- iCOMOT deployed. Please access iCOMOT Dashboard at http://10.0.0.X:8080/iCOMOT</code></pre>
+ 
+Do you want to install DOCKER to run your application on this machine?
+The installation requires ~800MB for docker image.
+1) Yes
+2) No
+#? 1 [Use docker for running applications]
+#? 2 [Use cloud for running applications]
+Configuring Docker
+Pulling repository 
+ ...
+ 
+iCOMOT deployed. Please run: sudo service icomot-services start|stop </code></pre>
 
+<p>For starting, stopping or uninstalling iCOMOT, please run the command lines as followings</p>
 
-                    <p>For uninstalling iCOMOT, please run the uninstallation script
-                        for the respective deployment</p>
-
-                    <pre><code> # wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/uninstall_iCOMOT.sh
- # bash ./uninstall_iCOMOT.sh</code></pre>
-
-                    <div>
+<pre><code>$ sudo service icomot-services start
+ * Starting iCOMOT services
+ ...
+ iCOMOT started. Please access iCOMOT Dashboard at http://localhost:8080/iCOMOT 
+</code></pre>
+                <div>
                         </br> 
                         <p>If deployment is successful, the iCOMOT Dashboard should be  accessible as below:</p>
                         <center>
@@ -296,6 +305,26 @@ Please select 1(No) if this is the local machine, 2(Yes) if this is a separate m
                             </figure>
                         </center>
                     </div>
+
+<p>iCOMOT services can be managed separatedly with following commands</p>
+<pre><code>$ sudo service salsa-engine-service start|stop|restart|status
+$ sudo service ganglia-monitor start|stop|restart|status
+$ sudo service mela-data-service start|stop|restart|status
+$ sudo service mela-analysis-service start|stop|restart|status
+$ sudo service rSYBL-service start|stop|restart|status
+$ sudo service elise-service start|stop|restart|status
+$ sudo service comot-dashboard-service start|stop|restart|status
+</code></pre>
+
+<p>To stop the whole services or to undeploy iCOMOT services, please run followings</p>
+<pre><code> $ sudo service icomot-services stop
+ ...
+ $ bash ./uninstall_iCOMOT.sh
+ ...
+</code></pre>
+
+
+
 
  
  <div>
