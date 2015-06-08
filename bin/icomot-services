@@ -1,0 +1,72 @@
+### BEGIN INIT INFO
+# Provides:          iCOMOT-service
+# Required-Start:
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop all the iCOMOT services: MELA, rSYBL, SALSA and ELISE
+# Description:       To start-stop iCOMOT services
+### END INIT INFO
+
+RUN_MODE="daemons"
+
+NAME=icmot-service
+DAEMONDIR=./
+HOST_IP=localhost
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting iCOMOT services"
+		log_progress_msg "icomot"
+		sudo -S service salsa-engine-service start
+		sudo -S service ganglia-monitor restart
+		sudo -S service mela-data-service start
+		sudo -S service mela-analysis-service start
+		sudo -S service rSYBL-service start
+		sudo -S service elise-service start
+
+		log_daemon_msg "Waiting for services to start before starting dashboard"
+		curl -X GET http://localhost:8180/MELA/REST_WS/elasticservices 2>/dev/null >> /tmp/comot_deployment_status
+		curl -X GET http://localhost:8181/MELA/REST_WS/elasticservices 2>/dev/null >> /tmp/comot_deployment_status
+		curl -X GET http://localhost:8380/salsa-engine/rest/viewgenerator/cloudservice/json/list 2>/dev/null >> /tmp/comot_deployment_status
+		curl -X GET http://localhost:8380/rSYBL/restWS/elasticservices  2>/dev/null >> /tmp/comot_deployment_status
+
+		log_daemon_msg "Waiting for COMOT Dashboard to start"
+		sudo -S service comot-dashboard-service start
+
+		sleep 5
+		#check that Dashboard started
+		curl -X GET http://localhost:8080/COMOT  2>/dev/null >> /tmp/comot_deployment_status
+		echo "iCOMOT started. Please access iCOMOT Dashboard at http://$HOST_IP:8080/iCOMOT"
+exit 0
+;;		
+	stop)
+                log_daemon_msg "Starting iCOMOT services"
+                log_progress_msg "icomot"
+                sudo -S service salsa-engine-service stop
+                sudo -S service ganglia-monitor stop
+                sudo -S service mela-data-service stop
+                sudo -S service mela-analysis-service stop
+                sudo -S service rSYBL-service stop
+                sudo -S service elise-service stop
+exit 0
+;;
+	status)
+                log_daemon_msg "Checking status of iCOMOT services"
+                sudo -S service salsa-engine-service status
+                sudo -S service ganglia-monitor status
+                sudo -S service mela-data-service status 
+                sudo -S service mela-analysis-service status
+                sudo -S service rSYBL-service status
+                sudo -S service elise-service status
+exit 0
+;;
+	*)
+		echo "Usage: $0 {start|stop|status}"
+		exit 1
+		;;
+esac
+ 
+exit 0
