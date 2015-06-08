@@ -237,7 +237,7 @@ function configureDocker() {
 
 echo " "
 echo "Do you want to install DOCKER to run your application on this machine?"
-echo "The installation will require root previledge and ~800MB for docker image"
+echo "The installation requires ~800MB for docker image."
 select yn in "Yes" "No"; do
     case $yn in
         No ) echo "ok. Docker is not installed."; break;;
