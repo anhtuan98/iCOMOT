@@ -168,9 +168,7 @@
                     </h1>
 
                     <div>
-                        <p>This page provides supporting material for demo <a href="http://mdmconferences.org/mdm2015/program.html">iCOMOT - Toolset for Managing IoT Cloud Systems </a> at <a href="http://mdmconferences.org/mdm2015">16th IEEE International Conference on Mobile Data Management</a>, 15-18 June, 2015, Pittsburg, USA</p>
-                        <p>
-	
+                        <p>This page provides guidelines for the tutorial on iCOMOT - Toolset for Managing IoT Cloud Systems. All the scripts and examples of iCOMOT is published on <a href="https://github.com/tuwiendsg/iCOMOT">Github</a> The turotial will be presented at <a href="http://mdmconferences.org/mdm2015">16th IEEE International Conference on Mobile Data Management</a>, 15-18 June, 2015, Pittsburg, USA.
                         </p>
                         
                         <p>Steps:</p>
@@ -179,6 +177,7 @@
                             <li>Deploy and run iCOMOT</li>
                             <li>Describe an IoT cloud based elastic data-center using iCOMOT API</li>
                             <li>Deploy the service on Docker/OpenStack using <a href="http://tuwiendsg.github.io/SALSA">SALSA</a></li>
+                            <li>Query the capabilities of the service using <a href="http://tuwiendsg.github.io/ELISE">ELISE</a></li>
                             <li>Monitor and analyze the service using <a href="http://tuwiendsg.github.io/MELA/">MELA</a></li>
                             <li>Control the service's elasticity using <a href="http://www.infosys.tuwien.ac.at/research/viecom/SYBL">rSYBL</a></li>
                             <li>Apply IoT governance policies using <a href="https://github.com/tuwiendsg/GovOps">GovOps</a></li>
@@ -377,9 +376,9 @@ In this Demo study, we will focus on the case the predictive maintenance company
 
                       <center>
                             <figure style="border: 1px solid #d2d2d2; width:70%">
-                                <img src="images/iCOMOT/demo/predictivecase.png"
+                                <img src="images/iCOMOT/demo/iCOMOT_ToolsSet.png"
                                      alt="Scenario" />
-                                <figcaption>Figure 2: Scenario</figcaption>
+                                <figcaption>Figure 2: iCOMOT toolset for IoT Cloud Systems</figcaption>
                             </figure>
                         </center>
 
@@ -625,8 +624,8 @@ In this Demo study, we will focus on the case the predictive maintenance company
                            href="#eliseView"><span class="octicon octicon-link"></span></a>
                          <h2>3. Query capabilities of sensors</h2>
                          <ul>      
-                            <li> Use the <b>elise-client</b> to query capabilities of all sensors. The command is available after install the iCOMOT platform. </li>  
-											<pre><code>~$ elise-client DEVICE
+                            <li> Use the <b>elise-client</b> to query capabilities of all sensors. The command is available after install the /bin directory. </li>  
+											<pre><code>~$ ./elise-client.sh DEVICE
 ELISE is collecting information ... -
  
 Query: {"category":"DEVICE","rules":[],"hasCapabilities":[]}
