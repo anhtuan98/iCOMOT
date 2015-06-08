@@ -51,7 +51,7 @@ exit 0
                 sudo -S service mela-analysis-service stop
                 sudo -S service rSYBL-service stop
                 sudo -S service elise-service stop
-                service comot-dashboard-service stop
+                sudo service comot-dashboard-service stop
 exit 0
 ;;
 	status)
@@ -62,7 +62,7 @@ exit 0
                 sudo -S service mela-analysis-service status
                 sudo -S service rSYBL-service status
                 sudo -S service elise-service status
-                service comot-dashboard-service status
+                sudo service comot-dashboard-service status
                 
 exit 0
 ;;
