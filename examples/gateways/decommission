@@ -1,0 +1,11 @@
+#!/bin/bash
+#used to decomission a gateway from GovOps before undeploying.
+GovOpsIP="128.130.172.199"
+GovOpsPORT=8080
+DEREGISTER_COMMAND="curl -X GET http://$GovOpsIP:$GovOpsPORT/APIManager/mapper/removeDevice"
+
+#need to get the index of the gateway from the container
+
+ID=`cat /etc/environment | grep -o "SALSA_ENV_PORTMAP_80=.*" | grep -o "=.*" | grep -o [0-9\.:]*`
+
+eval "$DEREGISTER_COMMAND/$ID/"

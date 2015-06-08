@@ -40,7 +40,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>at.ac.tuwien.infosys.sensor.LocationSensor</mainClass>
+							<mainClass>at.ac.tuwien.dsg.sensor.LocationSensor</mainClass>
 
 						</manifest>
 						<manifestEntries>
