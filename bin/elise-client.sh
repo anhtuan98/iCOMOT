@@ -5,7 +5,7 @@
 # elise-client.sh <category> [rules]
 
 IP=localhost
-PORT=8481
+PORT=8580
 REST=http://$IP:$PORT/elise-service/rest
 
 
@@ -13,7 +13,7 @@ if [ $# -lt 1 ]
 then
         echo "Usage : $0 <category> [rule...]"
         echo "  "
-        echo "   <category>    = DEVICE|SOFTWARE|DOCKER|TOMCAT|VirtualMachine"
+        echo "   <category>    = SENSOR|GATEWAY|VM"
         echo "   [rule...]     = metric:OPERATION:value "
         echo " "
         echo "Multiple rules can be used to filter service instances based on instance's properties. A rule consists of:"
@@ -25,8 +25,22 @@ then
         exit 1
 fi
 
+if [ "$1" == "SENSOR" ]
+then
+  category="DEVICE"
+elif [ "$1" == "GATEWAY" ]
+then
+  category="DOCKER"
+elif [ "$1" == "VM" ]
+then 
+  category="VirtualMachine"
+else
+  category="SOFTWARE"
+fi
+
+
 # build the query: {"category":"DEVICE","rules":[{"metric":"test","value":"value","operation":"EQUAL"}],"hasCapabilities":[]}
-QUERY='{"category":"'$1'","rules":['
+QUERY='{"category":"'$category'","rules":['
 
 shift
 
