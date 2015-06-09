@@ -93,7 +93,8 @@
                                 <li><a href="#requirements">Requirements</a></li>
                                 <li><a href="#pilotService">Elastic Cloud Service</a></li>
                                 <li><a href="#installing">Deploying iCOMOT</a></li>
-                                <li><a href="#runtimeElasticity">Demo</a>
+								<li><a href="#sensorUtil">Tutorial 1</a></li>
+                                <li><a href="#runtimeElasticity">Tutorial 2</a>
                                     <ul>
                                         <li><a href="#javaDevPerspective">Programming elasticity</a></li>
                                         <li><a href="#runExample">Elastic IoT Platform</a></li>
@@ -136,7 +137,8 @@
                                 <li><a href="#requirements">Requirements</a></li>
                                 <li><a href="#pilotService">Elastic Cloud Service</a></li>
                                 <li><a href="#installing">Deploying iCOMOT</a></li>
-                                <li><a href="#runtimeElasticity">Demo</a>
+								<li><a href="#sensorUtil">Tutorial 1</a></li>
+                                <li><a href="#runtimeElasticity">Tutorial 2</a>
                                     <ul>
                                         <li><a href="#javaDevPerspective">Programming elasticity</a></li>
                                         <li><a href="#runExample">Elastic IoT Platform</a></li>
@@ -328,36 +330,45 @@ $ sudo service comot-dashboard-service start|stop|restart|status
  
  <div>
 	<h1>
-                            <a name="buildSensor" class="anchor"
-                               href="#buildSensor"><span class="octicon octicon-link"></span></a>Tutorial 1: Develop sensor units
-                        </h1>
-                        Simulated sensors can be used in the development to simulate the sensory data. In our demo, a simulated sensors consists of three parts: the sensor runtime, the data and the configuration script.
-                                               // screenshot and video
+        <a name="sensorUtil" class="anchor"
+                        href="#sensorUtil"><span class="octicon octicon-link"></span></a>Tutorial 1: Using iCOMOT Utility Tools to Develop Sensor and Gateway Units
+    </h1>
+	
+	<h2>
+		<a name="scenario" class="anchor"
+					   href="#scenario"><span class="octicon octicon-link"></span></a>Simulated sensors and gateways 
+	</h2>
+                        Simulated sensors can be used in the development to simulate the sensory data. In our demo, a simulated sensors consists of three parts: the sensor runtime, the data and the configuration scripts.<br/>
+                   
+						
+						The gateways are used to host and simulate different sensors. Different components of one gateway are bundled in a Docker container with the capability to host sensors, to register and decommission with the IoT Governance. Generally, iCOMOT's agents are preinstalled in the gateways to enable it to manage such gateways during application runtime.
+						
+    <h2>
+		<a name="scenario" class="anchor"
+					   href="#scenario"><span class="octicon octicon-link"></span></a> Downloading and installing the SensorGatewayUtil
+	</h2> 					
+						The SensorGatewayUtil tool can be obtained in two ways: by cloning the whole iCOMOT toolset, as described earlier or it can be manually downloaded and installed as a standalone tool. To install it as a standalone tool, one can run the following command:
+						<pre><code> $ wget https://github.com/tuwiendsg/iCOMOT/bin/SensorGatewayUtil.sh
+ $ ./SensorGatewayUtil.sh
+						</code></pre>
+						The output should look something like this.
+						<pre><code> $ TODO add the sample output here
+						</code></pre>
+						
+	 <h2>
+		<a name="scenario" class="anchor"
+					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating your first iCOMOT virtualized sensor
+	</h2>					
+						The SensorGatewayUtil tool supports two modes to create a virtual sensor: batch mode and interactive mode. In the following video we show how to use SensorGatewayUtil in the interactive mode to create a simple sensor from custom data set.  	       
                     
  </div>
- 
- 
- 
- <div>
-	<h1>
-                            <a name="buildGateway" class="anchor"
-                               href="#buildGateway"><span class="octicon octicon-link"></span></a>Tutorial 2: Develop gateways
-                        </h1>
-                        The gateway is used to host and simulate different sensors. Different components of the gateway is bundled in a Docker container with the capability to host sensors, to register and decommiss with the IoT Governance.
-                        // screenshot and video
-                         
-                        
- </div>
- 
- 
- 
  
  
                     <div>
                          </br> </br>
                         <h1>
                             <a name="runtimeElasticity" class="anchor"
-                               href="#runtimeElasticity"><span class="octicon octicon-link"></span></a>Tutorial 3: Toolset for Managing IoT Cloud Systems
+                               href="#runtimeElasticity"><span class="octicon octicon-link"></span></a>Tutorial 2: Using iCOMOT Toolset to Manage IoT Cloud Systems
                         </h1>
 
 
