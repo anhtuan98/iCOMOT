@@ -132,25 +132,7 @@ exit 0
 START OF DATA
 generatedScript
 	
-	# add data to the end of the script. id is the data set, then the sensor name, afterward is the set of columns
-	# add $ before each column number  
-  if [ -z "$COLUMNS" ]; then
-    COL='$0'
-  else 
-    COL='$'`echo $COLUMNS | tr -d ' '`
-    COL=`echo $COL | sed -e "s/,/,$/g"`
-  fi
-  
-  # get the header
-	head -1 $DATASET | awk -F',' -v OFS=',' '{print "id,name,"'$COL'}' >> $FILE
 	
-	# write the data
-	DATASET_NAME_ONLY=`basename $DATASET | cut -d'.' -f1`
-	if [ $MAXLINES -gt 0 ]; then 
-		tail --lines=+2 $DATASET | head -n $MAXLINES |  awk -F',' -v OFS=',' '{print "'$DATASET_NAME_ONLY','$NAME',"'$COL'}' >> $FILE
-	else 
-		tail --lines=+2 $DATASET | awk -F',' -v OFS=',' '{print "'$DATASET_NAME_ONLY','$NAME',"'$COL'}' >> $FILE
-	fi	
 	
 	
 # create distribution folder
@@ -199,6 +181,27 @@ exit 0
 
 START OF DATA
 generatedScript
+
+
+# add data to the end of the scripts. id is the data set, then the sensor name, afterward is the set of columns
+	# add $ before each column number  
+  if [ -z "$COLUMNS" ]; then
+    COL='$0'
+  else 
+    COL='$'`echo $COLUMNS | tr -d ' '`
+    COL=`echo $COL | sed -e "s/,/,$/g"`
+  fi
+  
+  # get the header
+	head -1 $DATASET | awk -F',' -v OFS=',' '{print "id,name,"'$COL'}' >> $FILE
+	
+	# write the data to both scripts in TARGET folder and distribution folder
+	DATASET_NAME_ONLY=`basename $DATASET | cut -d'.' -f1`
+	if [ $MAXLINES -gt 0 ]; then 
+		tail --lines=+2 $DATASET | head -n $MAXLINES |  awk -F',' -v OFS=',' '{print "'$DATASET_NAME_ONLY','$NAME',"'$COL'}' | tee -a $FILE $TARGET/$NAME/$NAME-distribution/`basename $FILE` >/dev/null
+	else 
+		tail --lines=+2 $DATASET | awk -F',' -v OFS=',' '{print "'$DATASET_NAME_ONLY','$NAME',"'$COL'}' | tee -a $FILE $TARGET/$NAME/$NAME-distribution/`basename $FILE` >/dev/null
+	fi	
 
 
   echo "The run script is generated: $FILE"
