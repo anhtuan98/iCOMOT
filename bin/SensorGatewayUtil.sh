@@ -169,7 +169,7 @@ cat > $TARGET/$NAME/$NAME-distribution/`basename $FILE` << generatedScript
 # This script requires sensor.tar.gz in the same folder. If not, please uncomment following line.
 # wget https://github.com/tuwiendsg/iCOMOT/raw/master/examples/sensors/sensor.tar.gz
 
-if [ -f ./sensor.tar.gz ]; then
+if [ ! -f ./sensor.tar.gz ]; then
 	echo "Sensor artifact does not found!" | tee /tmp/sensor.err
   exit 1;
 fi
