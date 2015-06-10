@@ -291,8 +291,8 @@ ADD ./decommission /bin/decommission
 EXPOSE 80 2812 5683
 
 # add metadata and GovOps IP
-RUN echo "GOVOPS_ENDPOINT=$GOVOPS_LBHOST_IP:$GOVOPS_LBHOST_POR" > /etc/environment
-RUN echo "GATEWAY_META=$METASTRING"
+RUN echo "GOVOPS_ENDPOINT=$GOVOPS_LBHOST_IP:$GOVOPS_LBHOST_PORT" >> /etc/environment
+RUN echo "GATEWAY_META=$METASTRING" >> /etc/environment
 
 # Start cron deamon and hold on to a process
 RUN chmod +x /usr/share/provi-agent/starter.sh
@@ -312,6 +312,7 @@ cd $BINDIR
 mkdir -p $TARGET/$NAME/$NAME-distribution
 cp $PDIR/rtGovOps-agents.tar.gz $TARGET/$NAME/$NAME-distribution
 cp $PDIR/decommission $TARGET/$NAME/$NAME-distribution
+cp $FILE $TARGET/$NAME/$NAME-distribution
 
   echo "The Dockerfile is generated: $FILE"
   echo "Gateway name: $NAME"
