@@ -292,7 +292,7 @@ EXPOSE 80 2812 5683
 
 # add metadata and GovOps IP
 RUN echo "GOVOPS_ENDPOINT=$GOVOPS_LBHOST_IP:$GOVOPS_LBHOST_PORT" >> /etc/environment
-RUN echo "GATEWAY_META=$METASTRING" >> /etc/environment
+RUN echo "GATEWAY_META=\"$METASTRING\"" >> /etc/environment
 
 # Start cron deamon and hold on to a process
 RUN chmod +x /usr/share/provi-agent/starter.sh
@@ -359,7 +359,7 @@ COLUMNS=""
 PROTOCOL="dry"
 FREQUENCY="5"
 
-GWBASEIMAGE="java:8"
+GWBASEIMAGE="ubuntu:14.04"
 WITHGOVOPS="yes"
 GOVOPS_LBHOST_IP="128.130.172.199"
 GOVOPS_LBHOST_PORT="8080"
@@ -450,10 +450,10 @@ if [ $INTERACTIVE == "true" ]; then
 		  	echo "Custom Dockerfile is not supported yet. Please follow the next guildlines to build the gateway!"
 		  fi
 			default=$GWBASEIMAGE; read -p "Base image for the gateway (on Dockerhub) [$GWBASEIMAGE]: " GWBASEIMAGE; GWBASEIMAGE=${GWBASEIMAGE:-$default}
-			default=$WITHGOVOPS; read -p "With GovOps? [$WITHGOVOPS]: " WITHGOVOPS; 
+			default=$WITHGOVOPS; read -p "GovOps-enabled? [$WITHGOVOPS]: " WITHGOVOPS; 
 			while [ "$WITHGOVOPS" != "no" ] && [ "$WITHGOVOPS" != "yes" ] && [ "$WITHGOVOPS" != "" ]; do
 				echo "Wrong input: $WITHGOVOPS. Please answer \"yes\" or \"no\", or press return for the default settings."
-				read -p "With GovOps? [$WITHGOVOPS]: " WITHGOVOPS;
+				read -p "GovOps-enabled? [$WITHGOVOPS]: " WITHGOVOPS;
 			done
 			WITHGOVOPS=${WITHGOVOPS:-$default}
 			if [ "$WITHGOVOPS" == "yes" ]; then

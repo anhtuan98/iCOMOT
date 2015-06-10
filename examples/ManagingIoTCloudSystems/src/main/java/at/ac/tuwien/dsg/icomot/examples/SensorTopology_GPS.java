@@ -63,7 +63,6 @@ public class SensorTopology_GPS {
         DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
                 .providedBy(DockerDefault())
                 .deployedBy(DockerFileArtifact("dockerFileArtifact", salsaRepo + "Dockerfile-UB"),
-                        MiscArtifact("starter.sh", salsaRepo + "starter_ubuntu.sh"),
                         MiscArtifact("achieveArtifact", salsaRepo + "rtGovOps-agents.tar.gz"));
 
         ServiceUnit sensorUnit = SingleSoftwareUnit("sensorUnit")
