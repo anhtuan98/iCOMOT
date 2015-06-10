@@ -36,8 +36,14 @@
                     collapsible: true
                 });
             });
-			$(function() {
+						$(function() {
                 $("#codeDescription2").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+            $(function() {
+                $("#codeDescription3").accordion({
                     active: false,
                     collapsible: true
                 });
@@ -170,13 +176,14 @@
                     </h1>
 
                     <div>
-                        <p>This page provides guidelines for the tutorial on iCOMOT - Toolset for Managing IoT Cloud Systems. All the scripts and examples of iCOMOT is published on <a href="https://github.com/tuwiendsg/iCOMOT">Github</a> The turotial will be presented at <a href="http://mdmconferences.org/mdm2015">16th IEEE International Conference on Mobile Data Management</a>, 15-18 June, 2015, Pittsburg, USA.
+                        <p>This page provides guidelines for the tutorial on iCOMOT - Toolset for Managing IoT Cloud Systems. All the scripts and examples of iCOMOT is published on <a href="https://github.com/tuwiendsg/iCOMOT">Github</a> The tutorial will be presented at <a href="http://mdmconferences.org/mdm2015">16th IEEE International Conference on Mobile Data Management</a>, 15-18 June, 2015, Pittsburg, USA.
                         </p>
                         
                         <p>Steps:</p>
 
                         <ul>
                             <li>Deploy and run iCOMOT</li>
+                            <li>Using iCOMOT Utility Tools to develop sensor and gateway units</li>
                             <li>Describe an IoT cloud based elastic data-center using iCOMOT API</li>
                             <li>Deploy the service on Docker/OpenStack using <a href="http://tuwiendsg.github.io/SALSA">SALSA</a></li>
                             <li>Query the capabilities of the service using <a href="http://tuwiendsg.github.io/ELISE">ELISE</a></li>
@@ -349,19 +356,47 @@ $ sudo service comot-dashboard-service start|stop|restart|status
 	</h2> 					
 						The SensorGatewayUtil tool can be obtained in two ways: by cloning the whole iCOMOT toolset, as described earlier or it can be manually downloaded and installed as a standalone tool. To install it as a standalone tool, one can run the following command:
 						<pre><code> $ wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/SensorGatewayUtil.sh
- $ ./SensorGatewayUtil.sh
-						</code></pre>
-						The output should look something like this.
-						<pre><code> $ TODO add the sample output here
-						</code></pre>
-						
+ $ ./SensorGatewayUtil.sh</code></pre>
+											
 	 <h2>
 		<a name="scenario" class="anchor"
 					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating your first iCOMOT virtualized sensor
 	</h2>					
-						The SensorGatewayUtil tool supports two modes to create a virtual sensor: batch mode and interactive mode. In the following video we show how to use SensorGatewayUtil in the interactive mode to create a simple sensor from custom data set. <br/> <br/>
-						 <iframe width="680" height="410" src="https://www.youtube.com/embed/XnPiu-TRrhc" frameborder="0" allowfullscreen></iframe>
+						The SensorGatewayUtil tool supports two modes to create a virtual sensor or a virtual gateway: batch mode and interactive mode. 						
+							<div id="codeDescription3">
+                            <h4>The output of the interactive mode should look like this (click to expand)</h4>
+                            <div style="overflow-x: scroll;font-size: small;">						
+						<pre><code>$ bash SensorGatewayUtil.sh sensor -i
+Interactive mode for creating sensor
+Input a name for the sensor/gateway [sensor]: locationSensor
+Dataset [./data.csv]: ./gps1290.csv
+Maximum lines to extract from the dataset (0 for all lines) [0]: 1000
+Columns to extract from the dataset (leave empty for all) []: 2,3
+Sensor protocol [dry] (dry|mqtt|coap|smap): dry
+Sensor frequency [5]: 2
+...
+Successfully created sensor locationSensor
+You can run the sensor with ./iCOMOT-simulated-devices/sensors/locationSensor/run_sensor_locationSensor.sh
+
+$ bash SensorGatewayUtil.sh gateway -i
+Interactive mode for creating gateway
+Input a name for the sensor/gateway [gateway]: G1
+Enter the default Dockerfile if available, or press enter to continue []: 
+Base image for the gateway (on Dockerhub) [ubuntu:14.04]:
+GovOps-enabled? [yes]: yes
+  GovOps IP [128.130.172.199]: 
+  GovOps Port [8080]: 
+Please enter the metadata for the gateway (Enter empty meta name to stop):
+  Meta name:  location
+  Meta value: room320
+  Meta name:  
+Generate gateway code ...
+...
+The Dockerfile is generated: iCOMOT-simulated-devices/gateways/G1/Dockerfile</code></pre>
+						</div></div>
 						
+						In the following videos, we show how to use SensorGatewayUtil in the interactive mode to create a simple sensor from custom data set and a gateway from custom image. <br/> <br/>
+						 <iframe width="420" height="315" src="https://www.youtube.com/embed/XnPiu-TRrhc" frameborder="0" allowfullscreen></iframe>&nbsp;&nbsp;&nbsp;<iframe width="420" height="315" src="https://www.youtube.com/embed/7A5TBS3UjWA" frameborder="0" allowfullscreen></iframe>
                     
  </div>
  
