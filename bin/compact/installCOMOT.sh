@@ -66,7 +66,7 @@ fi
 ########## INSTALL COMPACT iCOMOT ###########
 echo "Deploying iCOMOT"
 echo "Downloading iCOMOT"
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/iCOMOT-Platform.tar.gz
+wget  -q https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/iCOMOT-Platform.tar.gz?raw=true
 echo "Unpacking iCOMOT"
 tar -xzf ./iCOMOT-Platform.tar.gz
 rm  ./iCOMOT-Platform.tar.gz
@@ -113,7 +113,8 @@ sudo -S service icomot-platform start
 cd ./iCOMOT-Platform
 CURRENT_DIR=$(pwd)
 
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/rSYBL.tar.gz
+
+wget -q https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/iCOMOT-Platform.tar.gz?raw=true
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
