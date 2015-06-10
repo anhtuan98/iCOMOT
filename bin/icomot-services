@@ -38,7 +38,7 @@ case "$1" in
 
 		sleep 5
 		#check that Dashboard started
-		curl -X GET http://localhost:8080/COMOT  2>/dev/null >> /tmp/comot_deployment_status
+		curl -X GET http://localhost:8080/iCOMOT  2>/dev/null >> /tmp/comot_deployment_status
 		echo "iCOMOT started. Please access iCOMOT Dashboard at http://$HOST_IP:8080/iCOMOT"
 exit 0
 ;;		

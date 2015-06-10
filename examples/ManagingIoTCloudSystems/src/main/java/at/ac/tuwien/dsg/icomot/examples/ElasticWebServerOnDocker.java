@@ -127,7 +127,9 @@ public class ElasticWebServerOnDocker {
                 .withDefaultMetrics();
 
         //instantiate COMOT orchestrator to deploy, monitor and control the service
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("128.130.172.216");
+        orchestrator.withSalsaPort(8380);
+        orchestrator.withRsyblPort(8280);
         
         // added to make it easier to run as jar from cmd line
  		{

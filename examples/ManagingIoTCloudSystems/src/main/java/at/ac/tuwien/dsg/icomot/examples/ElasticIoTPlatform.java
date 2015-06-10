@@ -39,7 +39,7 @@ public class ElasticIoTPlatform {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTPlatform/";
+        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
         String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
@@ -111,7 +111,7 @@ public class ElasticIoTPlatform {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployMoM.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployQueue.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();

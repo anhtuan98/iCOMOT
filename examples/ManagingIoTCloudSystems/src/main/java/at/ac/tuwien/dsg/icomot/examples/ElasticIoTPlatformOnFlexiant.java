@@ -41,8 +41,8 @@ public class ElasticIoTPlatformOnFlexiant {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://109.231.121.57/ElasticIoTPlatform/";
-        String miscRepo = "http://128.130.172.215/iCOMOTTutorial/files/Misc/";
+        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
+        String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
@@ -119,7 +119,7 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployMoM.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployQueue.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
@@ -262,38 +262,38 @@ public class ElasticIoTPlatformOnFlexiant {
 
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
         // added to make it easier to run as jar from cmd line
- 		{
- 			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
- 			for (Arg key : argsMap.keySet()) {
- 				switch (key) {
- 				case ORCHESTRATOR_IP:
- 					orchestrator.withIP(argsMap.get(key));
- 					break;
- 				case SALSA_IP:
- 					orchestrator.withSalsaIP(argsMap.get(key));
- 					break;
- 				case SALSA_PORT:
- 					orchestrator.withSalsaPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				case rSYBL_IP:
- 					orchestrator.withRsyblIP(argsMap.get(key));
- 					break;
- 				case rSYBL_PORT:
- 					orchestrator.withRsyblPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				case GovOps_IP:
- 					orchestrator.withGovOpsIP(argsMap.get(key));
- 					break;
- 				case GovOps_PORT:
- 					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				}
- 			}
- 		}
- 		
+        {
+            Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+            for (Arg key : argsMap.keySet()) {
+                switch (key) {
+                    case ORCHESTRATOR_IP:
+                        orchestrator.withIP(argsMap.get(key));
+                        break;
+                    case SALSA_IP:
+                        orchestrator.withSalsaIP(argsMap.get(key));
+                        break;
+                    case SALSA_PORT:
+                        orchestrator.withSalsaPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case rSYBL_IP:
+                        orchestrator.withRsyblIP(argsMap.get(key));
+                        break;
+                    case rSYBL_PORT:
+                        orchestrator.withRsyblPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case GovOps_IP:
+                        orchestrator.withGovOpsIP(argsMap.get(key));
+                        break;
+                    case GovOps_PORT:
+                        orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                }
+            }
+        }
+
         orchestrator.controlExisting(serviceTemplate);
 
         //only to deploy
