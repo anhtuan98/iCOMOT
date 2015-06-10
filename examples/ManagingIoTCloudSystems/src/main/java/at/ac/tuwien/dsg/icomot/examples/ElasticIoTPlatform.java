@@ -39,8 +39,8 @@ public class ElasticIoTPlatform {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://128.130.172.215/iCOMOTTutorial/files/ElasticIoTPlatform/";
-        String miscRepo = "http://128.130.172.215/iCOMOTTutorial/files/Misc/";
+        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTPlatform/";
+        String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
@@ -81,8 +81,8 @@ public class ElasticIoTPlatform {
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
                 //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraSeed.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraSeed.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
                 .exposes(Capability.Variable("DataController_IP_information"));
 
@@ -91,8 +91,8 @@ public class ElasticIoTPlatform {
 
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraNode.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraNode.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
                 //.provides(dataNodeUnitScaleIn, dataNodeUnitScaleOut)
@@ -111,16 +111,16 @@ public class ElasticIoTPlatform {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployMoM.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployMoM.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability eventProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
 
         //add the service units belonging to the event processing topology
         ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployEventProcessing.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "DaaS-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployEventProcessing.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaS-1.0.tar.gz"))
                 //event processing must register in Load Balancer, so it needs the IP
                 .requires(Requirement.Variable("EventProcessingUnit_LoadBalancer_IP_Req"))
                 //event processing also needs to querry the Data Controller to access data
@@ -144,13 +144,13 @@ public class ElasticIoTPlatform {
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployLoadBalancer.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLoadBalancer.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployQueue.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");
@@ -160,9 +160,9 @@ public class ElasticIoTPlatform {
                 .requires(Requirement.Variable("brokerIp_Requirement"))
                 .requires(Requirement.Variable("loadBalancerIp_Requirement"))
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployLocalAnalysis.sh"))
-                .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLocalAnalysis.sh"))
+                .deployedBy(MiscArtifact(miscRepo + "artifacts/jre-7-linux-x64.tar.gz"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/LocalDataAnalysis.tar.gz"));
 
         //Describe a Data End service topology containing the previous 2 software service units
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")

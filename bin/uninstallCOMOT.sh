@@ -49,10 +49,10 @@ sudo -S update-rc.d -f icomot-services remove
 
 sudo -S rm -rf ./workspace
 
-REPOSITORY=/var/www/files/iCOMOTTutorial/
+REPOSITORY=/var/www/html/iCOMOTTutorial/
 
 sudo -S rm -rf $REPOSITORY
-sudo -S apt-get remove apache2 -y
+sudo -S apt-get remove apache2 php5 -y
 
 sudo -S ifconfig lo:0 down
 

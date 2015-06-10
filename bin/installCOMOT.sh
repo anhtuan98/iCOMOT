@@ -253,18 +253,45 @@ sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
 
 
-
 #prepare software repository
 
-REPOSITORY=/var/www/files/iCOMOTTutorial/
+REPOSITORY=/var/www/html/iCOMOTTutorial/files/
+
 
 echo " "
 echo "Installing local software repository at http://$HOST_IP/iCOMOTTutorial/"
 echo "Repository files on disk at $REPOSITORY"
 
-sudo apt-get install apache2
+sudo apt-get install apache2 php5 -y
 
-sudo mkdir $REPOSITORY
+cd /var/www/html
+
+echo '<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="1;url=./iCOMOTTutorial/">
+        <script type="text/javascript">
+            window.location.href = "./iCOMOTTutorial/"
+        </script>
+        <title>TUW Software Repository redirection</title>
+    </head>
+    <body>
+        If you are not redirected automatically, follow the <a href="./iCOMOTTutorial/">./iCOMOTTutorial/</a>
+    </body>
+</html>' | sudo -S tee -a ./index.html
+
+sudo -S mkdir /var/www/html/iCOMOTTutorial/
+sudo -S mkdir $REPOSITORY
+
+
+cd /var/www/html/iCOMOTTutorial/
+
+
+sudo -S wget -q https://github.com/downloads/Studio-42/elFinder/elfinder-2.0-rc1.tar.gz
+sudo -S tar -xzf ./elfinder-2.0-rc1.tar.gz
+sudo -S mv ./elfinder-2.0-rc1/* ./
+sudo -S mv ./elfinder.html ./index.html
 
 #download all software artifacts from GitHub if not exist locally
 
@@ -274,13 +301,16 @@ if [ -f ../examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz ]; then
 	sudo cp -r ../examples/Misc $REPOSITORY
 else 	
 
-   declare -a filesToDownload=(
+   declare -a ElasticIoTCloudPlatform_artifacts=(
         https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/DaaSQueue-1.0.tar.gz
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/ElasticCassandraSetup-1.0.tar.gz
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/HAProxySetup-1.0.tar.gz
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/LocalDataAnalysis.tar.gz
-	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/apache-cassandra-1.2.6-bin.tar.gz
+        https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/artifacts/apache-cassandra-1.2.6-bin.tar.gz
+   )
+
+   declare -a ElasticIoTCloudPlatform_Docker_scripts=(
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraNode.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraSeed.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployEventProcessing.sh
@@ -289,6 +319,9 @@ else
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployQueue.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployWorkloadGenerator.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/run_mqtt_broker.sh
+   )
+
+    declare -a ElasticIoTCloudPlatform_Flexiant_scripts=(
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraNode.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraSeed.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployEventProcessing.sh
@@ -298,6 +331,9 @@ else
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deploySensorUnit.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployWorkloadGenerator.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/run_mqtt_broker.sh
+    )
+
+    declare -a ElasticIoTCloudPlatform_OpenStack_scripts=(
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraNode.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraSeed.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployEventProcessing.sh
@@ -305,16 +341,47 @@ else
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployLocalAnalysis.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployMoM.sh
 	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployQueue.shg
-	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/run_mqtt_broker.sh
-	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/Misc/artifacts/jre-7-linux-x64.tar.gz)
+	https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/run_mqtt_broker.sh
+
+    )
+ declare -a MISC_artifacts=(https://github.com/tuwiendsg/iCOMOT/blob/devLocal/examples/Misc/artifacts/jre-7-linux-x64.tar.gz)
+
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/artifacts
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts/Docker
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts/Flexiant
+  sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts/OpenStack
+  sudo -S mkdir $REPOSITORY/Misc
+  sudo -S mkdir $REPOSITORY/Misc/artifacts
+  
+  for i in "${ElasticIoTCloudPlatform_artifacts[@]}"
+  do
+     sudo -S wget -q $i -P $REPOSITORY/ElasticIoTCloudPlatform/artifacts/
+  done
+
+  for i in "${ElasticIoTCloudPlatform_Docker_scripts[@]}"
+  do
+     sudo -S wget -q $i -P $REPOSITORY/ElasticIoTCloudPlatform/scripts/Docker/
+  done
+
+  for i in "${ElasticIoTCloudPlatform_Flexiant_scripts[@]}"
+  do
+     sudo -S wget -q $i -P $REPOSITORY/ElasticIoTCloudPlatform/scripts/Flexiant/
+  done
+
+  for i in "${ElasticIoTCloudPlatform_OpenStack_scripts[@]}"
+  do
+     sudo -S wget -q $i -P $REPOSITORY/ElasticIoTCloudPlatform/scripts/OpenStack/
+  done
+
+
+  for i in "${MISC_artifacts[@]}"
+  do
+     sudo -S wget -q $i -P $REPOSITORY/Misc/artifacts/
+  done
+
 fi
-
-for i in "${filesToDownload[@]}"
-do
-   sudo -S wget -q $i -P $REPOSITORY
-done
-
-
 echo -e "iCOMOT deployed. Please run: sudo service icomot-services start|stop " 
 echo " "
 

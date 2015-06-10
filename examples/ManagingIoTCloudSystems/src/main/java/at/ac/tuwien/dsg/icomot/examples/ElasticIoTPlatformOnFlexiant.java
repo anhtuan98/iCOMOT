@@ -89,8 +89,8 @@ public class ElasticIoTPlatformOnFlexiant {
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
                 //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraSeed.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployCassandraSeed.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
                 .exposes(Capability.Variable("DataController_IP_information"));
 
@@ -99,8 +99,8 @@ public class ElasticIoTPlatformOnFlexiant {
 
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployCassandraNode.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "ElasticCassandraSetup-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployCassandraNode.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
                 //.provides(dataNodeUnitScaleIn, dataNodeUnitScaleOut)
@@ -119,16 +119,16 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployMoM.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "DaaSQueue-1.0.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployMoM.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability eventProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
 
         //add the service units belonging to the event processing topology
         ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployEventProcessing.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "DaaS-1.0.tar.gz"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployEventProcessing.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaS-1.0.tar.gz"))
                 //event processing must register in Load Balancer, so it needs the IP
                 .requires(Requirement.Variable("EventProcessingUnit_LoadBalancer_IP_Req"))
                 //event processing also needs to querry the Data Controller to access data
@@ -152,13 +152,13 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployLoadBalancer.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "HAProxySetup-1.0.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployLoadBalancer.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployQueue.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -168,9 +168,9 @@ public class ElasticIoTPlatformOnFlexiant {
                 .requires(Requirement.Variable("brokerIp_Requirement"))
                 .requires(Requirement.Variable("loadBalancerIp_Requirement"))
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
-                .deployedBy(SingleScriptArtifact(platformRepo + "deployLocalAnalysis.sh"))
-                .deployedBy(MiscArtifact(miscRepo + "jre-7-linux-x64.tar.gz"))
-                .deployedBy(MiscArtifact(platformRepo + "LocalDataAnalysis.tar.gz"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployLocalAnalysis.sh"))
+                .deployedBy(MiscArtifact(miscRepo + "artifacts/jre-7-linux-x64.tar.gz"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/LocalDataAnalysis.tar.gz"));
 
         //Describe a Data End service topology containing the previous 2 software service units
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
