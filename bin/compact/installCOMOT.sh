@@ -58,9 +58,9 @@ CURRENT_DIR=$(pwd)
 
 #ensure we use Oracle jdk 8 to work with GovOps
 echo "Downloading jre"
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
 echo "Unpacking JRE"
-tar -xzf ./jre-8u45-linux-x64.tar.gz
+tar -xzf ./jre-8u45-linux-x64.tar.gz 
 rm  ./jre-8u45-linux-x64.tar.gz
 JAVA=$CURRENT_DIR/jre1.8.0_45/bin/java
 eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.8.0_45/lib/security/java.security"
