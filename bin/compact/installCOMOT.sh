@@ -66,17 +66,17 @@ fi
 ########## INSTALL COMPACT iCOMOT ###########
 echo "Deploying iCOMOT"
 echo "Downloading iCOMOT"
-wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/iCOMOT-Platform.tar.gz
+wget  https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/iCOMOT-Platform.tar.gz?raw=true -O ./iCOMOT-Platform.tar.gz
 echo "Unpacking iCOMOT"
 tar -xzf ./iCOMOT-Platform.tar.gz
 rm  ./iCOMOT-Platform.tar.gz
 
 #download service's last version
 
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war  ./webapps/MELA.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war  ./webapps/iCOMOT.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war  ./webapps/salsa-engine.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war  ./webapps1/MELA-AnalysisService.war
+sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./webapps/MELA.war
+sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./webapps/iCOMOT.war
+sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war -O  ./webapps/salsa-engine.war
+sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./webapps1/MELA-AnalysisService.war
 
  
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/iCOMOT-Platform/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
@@ -114,7 +114,7 @@ cd ./iCOMOT-Platform
 CURRENT_DIR=$(pwd)
 
 
-wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.gz
+wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
