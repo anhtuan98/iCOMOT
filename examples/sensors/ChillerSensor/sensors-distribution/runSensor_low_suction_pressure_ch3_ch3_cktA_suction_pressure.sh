@@ -3,7 +3,7 @@
 # The settings of the sensor is:
 #    Dataset = low_suction_pressure_ch3.csv
 #    Maxlines = 0
-#    Columns = 6 
+#    Columns = 1,2 
 #    Protocol = mqtt 
 #    Frequency = 5
 # This script requires sensor.tar.gz in the same folder. If not, please uncomment following line.
@@ -37,13 +37,13 @@ sed -i 's#<property name="updateRate" value=.*#<property name="updateRate" value
 exit 0
 
 START OF DATA
-low_suction_pressure_ch3,cmn_chws_temp,26.06
-low_suction_pressure_ch3,cmn_chws_temp,11.72
-low_suction_pressure_ch3,cmn_chws_temp,7.56
-low_suction_pressure_ch3,cmn_chws_temp,8.72
-low_suction_pressure_ch3,cmn_chws_temp,8.89
-low_suction_pressure_ch3,cmn_chws_temp,8.94
-low_suction_pressure_ch3,cmn_chws_temp,8.44
-low_suction_pressure_ch3,cmn_chws_temp,8.61
-low_suction_pressure_ch3,cmn_chws_temp,8.72
-low_suction_pressure_ch3,cmn_chws_temp,7.28
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 04:30:01 AM,120.3
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 05:00:01 AM,67.4
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 05:30:01 AM,52.9
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 06:00:01 AM,53.1
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 06:30:01 AM,61.2
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 07:00:01 AM,62.9
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 07:30:01 AM,60.9
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 08:00:01 AM,60.8
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 08:30:01 AM,61.5
+low_suction_pressure_ch3,ch3_cktA_suction_pressure,Apr 3 2011 09:00:01 AM,59.3

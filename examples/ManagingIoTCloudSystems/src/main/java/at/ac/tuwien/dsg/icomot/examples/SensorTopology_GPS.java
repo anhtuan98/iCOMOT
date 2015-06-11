@@ -45,7 +45,8 @@ public class SensorTopology_GPS {
 
     public static void main(String[] args) {
 
-        String salsaRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensor/";
+        String sensorRepo  = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensorData/gps";
+        String gatewayRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTGateway";
 
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())
@@ -62,13 +63,15 @@ public class SensorTopology_GPS {
 
         DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
                 .providedBy(DockerDefault())
-                .deployedBy(DockerFileArtifact("dockerFileArtifact", salsaRepo + "Dockerfile-UB"),
-                        MiscArtifact("achieveArtifact", salsaRepo + "rtGovOps-agents.tar.gz"));
+                .deployedBy(DockerFileArtifact("dockerFileArtifact", gatewayRepo + "Dockerfile"),
+                        MiscArtifact("decommissionScript", gatewayRepo + "decommission"),
+                        MiscArtifact("achieveArtifact", gatewayRepo + "rtGovOps-agents.tar.gz"));
 
         ServiceUnit sensorUnit = SingleSoftwareUnit("sensorUnit")
                 .requires(Requirement.Variable("brokerIp_Requirement"))
-                .deployedBy(SingleScriptArtifact(salsaRepo + "deploySensorUnit.sh"))
-                .withLifecycleAction(LifecyclePhase.UNDEPLOY, new BASHAction("decommission"))
+                .deployedBy(SingleScriptArtifact(sensorRepo + "runSensor_gps1279_location.sh"))
+                .deployedBy(MiscArtifact(sensorRepo + "sensor.tar.gz"))
+                .withLifecycleAction(LifecyclePhase.UNDEPLOY, new BASHAction("./decommission"))
                 .withMaxColocatedInstances(1);
 
         ServiceTopology gatewayTopology = ServiceTopology("IoTTopology")

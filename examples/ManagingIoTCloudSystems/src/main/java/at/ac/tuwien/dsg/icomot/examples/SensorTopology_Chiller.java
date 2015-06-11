@@ -40,9 +40,7 @@ public class SensorTopology_Chiller {
     public static void main(String[] args) {
 
         String chillerSensorRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensorData/chiller/";
-        String sensorPackageRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensor/";
         
-
         // QueueUnit reference
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())
@@ -64,27 +62,23 @@ public class SensorTopology_Chiller {
         ServiceUnit evaporator_fouling_ch2a_exv_position = SingleSoftwareUnit("evaporator_fouling_ch2a_exv_position")
                 .requires(Requirement.Variable("brokerIp_Requirement_evaporator_fouling_ch2a_exv_position"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_ch2a_exv_position.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"evaporator_fouling.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz"))           
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz"))           
                 .withMaxColocatedInstances(1);
 
         ServiceUnit evaporator_fouling_chw_supply_temp = SingleSoftwareUnit("evaporator_fouling_chw_supply_temp")
                 .requires(Requirement.Variable("brokerIp_Requirement_evaporator_fouling_chw_supply_temp"))
-                .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_chw_supply_temp.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"evaporator_fouling.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz"))  
+                .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_chw_supply_temp.sh"))                           
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz"))  
                 .withMaxColocatedInstances(1);
         ServiceUnit evaporator_fouling_fcu_ff1_set_point = SingleSoftwareUnit("evaporator_fouling_fcu_ff1_set_point")
                 .requires(Requirement.Variable("brokerIp_Requirement_evaporator_fouling_fcu_ff1_set_point"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_fcu_ff1_set_point.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"evaporator_fouling.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz"))  
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz"))  
                 .withMaxColocatedInstances(1);
         ServiceUnit evaporator_fouling_fcu_ff1_space_temp = SingleSoftwareUnit("evaporator_fouling_fcu_ff1_space_temp")
                 .requires(Requirement.Variable("brokerIp_Requirement_evaporator_fouling_fcu_ff1_space_temp"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_fcu_ff1_space_temp.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"evaporator_fouling.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz"))  
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz"))  
                 .withMaxColocatedInstances(1);
         
         ServiceTopology evaporator_fouling_topology = ServiceTopology("evaporator_fouling_topology")
@@ -99,22 +93,19 @@ public class SensorTopology_Chiller {
         ServiceUnit condenser_rule_difference_oat_and_con_temp = SingleSoftwareUnit("condenser_rule_difference_oat_and_con_temp")
                 .requires(Requirement.Variable("brokerIp_Requirement_condenser_rule_difference_oat_and_con_temp"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_condenser_rule_difference_oat_and_con_temp.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"condenser_rule.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz"))  
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz"))  
                 .withMaxColocatedInstances(1);
 
         ServiceUnit condenser_rule_motor_status = SingleSoftwareUnit("condenser_rule_motor_status")
                 .requires(Requirement.Variable("brokerIp_Requirement_condenser_rule_motor_status"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_condenser_rule_motor_status.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"condenser_rule.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
 
         ServiceUnit condenser_rule_oat = SingleSoftwareUnit("condenser_rule_oat")
                 .requires(Requirement.Variable("brokerIp_Requirement_condenser_rule_oat"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_condenser_rule_oat.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"condenser_rule.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         
         ServiceTopology condenser_rule_topology = ServiceTopology("condenser_rule_topology")
@@ -129,32 +120,27 @@ public class SensorTopology_Chiller {
         ServiceUnit ch3_cktA_compressor_suction_superheat_temp = SingleSoftwareUnit("ch3_cktA_compressor_suction_superheat_temp")
                 .requires(Requirement.Variable("brokerIp_Requirement_ch3_cktA_compressor_suction_superheat_temp"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_low_suction_pressure_ch3_ch3_cktA_compressor_suction_superheat_temp.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"low_suction_pressure_ch3.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         ServiceUnit ch3_cktA_exv_position = SingleSoftwareUnit("ch3_cktA_exv_position")
                 .requires(Requirement.Variable("brokerIp_Requirement_ch3_cktA_exv_position"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_low_suction_pressure_ch3_ch3_cktA_exv_position.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"low_suction_pressure_ch3.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         ServiceUnit ch3_cktA_percent_total_capacity = SingleSoftwareUnit("ch3_cktA_percent_total_capacity")
                 .requires(Requirement.Variable("brokerIp_Requirement_ch3_cktA_percent_total_capacity"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_low_suction_pressure_ch3_ch3_cktA_percent_total_capacity.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"low_suction_pressure_ch3.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         ServiceUnit ch3_cktA_suction_pressure = SingleSoftwareUnit("ch3_cktA_suction_pressure")
                 .requires(Requirement.Variable("brokerIp_Requirement_ch3_cktA_suction_pressure"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_low_suction_pressure_ch3_ch3_cktA_suction_pressure.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"low_suction_pressure_ch3.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         ServiceUnit cmn_chws_temp = SingleSoftwareUnit("cmn_chws_temp")
                 .requires(Requirement.Variable("brokerIp_Requirement_cmn_chws_temp"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_low_suction_pressure_ch3_cmn_chws_temp.sh"))
-                .deployedBy(MiscArtifact(chillerSensorRepo+"low_suction_pressure_ch3.csv"))                
-                .deployedBy(MiscArtifact(sensorPackageRepo+"sensor.tar.gz")) 
+                .deployedBy(MiscArtifact(chillerSensorRepo+"sensor.tar.gz")) 
                 .withMaxColocatedInstances(1);
         ServiceTopology low_suction_pressure_ch3_topology = ServiceTopology("low_suction_pressure_ch3_topology")
                 .withServiceUnits(low_suction_pressure_ch3_VM, ch3_cktA_compressor_suction_superheat_temp,

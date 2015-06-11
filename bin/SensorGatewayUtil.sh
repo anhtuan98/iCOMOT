@@ -76,7 +76,8 @@ function createSensor(){
   fi
 
 	# Generate script to run the sensor
-	FILE=$TARGET/$NAME/run_sensor_$NAME.sh
+	DATASETNAMEONLY=`basename $DATASET | cut -d'.' -f1`
+	FILE=$TARGET/$NAME/runSensor_$DATASETNAMEONLY'_'$NAME.sh
 
 	# Generate the wire.xml string
 	PROTOCOL_CONF='at.ac.tuwien.infosys.cloudconnectivity.dryrun.Dryrun'
