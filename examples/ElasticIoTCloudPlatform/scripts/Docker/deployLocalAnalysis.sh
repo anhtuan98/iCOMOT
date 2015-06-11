@@ -50,4 +50,4 @@ eval "sed -i 's#udp_send_channel {.*#udp_send_channel { \n host = $GANGLIA_IP#' 
 eval "sed -i 's/bind.*//' /etc/ganglia/gmond.conf"
 
  
-sudo -S service ganglia-monitor start
+sudo -S service ganglia-monitor restart
