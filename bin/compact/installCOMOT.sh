@@ -58,7 +58,7 @@ CURRENT_DIR=$(pwd)
 
 #ensure we use Oracle jdk 8 to work with GovOps
 echo "Downloading jre"
-wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-8u45-linux-x64.tar.gz
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz
 echo "Unpacking JRE"
 tar -xzf ./jre-8u45-linux-x64.tar.gz
 rm  ./jre-8u45-linux-x64.tar.gz
@@ -92,6 +92,9 @@ sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tu
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/iCOMOT-Platform/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
 #eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
 eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
+
+#get config file for SALSA
+sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
 
 #try to get eth0 IP
@@ -133,7 +136,7 @@ cd ./iCOMOT-Platform
 CURRENT_DIR=$(pwd)
 
 ########## INSTALL rSYBL ###########
-wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
+wget  https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/resources/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
@@ -146,7 +149,6 @@ sudo -S cp ./rSYBL/rSYBL-service /etc/init.d/rSYBL-service
 sudo -S chmod +x /etc/init.d/rSYBL-service
 sudo -S update-rc.d rSYBL-service defaults
 
-sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
 
 ########## INSTALL ELISE ###########

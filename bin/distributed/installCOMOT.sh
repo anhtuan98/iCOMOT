@@ -152,26 +152,19 @@ sudo -S chmod +x /etc/init.d/mela-analysis-service
 sudo -S update-rc.d mela-analysis-service defaults
 
 #sudo service mela-analysis-service start
- 
-########## INSTALL rSYBL ###########
- 
-echo "Deploying rSYBL"
-echo "Downloading rSYBL"
- 
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/rSYBL.tar.gz
-echo "Unpacking rSYBL"
+ ########## INSTALL rSYBL ###########
+wget  https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/resources/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/rSYBL/control-service/rSYBL-analysis-engine/1.0-SNAPSHOT/rSYBL-analysis-engine-1.0-SNAPSHOT-exec-war.jar -O  ./rSYBL/rSYBL-analysis-engine-1.0-SNAPSHOT-war-exec.jar
 
 eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/rSYBL/rSYBL-service"
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/rSYBL#' $CURRENT_DIR/rSYBL/rSYBL-service"
 
-echo "Configuring rSYBL service"
- 
 sudo -S cp ./rSYBL/rSYBL-service /etc/init.d/rSYBL-service
 sudo -S chmod +x /etc/init.d/rSYBL-service
 sudo -S update-rc.d rSYBL-service defaults
-
 #sudo -S service rSYBL-service start
 
 ########## INSTALL rtGovOps ###########
