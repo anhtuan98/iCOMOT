@@ -118,6 +118,8 @@ wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.g
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
+wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/rSYBL/control-service/rSYBL-analysis-engine/1.0-SNAPSHOT/rSYBL-analysis-engine-1.0-SNAPSHOT-exec-war.jar -O  ./rSYBL/rSYBL-analysis-engine-1.0-SNAPSHOT-war-exec.jar
+
 eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/rSYBL/rSYBL-service"
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/rSYBL#' $CURRENT_DIR/rSYBL/rSYBL-service"
 
@@ -178,7 +180,7 @@ done
 
 
 ######### INSTALL icomot-service script ##########
-wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTCompactPlatform/icomot-services
+wget  https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/bin/compact/icomot-services
 sudo -S cp icomot-services /etc/init.d/icomot-services
 sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
