@@ -122,7 +122,7 @@ sudo -S update-rc.d icomot-platform defaults
 
 
 ########## INSTALL rtGovOps ###########
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war -O ./iCOMOT-Platform/webapps/APIManager.war
 sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war -O ./iCOMOT-Platform/webapps/SDGManager.war
 sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
 sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
