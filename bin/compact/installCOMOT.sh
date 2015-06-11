@@ -121,10 +121,18 @@ sudo -S chmod +x /etc/init.d/icomot-platform
 sudo -S update-rc.d icomot-platform defaults
 
 
+########## INSTALL rtGovOps ###########
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war -O ./iCOMOT-Platform/webapps/SDGManager.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/common-1.0-SNAPSHOT.jar -O  ./iCOMOT-Platform/webapps/common-1.0-SNAPSHOT.jar
+
+
 cd ./iCOMOT-Platform
 CURRENT_DIR=$(pwd)
 
-
+########## INSTALL rSYBL ###########
 wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
@@ -140,11 +148,6 @@ sudo -S update-rc.d rSYBL-service defaults
 
 sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
-########## INSTALL rtGovOps ###########wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war -O ./iCOMOT-Platform/webapps/SDGManager.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/common-1.0-SNAPSHOT.jar -O  ./iCOMOT-Platform/webapps/common-1.0-SNAPSHOT.jar
 
 ########## INSTALL ELISE ###########
 
