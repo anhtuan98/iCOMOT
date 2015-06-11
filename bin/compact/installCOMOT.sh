@@ -80,7 +80,7 @@ sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwie
 
  
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/iCOMOT-Platform/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
-eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
+eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$JAVA#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
 
 #try to get eth0 IP
 if [[ -n $(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}') ]]
