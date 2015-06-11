@@ -289,7 +289,7 @@ public class ElasticIoTPlatformOnDocker {
             }
         }
 
-        orchestrator.controlExisting(serviceTemplate);
+        orchestrator.deployAndControl(serviceTemplate);
 
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
