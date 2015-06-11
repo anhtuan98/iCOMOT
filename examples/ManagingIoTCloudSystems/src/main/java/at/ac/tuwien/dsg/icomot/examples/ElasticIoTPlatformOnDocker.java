@@ -164,6 +164,14 @@ public class ElasticIoTPlatformOnDocker {
                 .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployLocalAnalysis.sh"))
                 .deployedBy(MiscArtifact(miscRepo + "artifacts/jre-7-linux-x64.tar.gz"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/LocalDataAnalysis.tar.gz"));
+        
+        localProcessingUnit.
+                controlledBy(Strategy("LPT_ST1").when(Constraint.MetricConstraint("LPT_ST1_CO1", new Metric("avgBufferSize", "#")).lessThan("50"))
+                        .enforce(localProcessingUnitScaleIn));
+        localProcessingUnit.
+                controlledBy(Strategy("LPT_ST2").when(Constraint.MetricConstraint("LPT_ST2_CO1", new Metric("avgBufferSize", "#")).greaterThan("50"))
+                        .enforce(localProcessingUnitScaleOut));
+        
  
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
                 .withServiceUnits(dataControllerUnit, dataNodeUnit //add also OS units to topology
@@ -281,7 +289,7 @@ public class ElasticIoTPlatformOnDocker {
             }
         }
 
-        orchestrator.deployAndControl(serviceTemplate);
+        orchestrator.controlExisting(serviceTemplate);
 
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
