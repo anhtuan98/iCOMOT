@@ -47,14 +47,23 @@ cd workspace
 
 CURRENT_DIR=$(pwd)
 
-#ensure we use Oracle jdk
+##ensure we use Oracle jdk
+#echo "Downloading jre"
+#wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-7-linux-x64.tar.gz
+#echo "Unpacking JRE"
+#tar -xzf ./jre-7-linux-x64.tar.gz
+#rm  ./jre-7-linux-x64.tar.gz
+#JAVA=$CURRENT_DIR/jre1.7.0/bin/java
+#eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.7.0/lib/security/java.security"
+
+#ensure we use Oracle jdk 8 to work with GovOps
 echo "Downloading jre"
-wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-7-linux-x64.tar.gz
+wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-8u45-linux-x64.tar.gz
 echo "Unpacking JRE"
-tar -xzf ./jre-7-linux-x64.tar.gz
-rm  ./jre-7-linux-x64.tar.gz
-JAVA=$CURRENT_DIR/jre1.7.0/bin/java
-eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.7.0/lib/security/java.security"
+tar -xzf ./jre-8u45-linux-x64.tar.gz
+rm  ./jre-8u45-linux-x64.tar.gz
+JAVA=$CURRENT_DIR/jre1.8.0_45/bin/java
+eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.8.0_45/lib/security/java.security"
 
 echo "Checking if Ganglia exists"
 
@@ -67,7 +76,7 @@ fi
 ########## INSTALL COMPACT iCOMOT ###########
 echo "Deploying iCOMOT"
 echo "Downloading iCOMOT"
-wget  https://github.com/tuwiendsg/iCOMOT/blob/master/bin/compact/iCOMOT-Platform.tar.gz?raw=true -O ./iCOMOT-Platform.tar.gz
+wget  https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/iCOMOT-Platform.tar.gz?raw=true -O ./iCOMOT-Platform.tar.gz
 echo "Unpacking iCOMOT"
 tar -xzf ./iCOMOT-Platform.tar.gz
 rm  ./iCOMOT-Platform.tar.gz
@@ -75,7 +84,7 @@ rm  ./iCOMOT-Platform.tar.gz
 #download service's last version
 
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/MELA.war
-sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/iCOMOT.war
+#sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/iCOMOT.war
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war -O  ./iCOMOT-Platform/webapps/salsa-engine.war
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps1/MELA-AnalysisService.war
 
@@ -109,12 +118,12 @@ sudo -S cp ./iCOMOT-Platform/icomot-platform /etc/init.d/icomot-platform
 sudo -S chmod +x /etc/init.d/icomot-platform
 sudo -S update-rc.d icomot-platform defaults
 
-sudo -S service icomot-platform start 
 
 cd ./iCOMOT-Platform
 CURRENT_DIR=$(pwd)
 
-wget   https://github.com/tuwiendsg/iCOMOT/blob/master/bin/compact/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
+
+wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.gz?raw=true -O ./rSYBL.tar.gz
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
@@ -127,10 +136,13 @@ sudo -S cp ./rSYBL/rSYBL-service /etc/init.d/rSYBL-service
 sudo -S chmod +x /etc/init.d/rSYBL-service
 sudo -S update-rc.d rSYBL-service defaults
 
-sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
+sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
-########## INSTALL rtGovOps ###########
-
+########## INSTALL rtGovOps ###########wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war -O ./iCOMOT-Platform/webapps/SDGManager.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
+sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/common-1.0-SNAPSHOT.jar -O  ./iCOMOT-Platform/webapps/common-1.0-SNAPSHOT.jar
 
 ########## INSTALL ELISE ###########
 
@@ -179,7 +191,7 @@ done
 
 
 ######### INSTALL icomot-service script ##########
-wget  https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/compact/icomot-services
+wget  https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/bin/compact/icomot-services
 sudo -S cp icomot-services /etc/init.d/icomot-services
 sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
@@ -234,49 +246,49 @@ if [ -f ../examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz ]; then
 else 	
 
    declare -a ElasticIoTCloudPlatform_artifacts=(
-        https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/DaaSQueue-1.0.tar.gz
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/ElasticCassandraSetup-1.0.tar.gz
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/HAProxySetup-1.0.tar.gz
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/LocalDataAnalysis.tar.gz
-        https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/artifacts/apache-cassandra-1.2.6-bin.tar.gz
+        https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/DaaSQueue-1.0.tar.gz
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/ElasticCassandraSetup-1.0.tar.gz
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/HAProxySetup-1.0.tar.gz
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/LocalDataAnalysis.tar.gz
+        https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/artifacts/apache-cassandra-1.2.6-bin.tar.gz
    )
 
    declare -a ElasticIoTCloudPlatform_Docker_scripts=(
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraNode.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraSeed.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployEventProcessing.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployLoadBalancer.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployLocalAnalysis.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployQueue.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/deployWorkloadGenerator.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Docker/run_mqtt_broker.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraNode.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployCassandraSeed.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployEventProcessing.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployLoadBalancer.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployLocalAnalysis.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployQueue.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/deployWorkloadGenerator.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Docker/run_mqtt_broker.sh
    )
 
     declare -a ElasticIoTCloudPlatform_Flexiant_scripts=(
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraNode.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraSeed.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployEventProcessing.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployLoadBalancer.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployLocalAnalysis.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployQueue.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deploySensorUnit.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployWorkloadGenerator.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/Flexiant/run_mqtt_broker.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraNode.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployCassandraSeed.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployEventProcessing.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployLoadBalancer.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployLocalAnalysis.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployQueue.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deploySensorUnit.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/deployWorkloadGenerator.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/Flexiant/run_mqtt_broker.sh
     )
 
     declare -a ElasticIoTCloudPlatform_OpenStack_scripts=(
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraNode.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraSeed.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployEventProcessing.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployLoadBalancer.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployLocalAnalysis.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployMoM.sh
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployQueue.shg
-	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/ElasticIoTCloudPlatform/scripts/OpenStack/run_mqtt_broker.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraNode.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployCassandraSeed.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployEventProcessing.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployLoadBalancer.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployLocalAnalysis.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployMoM.sh
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/deployQueue.shg
+	https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/ElasticIoTCloudPlatform/scripts/OpenStack/run_mqtt_broker.sh
 
     )
- declare -a MISC_artifacts=(https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/Misc/artifacts/jre-7-linux-x64.tar.gz)
+ declare -a MISC_artifacts=(https://raw.githubusercontent.com/tuwiendsg/iCOMOT/devLocal/examples/Misc/artifacts/jre-7-linux-x64.tar.gz)
 
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/artifacts
