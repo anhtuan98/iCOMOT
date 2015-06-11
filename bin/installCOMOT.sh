@@ -253,8 +253,8 @@ sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
 
 
-#prepare software repository
-
+######### INSTALL icomot-service oftware repository ##########
+ 
 REPOSITORY=/var/www/html/iCOMOTTutorial/files/
 
 

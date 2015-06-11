@@ -192,6 +192,9 @@ echo " "
 echo "Installing local software repository at http://$HOST_IP/iCOMOTTutorial/"
 echo "Repository files on disk at $REPOSITORY"
 
+sudo -S ifconfig lo:0 192.1.1.15
+
+
 sudo apt-get install apache2 php5 -y
 
 cd /var/www/html
