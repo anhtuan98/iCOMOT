@@ -111,10 +111,13 @@ fi
 eval "sed -i 's#SALSA_CENTER_IP=.*#SALSA_CENTER_IP=$LOCAL_IP#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
 
 eval "sed -i 's#SALSA_CENTER_WORKING_DIR=.*#SALSA_CENTER_WORKING_DIR=$CURRENT_DIR/salsa-engine#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
+eval "sed -i 's#SALSA_PIONEER_WORKING_DIR=.*#SALSA_PIONEER_WORKING_DIR=$CURRENT_DIR/salsa-pioneer#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
  
 mkdir $CURRENT_DIR/salsa-engine/
+mkdir $CURRENT_DIR/salsa-pioneer/
 
 chmod 0777 $CURRENT_DIR/salsa-engine/
+chmod 0777 $CURRENT_DIR/salsa-pioneer/
 
 eval "sed -i 's#HOST_IP#$HOST_IP#' $CURRENT_DIR/iCOMOT-Platform/config/modules.xml"
  
