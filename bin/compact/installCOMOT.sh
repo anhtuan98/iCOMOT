@@ -311,6 +311,8 @@ else
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts/OpenStack
   sudo -S mkdir $REPOSITORY/Misc
   sudo -S mkdir $REPOSITORY/Misc/artifacts
+
+  sudo -S chmod +x $REPOSITORY/Misc/artifacts
   
   for i in "${ElasticIoTCloudPlatform_artifacts[@]}"
   do
@@ -331,12 +333,8 @@ else
   do
      sudo -S wget -q $i -P $REPOSITORY/ElasticIoTCloudPlatform/scripts/OpenStack/
   done
-
-
-  for i in "${MISC_artifacts[@]}"
-  do
-     sudo -S wget -q $i -P $REPOSITORY/Misc/artifacts/
-  done
+ 
+  sudo -S wget -q https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/Misc/artifacts/jre-7-linux-x64.tar.gz -P $REPOSITORY/Misc/artifacts/ 
 
   sudo -S wget -q http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/icomot/ManagingIoTCloudSystems-Tutorial/1.0/ManagingIoTCloudSystems-Tutorial-1.0.tar.gz -P $REPOSITORY/ManagingIoTCloudSystems/
 

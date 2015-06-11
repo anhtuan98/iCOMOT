@@ -33,7 +33,7 @@ case "$1" in
 		curl -X GET http://localhost:8380/salsa-engine/rest/viewgenerator/cloudservice/json/list 2>/dev/null >> /tmp/comot_deployment_status
 		curl -X GET http://localhost:8380/rSYBL/restWS/elasticservices  2>/dev/null >> /tmp/comot_deployment_status
 
-		log_daemon_msg "Waiting for COMOT Dashboard to start"
+		log_daemon_msg "Waiting for iCOMOT Dashboard to start"
 		sudo -S service comot-dashboard-service start
 
 		sleep 5
