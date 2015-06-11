@@ -66,10 +66,15 @@ fi
 ########## INSTALL SALSA ###########
 echo "Deploying SALSA"
 echo "Downloading SALSA"
-wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/SALSA.tar.gz
+
+wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/SALSA.tar.gz?raw=true -O ./SALSA.tar.gz
 echo "Unpacking SALSA"
 tar -xzf ./SALSA.tar.gz
 rm  ./SALSA.tar.gz
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0-exec-war.jar -O  ./SALSA/salsa-engine.jar
+#add pioneeer URL
+sudo -S wget PIONEER URL  -O  ./SALSA/salsa-pioneer.jar
 
 mkdir $CURRENT_DIR/SALSA/workspace
 mkdir $CURRENT_DIR/SALSA/services
@@ -117,10 +122,12 @@ sudo -S ifconfig lo:0 192.1.1.15
 
 echo "Deploying MELA DataService"
 echo "Downloading MELA DataService"
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/mela-data-service.tar.gz
+wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/mela-data-service?raw=true -O .mela-data-service.tar.gz
 echo "Unpacking MELA DataService"
 tar -xzf ./mela-data-service.tar.gz
 rm ./mela-data-service.tar.gz
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT-exec-war.jar -O ./mela-data-service/MELA-DataService-3.0-SNAPSHOT-war-exec.jar
 
 eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/mela-data-service/mela-data-service"
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/mela-data-service#' $CURRENT_DIR/mela-data-service/mela-data-service"
@@ -136,11 +143,12 @@ sudo -S update-rc.d mela-data-service defaults
 
 echo "Deploying MELA AnalysisService"
 echo "Downloading MELA AnalysisService"
- 
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/mela-analysis-service.tar.gz
+wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/mela-analysis-service?raw=true -O .mela-analysis-service.tar.gz
 echo "Unpacking MELA AnalysisService"
 tar -xzf ./mela-analysis-service.tar.gz
 rm ./mela-analysis-service.tar.gz
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-exec-war.jar -O ./mela-data-service/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-war-exec.jar
 
 eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/mela-analysis-service/mela-analysis-service"
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/mela-analysis-service#' $CURRENT_DIR/mela-analysis-service/mela-analysis-service"
@@ -198,7 +206,7 @@ sudo -S update-rc.d elise-service defaults
 echo "Deploying COMOT Dashboard"
 echo "Downloading COMOT Dashboard"
  
-wget  http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/comot-dashboard-service.tar.gz
+wget  https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/comot-dashboard-service.tar.gz?raw=true -O ./comot-dashboard-service.tar.gz
 echo "Unpacking COMOT Dashboard"
 tar -xzf ./comot-dashboard-service.tar.gz
 rm ./comot-dashboard-service.tar.gz
@@ -240,7 +248,7 @@ done
 
 
 ######### INSTALL icomot-service script ##########
-wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/icomot-services
+wget https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/distributed/icomot-services
 sudo -S cp icomot-services /etc/init.d/icomot-services
 sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults
