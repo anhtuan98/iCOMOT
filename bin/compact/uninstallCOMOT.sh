@@ -43,6 +43,8 @@ sudo -S rm -rf ./comot-*
 echo "Removing ganglia"
 sudo -S apt-get remove ganglia-monitor gmetad -y
 
+sudo -S service icomot-services stop
+
 echo "Remove iCOMOT service script"
 sudo -S rm /etc/init.d/icomot-services
 sudo -S update-rc.d -f icomot-services remove

@@ -47,21 +47,14 @@ cd workspace
 
 CURRENT_DIR=$(pwd)
 
-JAVA=$(which java)
-
-if [[ -z $JAVA ]]
-  then
-     echo "Downloading jre"
-     wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-7-linux-x64.tar.gz
-     echo "Unpacking JRE"
-     tar -xzf ./jre-7-linux-x64.tar.gz
-     rm  ./jre-7-linux-x64.tar.gz
-
-     JAVA=$CURRENT_DIR/jre1.7.0/bin/java
-
-     eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.7.0/lib/security/java.security"
-
-fi
+#ensure we use Oracle jdk
+echo "Downloading jre"
+wget  http://128.130.172.215/iCOMOTTutorial/files/Misc/jre-7-linux-x64.tar.gz
+echo "Unpacking JRE"
+tar -xzf ./jre-7-linux-x64.tar.gz
+rm  ./jre-7-linux-x64.tar.gz
+JAVA=$CURRENT_DIR/jre1.7.0/bin/java
+eval "sed -i 's#securerandom.source=.*#securerandom.source=file:/dev/./urandom#' $CURRENT_DIR/jre1.7.0/lib/security/java.security"
 
 ########## INSTALL COMPACT iCOMOT ###########
 echo "Deploying iCOMOT"
@@ -73,14 +66,14 @@ rm  ./iCOMOT-Platform.tar.gz
 
 #download service's last version
 
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./webapps/MELA.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./webapps/iCOMOT.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war -O  ./webapps/salsa-engine.war
-sudo wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./webapps1/MELA-AnalysisService.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/MELA.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/iCOMOT.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war -O  ./iCOMOT-Platform/webapps/salsa-engine.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps1/MELA-AnalysisService.war
 
  
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/iCOMOT-Platform/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
-eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$JAVA#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
+eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
 
 #try to get eth0 IP
 if [[ -n $(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}') ]]
@@ -93,7 +86,7 @@ else
   LOCAL_IP="172.17.42.1"
 fi
 
-eval "sed -i 's#SALSA_CENTER_IP=.*#SALSA_CENTER_IP$LOCAL_IP#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
+eval "sed -i 's#SALSA_CENTER_IP=.*#SALSA_CENTER_IP=$LOCAL_IP#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
 
 eval "sed -i 's#SALSA_CENTER_WORKING_DIR=.*#SALSA_CENTER_WORKING_DIR=$CURRENT_DIR/salsa-engine#' $CURRENT_DIR/iCOMOT-Platform/salsa.engine.properties"
  
@@ -118,7 +111,7 @@ wget   https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/rSYBL.tar.g
 tar -xzf ./rSYBL.tar.gz
 rm ./rSYBL.tar.gz
 
-wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/rSYBL/control-service/rSYBL-analysis-engine/1.0-SNAPSHOT/rSYBL-analysis-engine-1.0-SNAPSHOT-exec-war.jar -O  ./rSYBL/rSYBL-analysis-engine-1.0-SNAPSHOT-war-exec.jar
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/rSYBL/control-service/rSYBL-analysis-engine/1.0-SNAPSHOT/rSYBL-analysis-engine-1.0-SNAPSHOT-exec-war.jar -O  ./rSYBL/rSYBL-analysis-engine-1.0-SNAPSHOT-war-exec.jar
 
 eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/rSYBL/rSYBL-service"
 eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/rSYBL#' $CURRENT_DIR/rSYBL/rSYBL-service"
@@ -127,8 +120,7 @@ sudo -S cp ./rSYBL/rSYBL-service /etc/init.d/rSYBL-service
 sudo -S chmod +x /etc/init.d/rSYBL-service
 sudo -S update-rc.d rSYBL-service defaults
 
-sudo -S service rSYBL-service start
-
+sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/devLocal/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
 ########## INSTALL rtGovOps ###########
 
@@ -193,9 +185,7 @@ REPOSITORY=/var/www/html/iCOMOTTutorial/files/
 echo " "
 echo "Installing local software repository at http://$HOST_IP/iCOMOTTutorial/"
 echo "Repository files on disk at $REPOSITORY"
-
-sudo -S ifconfig lo:0 192.1.1.15
-
+ 
 
 sudo apt-get install apache2 php5 -y
 
@@ -214,7 +204,7 @@ echo '<!DOCTYPE HTML>
     <body>
         If you are not redirected automatically, follow the <a href="./iCOMOTTutorial/">./iCOMOTTutorial/</a>
     </body>
-</html>' | sudo -S tee -a ./index.html
+</html>' | sudo -S tee -a ./index.html > /tmp/index.log
 
 sudo -S mkdir /var/www/html/iCOMOTTutorial/
 sudo -S mkdir $REPOSITORY

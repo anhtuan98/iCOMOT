@@ -31,7 +31,6 @@ case "$1" in
 		curl -X GET http://localhost:8280/rSYBL/restWS/elasticservices  2>/dev/null >> /tmp/comot_deployment_status
 
 		log_daemon_msg "Waiting for COMOT Dashboard to start"
-		sudo -S service comot-dashboard-service start
 
 		sleep 5
 		#check that Dashboard started
