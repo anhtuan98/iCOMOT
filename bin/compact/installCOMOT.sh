@@ -250,6 +250,8 @@ sudo -S mv ./elfinder.html ./index.html
 if [ -f ../examples/ElasticIoTCloudPlatform/artifacts/DaaS-1.0.tar.gz ]; then
 	sudo cp -r ../examples/ElasticIoTCloudPlatform $REPOSITORY
 	sudo cp -r ../examples/Misc $REPOSITORY
+        sudo -S mkdir $REPOSITORY/ManagingIoTCloudSystems
+        sudo -S wget -q http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/icomot/ManagingIoTCloudSystems-Tutorial/1.0/ManagingIoTCloudSystems-Tutorial-1.0.tar.gz -P $REPOSITORY/ManagingIoTCloudSystems/
 else 	
 
    declare -a ElasticIoTCloudPlatform_artifacts=(
@@ -298,6 +300,7 @@ else
  declare -a MISC_artifacts=(https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/Misc/artifacts/jre-7-linux-x64.tar.gz)
 
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform
+  sudo -S mkdir $REPOSITORY/ManagingIoTCloudSystems
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/artifacts
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts
   sudo -S mkdir $REPOSITORY/ElasticIoTCloudPlatform/scripts/Docker
@@ -331,6 +334,8 @@ else
   do
      sudo -S wget -q $i -P $REPOSITORY/Misc/artifacts/
   done
+
+  sudo -S wget -q http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/icomot/ManagingIoTCloudSystems-Tutorial/1.0/ManagingIoTCloudSystems-Tutorial-1.0.tar.gz -P $REPOSITORY/ManagingIoTCloudSystems/
 
 fi
 echo -e "iCOMOT deployed. Please run: sudo service icomot-services start|stop " 
