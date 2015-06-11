@@ -1,0 +1,5 @@
+This folder contains example of chiller sensors with 3 examples of data set.
+Please check following file:
+ - generateGPSSensor.sh: how to use iCOMOT to build custom sensors from existing data set
+ - *.csv: extract 10 lines from big data sets of chiller
+ - sensors-distribution: the sensors after built

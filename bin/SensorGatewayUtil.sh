@@ -52,15 +52,17 @@ function createSensor(){
 	#Add README
 	touch $PDIR/README
 	echo "This directory is created automatically by iCOMOT. Please do not change its content manually..." > $PDIR/README
-	
+
 	echo "Gathering artifacts..."
 	if [ -f ../examples/sensors/sensor.tar.gz ]; then
 		cp ../examples/sensors/sensor.tar.gz $PDIR
-	else 	
-  	wget -N https://github.com/tuwiendsg/iCOMOT/raw/master/examples/sensors/sensor.tar.gz -O $PDIR/sensor.tar.gz
+	else
+	if [ ! -f $PDIR/sensor.tar.gz ]; then
+	  	wget -N https://github.com/tuwiendsg/iCOMOT/raw/master/examples/sensors/sensor.tar.gz -O $PDIR/sensor.tar.gz
+	fi
   fi
   if [ $DATASET == ^http://.* ]; then
-  	wget $DATASET
+  	wget -N $DATASET
   	if [ $? -nq 0 ]; then
   		echo "Error: Cannot get dataset at URL: $DATASET"
   		exit 2
@@ -206,7 +208,7 @@ generatedScript
   echo "The run script is generated: $FILE"
   echo "Sensor name: $NAME"
   echo "Dataset:   : $DATASET"
-
+if [ $INTERACTIVE == "true" ]; then
   RUNME="Y";
   default=$RUNME;  read -p "Should I run the sensor now? [$RUNME]: " RUNME; RUNME=${RUNME:-$default}
   if [ $RUNME == "Y" ]; then
@@ -219,7 +221,8 @@ generatedScript
     echo "Successfully created sensor $NAME"
     echo "You can run the sensor with ./$FILE"
   fi
-  cd .. 
+  cd ../..
+fi
 } # End create sensor
 
 function gatherGatewayArtifacts(){
