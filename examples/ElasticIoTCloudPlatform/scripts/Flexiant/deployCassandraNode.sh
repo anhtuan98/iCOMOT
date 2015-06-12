@@ -5,7 +5,7 @@ echo "Installing cassandra head node \n" >> /tmp/salsa.artifact.log
 . /etc/environment
 
 #used in unicast
-GANGLIA_IP=109.231.126.63
+
 
 IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
 H=$(hostname)
@@ -25,14 +25,14 @@ cd ./gangliaPlugIns
 
 sudo -S service ganglia-monitor stop
 
+GANGLIA_IP=109.231.126.63
 #delete all joins on multicast
 eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
+eval "sed -i 's/host = .*//' /etc/ganglia/gmond.conf"
 #add unicast host destination
 eval "sed -i 's#udp_send_channel {.*#udp_send_channel { \n host = $GANGLIA_IP#' /etc/ganglia/gmond.conf"
 #delete the bind on multicast for receive
 eval "sed -i 's/bind.*//' /etc/ganglia/gmond.conf"
-
-
 
 #configure ganglia on port 8649
 sudo -S service ganglia-monitor start

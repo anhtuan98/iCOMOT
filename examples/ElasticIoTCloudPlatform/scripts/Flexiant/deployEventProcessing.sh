@@ -43,6 +43,7 @@ GANGLIA_IP=109.231.126.63
 sudo -S service ganglia-monitor stop
 
 #delete all joins on multicast
+eval "sed -i 's/host = .*//' /etc/ganglia/gmond.conf"
 eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
 #add unicast host destination
 eval "sed -i 's#udp_send_channel {.*#udp_send_channel { \n host = $GANGLIA_IP#' /etc/ganglia/gmond.conf"
