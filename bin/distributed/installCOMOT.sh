@@ -1,6 +1,9 @@
 # This script for installing iCOMOT
 #!/bin/bash
 
+sudo apt-get install dialog -y 
+
+
 
 CURRENT_DIR=`pwd`
 CONFIG_INFO=$CURRENT_DIR/icomotInstallation.info
