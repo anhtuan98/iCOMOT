@@ -256,8 +256,8 @@ function install_icomot_script(){
 
 ######### INSTALL icomot-service oftware repository ##########
 function install_repo(){ 
+   REPOSITORY=/var/www/html/iCOMOTTutorial/files/
 
- REPOSITORY=/var/www/html/iCOMOTTutorial/files/
 
 echo " "
 echo "Installing local software repository at http://$HOST_IP/iCOMOTTutorial/"
@@ -385,6 +385,8 @@ else
   sudo -S wget -q https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/examples/Misc/artifacts/jre-7-linux-x64.tar.gz -P $REPOSITORY/Misc/artifacts/ 
 
   sudo -S wget -q http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/icomot/ManagingIoTCloudSystems-Tutorial/1.0/ManagingIoTCloudSystems-Tutorial-1.0.tar.gz -P $REPOSITORY/ManagingIoTCloudSystems/
+
+fi
 } # end install_repo
 
 
