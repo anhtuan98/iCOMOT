@@ -444,7 +444,7 @@ if [ $INTERACTIVE == "true" ]; then
 		  done		  
 		  
 		  default=$MAXLINES;  read -p "Maximum lines to extract from the dataset (0 for all lines) [$MAXLINES]: " MAXLINES; MAXLINES=${MAXLINES:-$default}
-		  default=$COLUMNS;   read -p "Columns to extract from the dataset (leave empty for all) []: " COLUMNS;         COLUMNS=${COLUMNS:-$default}
+		  default=$COLUMNS;   read -p "Columns to extract from the dataset ((e.g.: 2,3,4. Leave empty for all) []: " COLUMNS;         COLUMNS=${COLUMNS:-$default}
 		  default=$PROTOCOL;  read -p "Sensor protocol [$PROTOCOL] (dry|mqtt|coap|smap): " PROTOCOL;              PROTOCOL=${PROTOCOL:-$default}
 		  default=$FREQUENCY; read -p "Sensor frequency [$FREQUENCY]: " FREQUENCY;                                FREQUENCY=${FREQUENCY:-$default}
 		  echo -e "\nCreating sensor with following settings: \n Dataset = $DATASET \n Maxlines = $MAXLINES \n Columns = $COLUMNS \n Protocol = $PROTOCOL \n Frequency = $FREQUENCY"			
