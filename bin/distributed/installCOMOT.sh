@@ -153,7 +153,7 @@ function install_MELA(){
     tar -xzf ./mela-analysis-service.tar.gz
     rm ./mela-analysis-service.tar.gz
 
-    sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-exec-war.jar -O ./mela-data-service/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-war-exec.jar
+    sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-exec-war.jar -O ./mela-analysis-service/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT-war-exec.jar
 
     eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/mela-analysis-service/mela-analysis-service"
     eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/mela-analysis-service#' $CURRENT_DIR/mela-analysis-service/mela-analysis-service"

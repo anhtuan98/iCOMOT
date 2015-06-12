@@ -12,7 +12,7 @@ else
     case $opt in
         "Uninstall all iCOMOT services")
         INSTALL_DIR=./iCOMOTWorkspace
-        INSTALL_OPT="Dashboard SALSA MELA rSYBL ELISE rtGovOps"
+        INSTALL_OPT="Dashboard SALSA MELA rSYBL ELISE rtGovOps repo docker"
         break
         ;;
       "Abort")
