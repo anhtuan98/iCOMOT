@@ -94,7 +94,7 @@ eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/iCOMOT-Platform/#' $CURRENT_
 eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
 
 #get config file for SALSA
-sudo -S wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
+sudo -S https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 
 
 #try to get eth0 IP
@@ -128,11 +128,11 @@ sudo -S update-rc.d icomot-platform defaults
 
 
 ########## INSTALL rtGovOps ###########
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war -O ./iCOMOT-Platform/webapps/APIManager.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war -O ./iCOMOT-Platform/webapps/SDGManager.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
-sudo -S wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/common-1.0-SNAPSHOT.jar -O  ./iCOMOT-Platform/webapps/common-1.0-SNAPSHOT.jar
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/apimanager/1.0-SNAPSHOT/apimanager-1.0-SNAPSHOT.war -O ./iCOMOT-Platform/webapps/APIManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGManager/1.0-SNAPSHOT/SDGManager-1.0-SNAPSHOT.war -O ./iCOMOT-Platform/webapps/SDGManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBalancer/1.0-SNAPSHOT/SDGBalancer-1.0-SNAPSHOT.war -O ./iCOMOT-Platform/webapps/SDGBalancer.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBuilder/1.0-SNAPSHOT/SDGBuilder-1.0-SNAPSHOT.war -O ./iCOMOT-Platform/webapps/SDGBuilder.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/common/1.0-SNAPSHOT/common-1.0-SNAPSHOT.jar -O  ./iCOMOT-Platform/webapps/common-1.0-SNAPSHOT.jar
 
 
 cd ./iCOMOT-Platform
