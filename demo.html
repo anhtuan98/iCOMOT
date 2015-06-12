@@ -48,6 +48,12 @@
                     collapsible: true
                 });
             });
+             $(function() {
+                $("#deploymentFigures").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
         </script>
 
         <script type="text/javascript">
@@ -248,10 +254,8 @@
                         <a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Deploying iCOMOT</h1>
 
                     <p>
-                        Built and ready to use versions of iCOMOT are available in our <a
-                            href="http://128.130.172.215/iCOMOTTutorial/">Software Repository</a>.
-                        The repository also contains the software artifacts for the elastic
-                        service used in the Demo.
+                        Built and ready to use versions of iCOMOT are available in <a
+                            href="https://github.com/tuwiendsg/iCOMOT">iCOMOT github</a> and our maven repository. The GIT repository also contains the software artifacts for the elastic service used in the Demo.
                     </p>
 
                     <p>We provide separate install and uninstall scripts for both
@@ -264,37 +268,55 @@
                         compact deployment, the same approach applies to the distributed
                         deployment version</p>
 
-                    <p>For deploying iCOMOT follow the next steps:</p>
+                    <p>For deploying iCOMOT, clone the GIT repository, change to the bin folder and execute the installation script:</p>
                     <pre><code> $ git clone https://github.com/tuwiendsg/iCOMOT.git
  $ cd iCOMOT/bin
- $ bash install_iCOMOT.sh</code></pre>
+ $ bash install.sh</code></pre>
+ <p> The installation process is shown through a set of configuration steps.</p>
+ <ul>
+    <li>Select the compact deployment or distributed deployment.</li>
+    <li>Select which services will be installed.</li>
+    <li>Input the installation directory for iCOMOT (some script is installed in /etc/init.d instead of installation directory).</li>
+    <li>If DashBoard is selected to be installed, a window  appear and ask for a publicly accessible IP.</li>
+ </ul>
+After the configuration, the installation is performed.
+ <div id="deploymentFigures">
+                            <h4>Screenshot of the installation process as below (click to expand)</h4>
+                            <div style="overflow-x: scroll;font-size: small;">						
+						<pre><code>$ bash install.sh<pre><code>
+     <center>
+        <figure>
+            <img src="images/installation/1.png"
+                 alt="Scenario" />
+            <figcaption>Select deployment configuration</figcaption>
+        </figure>
+          <figure>
+            <img src="images/installation/2.png"
+                 alt="Scenario" />
+            <figcaption>Select iCOMOT services to be installed</figcaption>
+        </figure>
+          <figure>
+            <img src="images/installation/3.png"
+                 alt="Scenario" />
+            <figcaption>Configure the installation directory</figcaption>
+        </figure>
+                <figure>
+            <img src="images/installation/4.png"
+                 alt="Scenario" />
+            <figcaption>Configure assessible IP for DashBoard </figcaption>
+        </figure>
+                <figure>
+            <img src="images/installation/5.png"
+                 alt="Scenario" />
+            <figcaption>Installation progress</figcaption>
+        </figure>
+    </center>					
+    
+<pre><code>iCOMOT deployed. Please run: sudo service icomot-services start|stop </code></pre>
+ </div>
+ </div>
+ 
 
-                    <p>A prompt will appear and ask for a publicly accessible IP of the machine on which iCOMOT is deployed to be specified. This is used to correctly configure the 
-                        web-based iCOMOT Dashboard.<p>
-                    <pre><code>Is this a virtual machine/container?
-Please select 1(No) if this is the local machine, 2(Yes) if this is a separate machine, 3(Quit)
- 1) Yes
- 2) No
- 3) Quit
- $? 1 [please enter 1 if the Tutorial is run on local machine]
- $? 2 [please enter 2 if the machine is a remote one, i.e., not accessible as "localhost"]
- Please enter a PUBLICLY ACCESSIBLE IP for this machine to setup iCOMOT Dashboard accordingly
- 10.0.0.X [if 2 was selected, please enter instead of "10.0.0.X" the public IP of the machine]
- ...
- [ installation progress will be reported ]
- ...
- 
-Do you want to install DOCKER to run your application on this machine?
-The installation requires ~800MB for docker image.
-1) Yes
-2) No
-#? 1 [Use docker for running applications]
-#? 2 [Use cloud for running applications]
-Configuring Docker
-Pulling repository 
- ...
- 
-iCOMOT deployed. Please run: sudo service icomot-services start|stop </code></pre>
 
 <p>For starting, stopping or uninstalling iCOMOT, please run the command lines as followings</p>
 
