@@ -54,13 +54,32 @@ function createSensor(){
 	echo "This directory is created automatically by iCOMOT. Please do not change its content manually..." > $PDIR/README
 
 	echo "Gathering artifacts..."
-	if [ -f ../examples/sensors/sensor.tar.gz ]; then
+	SCRIPTFILE=$(readlink -f "$0")
+	SCRIPT=$(dirname "$SCRIPTFILE")
+	
+	if [ -f $SCRIPT/../examples/sensors/sensor.tar.gz ]; then
+	  echo "sensor.tar.gz is found in \"examples\" folder!"
 		cp ../examples/sensors/sensor.tar.gz $PDIR
+	elif [ -f ./sensor.tar.gz ]; then
+	  echo "sensor.tar.gz is found in current folder!"
+	  cp ./sensor.tar.gz $PDIR
 	else
+	  echo "The sensor.tar.gz is not found in current folder ($PWD). By default you can find it in ../examples/sensors/sensor.tar.gz"
+	  read -p "Please enter the path to sensor.tar.gz, or press enter to download it: " SENSORTAR
+	  while [ ! -f "$SENSORTAR" ] || [ ! -z "$SENSORTAR" ]
+	  do
+	    echo "File does not exist: $SENSORTAR."
+	    read -p "Please enter the path to sensor.tar.gz, or press enter to download it: " SENSORTAR
+	    if [ -f $SENSORTAR ]; then
+	      cp  $SENSORTAR $PDIR
+	    fi
+	  done
+	fi	
+	
 	if [ ! -f $PDIR/sensor.tar.gz ]; then
 	  	wget -N https://github.com/tuwiendsg/iCOMOT/raw/master/examples/sensors/sensor.tar.gz -O $PDIR/sensor.tar.gz
 	fi
-  fi
+
   if [ $DATASET == ^http://.* ]; then
   	wget -N $DATASET
   	if [ $? -nq 0 ]; then
@@ -444,7 +463,7 @@ if [ $INTERACTIVE == "true" ]; then
 		  done		  
 		  
 		  default=$MAXLINES;  read -p "Maximum lines to extract from the dataset (0 for all lines) [$MAXLINES]: " MAXLINES; MAXLINES=${MAXLINES:-$default}
-		  default=$COLUMNS;   read -p "Columns to extract from the dataset ((e.g.: 2,3,4. Leave empty for all) []: " COLUMNS;         COLUMNS=${COLUMNS:-$default}
+		  default=$COLUMNS;   read -p "Columns to extract from the dataset (e.g.: 2,3,4. Leave empty for all) []: " COLUMNS;         COLUMNS=${COLUMNS:-$default}
 		  default=$PROTOCOL;  read -p "Sensor protocol [$PROTOCOL] (dry|mqtt|coap|smap): " PROTOCOL;              PROTOCOL=${PROTOCOL:-$default}
 		  default=$FREQUENCY; read -p "Sensor frequency [$FREQUENCY]: " FREQUENCY;                                FREQUENCY=${FREQUENCY:-$default}
 		  echo -e "\nCreating sensor with following settings: \n Dataset = $DATASET \n Maxlines = $MAXLINES \n Columns = $COLUMNS \n Protocol = $PROTOCOL \n Frequency = $FREQUENCY"			

@@ -447,7 +447,7 @@ else
   rtGovOps=$STATUS_SKIPPED
 fi
 
-if [[ $INSTALL_OPT =~ .*repo.* ]]; then
+if [[ $INSTALL_OPT =~ .*Repository.* ]]; then
   install_repo
   #runInstallation install_repo
   repo=$STATUS_DONE
