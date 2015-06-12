@@ -5,7 +5,7 @@ echo "Installing cassandra head node \n" >> /tmp/salsa.artifact.log
 . /etc/environment
 
 #used in unicast
-GANGLIA_IP=109.231.121.91
+GANGLIA_IP=109.231.126.63
 
 IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
 H=$(hostname)

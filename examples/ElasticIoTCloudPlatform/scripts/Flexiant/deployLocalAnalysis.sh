@@ -40,7 +40,7 @@ cd $CURRENT_DIR/LocalDataAnalysis/gangliaPlugIns
 ./setupPlugIns.sh
 
 #used in unicast
-GANGLIA_IP=109.231.121.91
+GANGLIA_IP=109.231.126.63
 
 #delete all joins on multicast
 eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
