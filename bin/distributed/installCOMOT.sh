@@ -1,8 +1,14 @@
 # This script for installing iCOMOT
 #!/bin/bash
 
-sudo apt-get install dialog -y 
-
+# firstly install dialog
+if which dialog > /dev/null; then
+  echo "Running installation..."
+else
+  echo "The installation require \"dialog\" to run. Trying to install it now."
+  sudo apt-get update
+  sudo apt-get -y install dialog
+fi
 
 
 CURRENT_DIR=`pwd`
