@@ -26,6 +26,7 @@ import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingS
 import at.ac.tuwien.dsg.comot.common.model.Requirement;
 import static at.ac.tuwien.dsg.comot.common.model.ServiceTopology.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.BASHAction;
+import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.FlexiantSmall;
 import at.ac.tuwien.dsg.comot.common.model.LifecyclePhase;
 import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
@@ -41,12 +42,12 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class SensorTopology_GPS {
+public class SensorTopology_GPSFlexiant {
 
     public static void main(String[] args) {
 
-        String sensorRepo  = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensorData/gps";
-        String gatewayRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTGateway";
+        String sensorRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/LocationSensor/LocationSensor-distribution/";
+        String gatewayRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/GPSSensorsDateway/GPSSensorsDateway-distribution/";
 
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())
@@ -57,22 +58,23 @@ public class SensorTopology_GPS {
                 .andReference("ElasticIoTPlatform/QueueUnit");
 
         OperatingSystemUnit gatewayVM = OperatingSystemUnit("gatewayVM")
-                .providedBy(OpenstackSmall()
-                        .withBaseImage("7ac2cc53-2301-40d7-a030-910d72f552ff") // this image includes docker, faster spin up
+                .providedBy(FlexiantSmall()
+                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
                 );
 
         DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
                 .providedBy(DockerDefault())
                 .deployedBy(DockerFileArtifact("dockerFileArtifact", gatewayRepo + "Dockerfile"),
                         MiscArtifact("decommissionScript", gatewayRepo + "decommission"),
-                        MiscArtifact("achieveArtifact", gatewayRepo + "rtGovOps-agents.tar.gz"));
+                        MiscArtifact("achieveArtifact", gatewayRepo + "rtGovOps-agents.tar.gz"))
+                ;
 
         ServiceUnit sensorUnit = SingleSoftwareUnit("sensorUnit")
                 .requires(Requirement.Variable("brokerIp_Requirement"))
-                .deployedBy(SingleScriptArtifact(sensorRepo + "runSensor_gps1279_location.sh"))
+                .deployedBy(SingleScriptArtifact(sensorRepo + "runSensor_gps1279_LocationSensor.sh"))
                 .deployedBy(MiscArtifact(sensorRepo + "sensor.tar.gz"))
                 .withLifecycleAction(LifecyclePhase.UNDEPLOY, new BASHAction("decommission"))
-                .withMaxColocatedInstances(1);
+                ;
 
         ServiceTopology gatewayTopology = ServiceTopology("IoTTopology")
                 .withServiceUnits(sensorUnit, gatewayVM, gatewayDocker)
@@ -99,40 +101,40 @@ public class SensorTopology_GPS {
         String tosca = toscaBuilder.toXml(serviceTemplate);
         System.out.println(tosca);
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+           iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
         // added to make it easier to run as jar from cmd line
- 		{
- 			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
- 			for (Arg key : argsMap.keySet()) {
- 				switch (key) {
- 				case ORCHESTRATOR_IP:
- 					orchestrator.withIP(argsMap.get(key));
- 					break;
- 				case SALSA_IP:
- 					orchestrator.withSalsaIP(argsMap.get(key));
- 					break;
- 				case SALSA_PORT:
- 					orchestrator.withSalsaPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				case rSYBL_IP:
- 					orchestrator.withRsyblIP(argsMap.get(key));
- 					break;
- 				case rSYBL_PORT:
- 					orchestrator.withRsyblPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				case GovOps_IP:
- 					orchestrator.withGovOpsIP(argsMap.get(key));
- 					break;
- 				case GovOps_PORT:
- 					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
- 							.get(key)));
- 					break;
- 				}
- 			}
- 		}
- 		
+        {
+            Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+            for (Arg key : argsMap.keySet()) {
+                switch (key) {
+                    case ORCHESTRATOR_IP:
+                        orchestrator.withIP(argsMap.get(key));
+                        break;
+                    case SALSA_IP:
+                        orchestrator.withSalsaIP(argsMap.get(key));
+                        break;
+                    case SALSA_PORT:
+                        orchestrator.withSalsaPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case rSYBL_IP:
+                        orchestrator.withRsyblIP(argsMap.get(key));
+                        break;
+                    case rSYBL_PORT:
+                        orchestrator.withRsyblPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case GovOps_IP:
+                        orchestrator.withGovOpsIP(argsMap.get(key));
+                        break;
+                    case GovOps_PORT:
+                        orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                }
+            }
+        }
+
         orchestrator.deploy(serviceTemplate);
     }
 }
