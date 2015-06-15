@@ -178,7 +178,7 @@ if [ ! -f ./sensor.tar.gz ]; then
   exit 1;
 fi
 
-CURRENT_DIR=$(pwd)
+CURRENT_DIR=\$(pwd)
 
 # prepare sensor artifact for the iCOMOT-compatible gateway
 mkdir /tmp/sensor
@@ -190,7 +190,7 @@ chmod 777 sensor.pid
 rm sensor.tar.gz
 
 # replace the data
-cd $CURRENT_DIR
+cd \$CURRENT_DIR
 sed '1,/^START OF DATA/d' \$0 > data.csv
 mv data.csv /tmp/sensor/config-files/data.csv
 
