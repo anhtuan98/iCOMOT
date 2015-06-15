@@ -47,7 +47,7 @@ public class SensorTopology_GPSFlexiant {
     public static void main(String[] args) {
 
         String sensorRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/LocationSensor/LocationSensor-distribution/";
-        String gatewayRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/GPSSensorsDateway/GPSSensorsDateway-distribution/";
+        String gatewayRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/GPSSensorsGateway/GPSSensorsGateway-distribution/";
 
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())
@@ -93,7 +93,7 @@ public class SensorTopology_GPSFlexiant {
                         .from(QueueUnit)
                         .to(MqttQueueVM))
                 // note: the ID of connectto relationship for Sensors must be started with "mqtt", the sensor code is hard-coded to read this pattern.
-                .andRelationships(ConnectToRelation("mqtt-broker")
+                .andRelationships(ConnectToRelation("mqtt_broker")
                         .from(QueueUnit.getContext().get("brokerIp_Capability"))
                         .to(sensorUnit.getContext().get("brokerIp_Requirement")));
 

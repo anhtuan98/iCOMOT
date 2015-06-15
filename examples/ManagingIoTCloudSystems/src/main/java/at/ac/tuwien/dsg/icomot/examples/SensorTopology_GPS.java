@@ -91,7 +91,7 @@ public class SensorTopology_GPS {
                         .from(QueueUnit)
                         .to(MqttQueueVM))
                 // note: the ID of connectto relationship for Sensors must be started with "mqtt", the sensor code is hard-coded to read this pattern.
-                .andRelationships(ConnectToRelation("mqtt-broker")
+                .andRelationships(ConnectToRelation("mqtt_broker")
                         .from(QueueUnit.getContext().get("brokerIp_Capability"))
                         .to(sensorUnit.getContext().get("brokerIp_Requirement")));
 
