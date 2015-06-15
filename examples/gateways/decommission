@@ -1,8 +1,10 @@
 #!/bin/bash
 #used to decomission a gateway from GovOps before undeploying.
-GovOpsIP="128.130.172.199"
-GovOpsPORT=8080
-DEREGISTER_COMMAND="curl -X GET http://$GovOpsIP:$GovOpsPORT/APIManager/mapper/removeDevice"
+
+. /etc/environment
+GovOps=$GOVOPS_ENDPOINT
+
+DEREGISTER_COMMAND="curl -X GET http://$GovOps/APIManager/mapper/removeDevice"
 
 #need to get the index of the gateway from the container
 
