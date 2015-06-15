@@ -12,11 +12,13 @@ sudo service tomcat7 restart
 
 #### Install GovOps ##########
 sudo service tomcat7 stop
-wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/APIManager.war
-wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGManager.war
-wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBalancer.war
-wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/SDGBuilder.war
-wget http://128.130.172.215/salsa/upload/files/rtGovOps/install/common-1.0-SNAPSHOT.jar
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/apimanager/1.0-SNAPSHOT/apimanager-1.0-SNAPSHOT.war -O ./APIManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGManager/1.0-SNAPSHOT/SDGManager-1.0-SNAPSHOT.war -O ./SDGManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBalancer/1.0-SNAPSHOT/SDGBalancer-1.0-SNAPSHOT.war -O ./SDGBalancer.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBuilder/1.0-SNAPSHOT/SDGBuilder-1.0-SNAPSHOT.war -O ./SDGBuilder.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/common/1.0-SNAPSHOT/common-1.0-SNAPSHOT.jar -O  ./common-1.0-SNAPSHOT.jar
+
 sudo cp *.war *.jar /var/lib/tomcat7/webapps/
 sudo rm -rf  APIManager.war
 sudo rm -rf  SDGManager.war
