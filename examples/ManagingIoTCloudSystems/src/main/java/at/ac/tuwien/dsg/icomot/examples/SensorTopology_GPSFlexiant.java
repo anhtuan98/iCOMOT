@@ -80,7 +80,7 @@ public class SensorTopology_GPSFlexiant {
                 .withServiceUnits(sensorUnit, gatewayVM, gatewayDocker)
                 .withServiceUnits(MqttQueueVM, QueueUnit);
 
-        CloudService serviceTemplate = ServiceTemplate("IoTSensorsDecomissionDirect")
+        CloudService serviceTemplate = ServiceTemplate("IoTSensors")
                 .consistsOfTopologies(gatewayTopology)
                 //defining CONNECT_TO and HOSTED_ON relationships
                 .andRelationships(HostedOnRelation("dockerOnVM")
