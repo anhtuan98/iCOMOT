@@ -151,7 +151,7 @@ public class ElasticIoTPlatformOnDocker {
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/run_mqtt_broker.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -174,9 +174,12 @@ public class ElasticIoTPlatformOnDocker {
         
  
         ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
-                .withServiceUnits(dataControllerUnit, dataNodeUnit //add also OS units to topology
-                        , dataControllerVM, dataNodeVM, loadbalancerUnit, eventProcessingUnit, momUnit //add vm types to topology
-                        , loadbalancerVM, eventProcessingVM, momVM, mqttQueueVM, mqttUnit, localProcessingUnit, localProcessingVM, personalMachine);
+                .withServiceUnits(personalMachine, mqttQueueVM, loadbalancerVM,momVM,  dataControllerVM,  dataNodeVM , localProcessingVM, eventProcessingVM,  mqttUnit,  loadbalancerUnit, 
+                        momUnit, dataControllerUnit  , dataNodeUnit 
+                        , eventProcessingUnit,  localProcessingUnit
+                );
+        
+        
 
         //describe the service template which will hold more topologies
         CloudService serviceTemplate = ServiceTemplate("ElasticIoTPlatform")

@@ -150,7 +150,7 @@ public class ElasticIoTPlatform {
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/run_mqtt_broker.sh"));
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");

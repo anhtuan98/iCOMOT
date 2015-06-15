@@ -41,8 +41,8 @@ public class ElasticIoTPlatformOnFlexiant {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
-        String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
+        String platformRepo = "http://109.231.126.63/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
+        String miscRepo = "http://109.231.126.63/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
@@ -158,7 +158,9 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployQueue.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/run_mqtt_broker.sh"))
+                .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"))
+                ;
 
         ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
         ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
@@ -261,7 +263,7 @@ public class ElasticIoTPlatformOnFlexiant {
                 .withDefaultMetrics();
 
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
-        // added to make it easier to run as jar from cmd line
+        orchestrator.withRsyblPort(8280); // added to make it easier to run as jar from cmd line
         {
             Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
             for (Arg key : argsMap.keySet()) {
