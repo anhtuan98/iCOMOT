@@ -48,8 +48,14 @@
                     collapsible: true
                 });
             });
-             $(function() {
+            $(function() {
                 $("#deploymentFigures").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+             $(function() {
+                $("#specifySensorTopology").accordion({
                     active: false,
                     collapsible: true
                 });
@@ -281,42 +287,30 @@
  </ul>
 After the configuration, the installation is performed.
  <div id="deploymentFigures">
-                            <h4>Screenshot of the installation process as below (click to expand)</h4>
-                            <div style="overflow-x: scroll;font-size: small;">						
-						<pre><code>$ bash install.sh<pre><code>
+ <h4>Screenshot of the installation process as below (click to expand)</h4>
      <center>
         <figure>
-            <img src="images/installation/1.png"
-                 alt="Scenario" />
+            <img src="images/installation/1.png"    alt="Deployment" />
             <figcaption>Select deployment configuration</figcaption>
         </figure>
-          <figure>
-            <img src="images/installation/2.png"
-                 alt="Scenario" />
+        <figure>
+            <img src="images/installation/2.png"    alt="Deployment" />
             <figcaption>Select iCOMOT services to be installed</figcaption>
         </figure>
-          <figure>
-            <img src="images/installation/3.png"
-                 alt="Scenario" />
+        <figure>
+            <img src="images/installation/3.png"     alt="Deployment" />
             <figcaption>Configure the installation directory</figcaption>
         </figure>
-                <figure>
-            <img src="images/installation/4.png"
-                 alt="Scenario" />
+        <figure>
+            <img src="images/installation/4.png"     alt="Deployment" />
             <figcaption>Configure assessible IP for DashBoard </figcaption>
         </figure>
-                <figure>
-            <img src="images/installation/5.png"
-                 alt="Scenario" />
+        <figure>
+            <img src="images/installation/5.png"    alt="Deployment" />
             <figcaption>Installation progress</figcaption>
         </figure>
-    </center>					
-    
-<pre><code>iCOMOT deployed. Please run: sudo service icomot-services start|stop </code></pre>
+    </center>
  </div>
- </div>
- 
-
 
 <p>For starting, stopping or uninstalling iCOMOT, please run the command lines as followings</p>
 
@@ -382,12 +376,15 @@ $ sudo service comot-dashboard-service start|stop|restart|status
 											
 	 <h2>
 		<a name="scenario" class="anchor"
-					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating your first iCOMOT virtualized sensor
+					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating iCOMOT virtualized sensor and gateway
 	</h2>					
-						The SensorGatewayUtil tool supports two modes to create a virtual sensor or a virtual gateway: batch mode and interactive mode. 						
-							<div id="codeDescription3">
-                            <h4>The output of the interactive mode should look like this (click to expand)</h4>
-                            <div style="overflow-x: scroll;font-size: small;">						
+						The SensorGatewayUtil tool supports two modes to create a virtual sensor or a virtual gateway: batch mode and interactive mode.
+						<ul>
+              <li>Batch mode: User runs the utility by passing parameters to configure the sensor/gateway. In the case that one or some parameters are missing, the default values will be used. Error can occur if the parameters are incorrect and the sensor/gateway is not created (e.g. user provides wrong dataset).</li>
+              <li>Interactive mode: The interactive mode guide the user through a set of question and validate the configuration before creating sensor/gateway. To use this mode, please run the utility with <b>-i</b> argument. The interactive mode also parse the parameter as in batch mode as default configurations.</li>
+            </ul>
+
+                            <h4>The output of the interactive mode should look like this</h4>
 						<pre><code>$ bash SensorGatewayUtil.sh sensor -i
 Interactive mode for creating sensor
 Input a name for the sensor/gateway [sensor]: locationSensor
@@ -415,8 +412,62 @@ Please enter the metadata for the gateway (Enter empty meta name to stop):
 Generate gateway code ...
 ...
 The Dockerfile is generated: iCOMOT-simulated-devices/gateways/G1/Dockerfile</code></pre>
-						</div></div>
 						
+						
+						<h2>Specify sensors topology</h2>
+						The sensors topology which is deployed and managed by iCOMOT can be describe through our iCOMOT API. The examples of GPS sensors topology and Chiller sensors topology can be found at <i>"examples/ManagingIoTCloudSystems/src/main/java/at/ac/tuwien/dsg/icomot/examples"</i>
+						
+						<div id="specifySensorTopology">
+						  <h4>Step to specify GPS location sensor topology and deploy</h4>
+						   					  <div style="overflow-x: scroll;font-size: small;">
+						    
+						<ol>
+						    <li>
+						    <p>The sensors and gateways deployment require software artifacts (scripts, archive, Dockerfile, etc). The ready-to-use version is put in the <sensor/gateway name>-distribution folder when sensors/gateways are created.We upload them into repository and specify the URL.</p>
+							  <pre class="prettyprint"  style="background-color: white;">
+	       String sensorRepo = "http://109.231.121.77/iCOMOTTutorial/files/iotDevice/sensor/";
+	       String gatewayRepo = "http://109.231.121.77/iCOMOTTutorial/files/iotDevice/gateway/"; </pre>
+	              </li>
+	              <li>
+							  <p>We specify the cloud infrastructure to host the sensor/gateway.</p>
+							  <pre class="prettyprint"  style="background-color: white;">
+	       OperatingSystemUnit gatewayVM = OperatingSystemUnit("gatewayVM")
+	       	       .providedBy(FlexiantSmall()
+	       	       .withBaseImage("422a6e60-611c-304d-9317-75ed5ca949b5")
+                  );</pre></li>
+                  <li>
+                <p>The gateway is defined by the Dockerfile and sensor is defined by the script. There are additional artifacts are also specified.</p>
+							  <pre class="prettyprint"  style="background-color: white;">
+	       DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
+	       	       .providedBy(DockerDefault())
+	       	       .deployedBy(DockerFileArtifact("dockerFileArtifact", gatewayRepo + "Dockerfile"),
+	       	       MiscArtifact("achieveArtifact", gatewayRepo + "rtGovOps-agents.tar.gz"));
+
+	       ServiceUnit sensorUnit = SingleSoftwareUnit("sensorUnit")
+	       	       .requires(Requirement.Variable("brokerIp_Requirement"))
+	       	       .deployedBy(SingleScriptArtifact(sensorRepo + "runSensor_gps1279_LocationSensor.sh"))
+	       	       .deployedBy(MiscArtifact(sensorRepo + "sensor.tar.gz"))
+	       	       .withLifecycleAction(LifecyclePhase.UNDEPLOY, new BASHAction("./decommission")) ;</pre>
+                Note that we specified <i>".requires(Requirement.Variable("brokerIp_Requirement"))"</i> to use later. The sensor can send data to a message queue, then we also define a queue service. In following, the queue service is reference to an existing deployment.
+                <pre class="prettyprint"  style="background-color: white;">
+	       	       ServiceUnit QueueUnit = SoftwareNode.SingleSoftwareUnit("QueueUnit")
+	       	       .exposes(Capability.Variable("brokerIp_Capability"))
+	       	       .andReference("ElasticIoTPlatform/QueueUnit");</pre></li>
+	       	       <li>
+						    <p>After define all the service unit, we define the topology of these unit</p>
+						    <pre class="prettyprint"  style="background-color: white;">
+         HostedOnRelation("dockerOnVM")
+	       	       .from(gatewayDocker)
+	       	       .to(gatewayVM))
+	       ConnectToRelation("mqtt_broker")
+	       	       .from(QueueUnit.getContext().get("brokerIp_Capability"))
+	       	       .to(sensorUnit.getContext().get("brokerIp_Requirement")));</pre></li>
+						</ol>
+						</div>
+						</div>
+						
+						
+						<br />
 						In the following videos, we show how to use SensorGatewayUtil in the interactive mode to create a simple sensor from custom data set and a gateway from custom image. <br/> <br/>
 						 <iframe width="420" height="315" src="https://www.youtube.com/embed/XnPiu-TRrhc" frameborder="0" allowfullscreen></iframe>&nbsp;&nbsp;&nbsp;<iframe width="420" height="315" src="https://www.youtube.com/embed/7A5TBS3UjWA" frameborder="0" allowfullscreen></iframe>
                     
