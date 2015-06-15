@@ -193,6 +193,34 @@ function install_rSYBL(){
 
 ########## INSTALL rtGovOps ###########
 
+wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/GovOps.tar.gz?raw=true -O ./GovOps.tar.gz
+
+tar -xzf ./GovOps.tar.gz
+rm ./GovOps.tar.gz
+
+
+
+echo "Downloading jre"
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
+echo "Unpacking JRE"
+tar -xzf ./jre-8u45-linux-x64.tar.gz 
+rm  ./jre-8u45-linux-x64.tar.gz
+
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/apimanager/1.0-SNAPSHOT/apimanager-1.0-SNAPSHOT.war -O ./GovOps/webapps/APIManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGManager/1.0-SNAPSHOT/SDGManager-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGManager.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBalancer/1.0-SNAPSHOT/SDGBalancer-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBalancer.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBuilder/1.0-SNAPSHOT/SDGBuilder-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBuilder.war
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/common/1.0-SNAPSHOT/common-1.0-SNAPSHOT.jar -O  ./GovOps/webapps/common-1.0-SNAPSHOT.jar
+
+eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/GovOps/#' $CURRENT_DIR/GovOps/govops-service"
+#eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
+eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/GovOps/govops-service"
+
+sudo -S chmod +x ./GovOps/govops-service
+sudo -S cp ./GovOps/govops-service /etc/init.d/govops-service
+sudo -S chmod +x /etc/init.d/govops-service
+sudo -S update-rc.d govops-service defaults
+
 
 ########## INSTALL ELISE ###########
 function install_ELISE(){
