@@ -95,7 +95,8 @@ eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/
 
 #get config file for SALSA
 sudo -S https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
-
+#get latest salsa pioneer
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-pioneer-vm/1.0/salsa-pioneer-vm-1.0.jar -O  $CURRENT_DIR/iCOMOT-Platform/salsa-pioneer.jar
 
 #try to get eth0 IP
 if [[ -n $(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}') ]]
@@ -156,23 +157,23 @@ sudo -S update-rc.d rSYBL-service defaults
 
 ########## INSTALL ELISE ###########
 
-echo "Deploying ELISE"
-echo "Downloading ELISE"
+    echo "Deploying ELISE"
+    echo "Downloading ELISE"
+    wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/ELISE.tar.gz?raw=true -O ./ELISE.tar.gz
+    tar -xzf ./ELISE.tar.gz
+    rm -rf ./ELISE.tar.gz
 
-wget http://128.130.172.215/iCOMOTTutorial/files/iCOMOTDistributedPlatform/ELISE.tar.gz
-tar -xzf ./ELISE.tar.gz
-rm -rf ./ELISE.tar.gz
+    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-service/1.0/elise-service-1.0-war-exec.jar -O ./ELISE/elise-service-1.0-war-exec.jar
+    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-salsa/1.0/elise-collector-salsa-1.0.jar -O ./ELISE/extensions/salsa/elise-collector-salsa-1.0.jar
+    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-govops/1.0/elise-collector-govops-1.0.jar -O ./ELISE/extensions/govops/elise-collector-govops-1.0.jar
 
-eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/ELISE/elise-service"
-eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/ELISE#' $CURRENT_DIR/ELISE/elise-service"
+    eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/ELISE/elise-service"
+    eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/ELISE#' $CURRENT_DIR/ELISE/elise-service"
 
-echo "Configuring ELISE service" 
-sudo -S cp ./ELISE/elise-service /etc/init.d/elise-service
-sudo -S chmod +x /etc/init.d/elise-service
-sudo -S update-rc.d elise-service defaults
-#sudo -S service elise-service start
-#sudo cp ./ELISE/elise-client /usr/bin
-#chmod +x /usr/bin/elise-client
+    echo "Configuring ELISE service" 
+    sudo -S cp ./ELISE/elise-service /etc/init.d/elise-service
+    sudo -S chmod +x /etc/init.d/elise-service
+    sudo -S update-rc.d elise-service defaults
 
 
 ########## INSTALL DOCKER ###########
