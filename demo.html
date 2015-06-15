@@ -360,7 +360,7 @@ $ sudo service comot-dashboard-service start|stop|restart|status
 											
 	 <h2>
 		<a name="scenario" class="anchor"
-					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating your first iCOMOT virtualized sensor
+					   href="#scenario"><span class="octicon octicon-link"></span></a> Creating your first iCOMOT virtualized sensor and gateway
 	</h2>					
 						The SensorGatewayUtil tool supports two modes to create a virtual sensor or a virtual gateway: batch mode and interactive mode. 						
 							<div id="codeDescription3">
@@ -397,8 +397,25 @@ The Dockerfile is generated: iCOMOT-simulated-devices/gateways/G1/Dockerfile</co
 						
 						In the following videos, we show how to use SensorGatewayUtil in the interactive mode to create a simple sensor from custom data set and a gateway from custom image. <br/> <br/>
 						 <iframe width="420" height="315" src="https://www.youtube.com/embed/XnPiu-TRrhc" frameborder="0" allowfullscreen></iframe>&nbsp;&nbsp;&nbsp;<iframe width="420" height="315" src="https://www.youtube.com/embed/7A5TBS3UjWA" frameborder="0" allowfullscreen></iframe>
-                    
- </div>
+            
+
+
+															
+						<h2>
+							<a name="scenario" class="anchor"
+										href="#scenario"><span class="octicon octicon-link"></span></a> Communication protocols 
+						</h2>	
+						
+						In the current setup the gateways host the sensors and they are responsible to support the sensors to communicate with the cloud services. To this end
+						we have developed several communication protocols that can be used for the communication between the sensors/gateways and the cloud services. 
+						Generally, the gateways support two types of communication: push-based and poll-based. The push-based communication is realized via the MQTT protocol, which can be configured when the sensor is created(see "Creating your first iCOMOT virtualized sensor and gateway"). Currently, we provide a mqqt client (part of the cloudconnectivity library), thus no development is required if the MQTT is used for push-based communication. For the purposes of this demo, we run an instance of MQ broker and all the sensors/gateways send their data to this broker, which further delivers the data to the cloud services. The poll-based communication is realized via CoAP protocol (also configurable during sensor creation). In this case the gateway will start a light-weight CoAP server (based on <a href="https://eclipse.org/californium/"> Californium</a>) and the iCOMOT will open and map all the required ports for the docker containers(Note that CoAP is udp based). Finally, iCOMOT provides a "dryrun" protocol, which is a special protocol, meant for local testing of the sensors and it only replays the date locally, e.g, to stdout.<br/><br/>
+						
+						As one might have noticed, in the current demo we did not show any inter-gateway communication, because the current implementation only allows the bi-directional communication between the gateways/sensors and the cloud services. In the future, we plan to also add this support in the iCOMOT platform.
+						
+						
+			
+
+</div>
  
  
                     <div>
