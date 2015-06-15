@@ -66,7 +66,7 @@ function createSensor(){
 	else
 	  echo "The sensor.tar.gz is not found in current folder ($PWD). By default you can find it in ../examples/sensors/sensor.tar.gz"
 	  read -p "Please enter the path to sensor.tar.gz, or press enter to download it: " SENSORTAR
-	  while [ ! -f "$SENSORTAR" ] || [ ! -z "$SENSORTAR" ]
+	  while [ ! -f "$SENSORTAR" ] && [ ! -z "$SENSORTAR" ]
 	  do
 	    echo "File does not exist: $SENSORTAR."
 	    read -p "Please enter the path to sensor.tar.gz, or press enter to download it: " SENSORTAR
@@ -233,10 +233,9 @@ if [ $INTERACTIVE == "true" ]; then
   default=$RUNME;  read -p "Should I run the sensor now? [$RUNME]: " RUNME; RUNME=${RUNME:-$default}
   if [ $RUNME == "Y" ]; then
     echo "Running the sensor ..."
-    chmod +x $FILE
     cd $TARGET/$NAME
-    chmod +x ./run_sensor_$NAME.sh
-    bash ./run_sensor_$NAME.sh
+    chmod +x runSensor_$DATASETNAMEONLY'_'$NAME.sh
+    bash runSensor_$DATASETNAMEONLY'_'$NAME.sh
   else
     echo "Successfully created sensor $NAME"
     echo "You can run the sensor with ./$FILE"
