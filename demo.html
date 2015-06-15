@@ -380,11 +380,11 @@ $ sudo service comot-dashboard-service start|stop|restart|status
 	</h2>					
 						The SensorGatewayUtil tool supports two modes to create a virtual sensor or a virtual gateway: batch mode and interactive mode.
 						<ul>
-              <li>Batch mode: User runs the utility by passing parameters to configure the sensor/gateway. In the case that one or some parameters are missing, the default values will be used. Error can occur if the parameters are incorrect and the sensor/gateway is not created (e.g. user provides wrong dataset).</li>
-              <li>Interactive mode: The interactive mode guide the user through a set of question and validate the configuration before creating sensor/gateway. To use this mode, please run the utility with <b>-i</b> argument. The interactive mode also parse the parameter as in batch mode as default configurations.</li>
+              <li>Batch mode: The user runs the utility by passing parameters to configure the sensor/gateway. In the case that one or some parameters are missing, the default values will be used. An error can occur if the parameters are incorrect and the sensor/gateway is not created (e.g. user provides wrong dataset).</li>
+              <li>Interactive mode: The interactive mode guides the user through a set of question and validate the configuration before creating sensor/gateway. To use this mode, please run the utility with <b>-i</b> argument. The interactive mode also parses the parameter as in batch mode as default configurations.</li>
             </ul>
 
-                            <h4>The output of the interactive mode should look like this</h4>
+                            <p>The output of the interactive mode should look like this:</p>
 						<pre><code>$ bash SensorGatewayUtil.sh sensor -i
 Interactive mode for creating sensor
 Input a name for the sensor/gateway [sensor]: locationSensor
@@ -412,7 +412,22 @@ Please enter the metadata for the gateway (Enter empty meta name to stop):
 Generate gateway code ...
 ...
 The Dockerfile is generated: iCOMOT-simulated-devices/gateways/G1/Dockerfile</code></pre>
-						
+					<p>To generate multiple sensors from multiple datasets, batch mode can be used (please check the example folder for more details).</p>	
+					<pre><code>bash SensorGatewayUtil.sh sensor -p mqtt -s condenser_rule.csv -c 1,4 -n difference_oat_and_con_temp
+bash SensorGatewayUtil.sh sensor -p mqtt -s condenser_rule.csv -c 1,3 -n motor_status 
+bash SensorGatewayUtil.sh sensor -p mqtt -s condenser_rule.csv -c 1,2 -n oat
+
+bash SensorGatewayUtil.sh sensor -p mqtt -s evaporator_fouling.csv -c 1,5 -n ch2a_exv_position 
+bash SensorGatewayUtil.sh sensor -p mqtt -s evaporator_fouling.csv -c 1,4 -n chw_supply_temp
+bash SensorGatewayUtil.sh sensor -p mqtt -s evaporator_fouling.csv -c 1,3 -n fcu_ff1_set_point
+bash SensorGatewayUtil.sh sensor -p mqtt -s evaporator_fouling.csv -c 1,2 -n fcu_ff1_space_temp
+
+bash SensorGatewayUtil.sh sensor -p mqtt -s low_suction_pressure_ch3.csv -c 1,6 -n cmn_chws_temp
+bash SensorGatewayUtil.sh sensor -p mqtt -s low_suction_pressure_ch3.csv -c 1,5 -n ch3_cktA_compressor_suction_superheat_temp
+bash SensorGatewayUtil.sh sensor -p mqtt -s low_suction_pressure_ch3.csv -c 1,4 -n ch3_cktA_percent_total_capacity
+bash SensorGatewayUtil.sh sensor -p mqtt -s low_suction_pressure_ch3.csv -c 1,3 -n ch3_cktA_exv_position
+bash SensorGatewayUtil.sh sensor -p mqtt -s low_suction_pressure_ch3.csv -c 1,2 -n ch3_cktA_suction_pressure</code></pre>
+					
 						
 						<h2>Specify sensors topology</h2>
 						The sensors topology which is deployed and managed by iCOMOT can be describe through our iCOMOT API. The examples of GPS sensors topology and Chiller sensors topology can be found at <i>"examples/ManagingIoTCloudSystems/src/main/java/at/ac/tuwien/dsg/icomot/examples"</i>
