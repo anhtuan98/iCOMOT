@@ -71,7 +71,7 @@ function install_jre(){
   if [[ -z $JAVA ]]
     then
         echo "Downloading jre"
-        wget --progress=dot:mega --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
+	wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
         echo "Unpacking JRE"
         tar -xzf ./jre-8u45-linux-x64.tar.gz 
         rm  ./jre-8u45-linux-x64.tar.gz
@@ -424,7 +424,7 @@ else
 fi
 } # end install_repo
 
-
+install_jre
 
 if [[ $INSTALL_OPT =~ .*Dashboard.* ]]; then  
   install_Dashboard
