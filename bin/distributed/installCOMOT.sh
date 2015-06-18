@@ -71,7 +71,7 @@ function install_jre(){
   if [[ -z $JAVA ]]
     then
         echo "Downloading jre"
-        wget --progress=dot:mega --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
+	wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
         echo "Unpacking JRE"
         tar -xzf ./jre-8u45-linux-x64.tar.gz 
         rm  ./jre-8u45-linux-x64.tar.gz
@@ -193,34 +193,32 @@ function install_rSYBL(){
 
 ########## INSTALL rtGovOps ###########
 
-wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/GovOps.tar.gz?raw=true -O ./GovOps.tar.gz
+function install_rtGovOps(){
+  wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/GovOps.tar.gz?raw=true -O ./GovOps.tar.gz
+  tar -xzf ./GovOps.tar.gz
+  rm ./GovOps.tar.gz
 
-tar -xzf ./GovOps.tar.gz
-rm ./GovOps.tar.gz
+  echo "Downloading jre"
+  #wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
+  #echo "Unpacking JRE"
+  #tar -xzf ./jre-8u45-linux-x64.tar.gz 
+  #rm  ./jre-8u45-linux-x64.tar.gz
 
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/apimanager/1.0-SNAPSHOT/apimanager-1.0-SNAPSHOT.war -O ./GovOps/webapps/APIManager.war
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGManager/1.0-SNAPSHOT/SDGManager-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGManager.war
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBalancer/1.0-SNAPSHOT/SDGBalancer-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBalancer.war
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBuilder/1.0-SNAPSHOT/SDGBuilder-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBuilder.war
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/common/1.0-SNAPSHOT/common-1.0-SNAPSHOT.jar -O  ./GovOps/webapps/common-1.0-SNAPSHOT.jar
 
+  eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/GovOps/#' $CURRENT_DIR/GovOps/govops-service"
+  #eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
+  eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/GovOps/govops-service"
 
-echo "Downloading jre"
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-x64.tar.gz
-echo "Unpacking JRE"
-tar -xzf ./jre-8u45-linux-x64.tar.gz 
-rm  ./jre-8u45-linux-x64.tar.gz
-
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/apimanager/1.0-SNAPSHOT/apimanager-1.0-SNAPSHOT.war -O ./GovOps/webapps/APIManager.war
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGManager/1.0-SNAPSHOT/SDGManager-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGManager.war
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBalancer/1.0-SNAPSHOT/SDGBalancer-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBalancer.war
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/SDGBuilder/1.0-SNAPSHOT/SDGBuilder-1.0-SNAPSHOT.war -O ./GovOps/webapps/SDGBuilder.war
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/infosys/common/1.0-SNAPSHOT/common-1.0-SNAPSHOT.jar -O  ./GovOps/webapps/common-1.0-SNAPSHOT.jar
-
-eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/GovOps/#' $CURRENT_DIR/GovOps/govops-service"
-#eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.7.0/#' $CURRENT_DIR/iCOMOT-Platform/icomot-platform"
-eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/GovOps/govops-service"
-
-sudo -S chmod +x ./GovOps/govops-service
-sudo -S cp ./GovOps/govops-service /etc/init.d/govops-service
-sudo -S chmod +x /etc/init.d/govops-service
-sudo -S update-rc.d govops-service defaults
-
+  sudo -S chmod +x ./GovOps/govops-service
+  sudo -S cp ./GovOps/govops-service /etc/init.d/govops-service
+  sudo -S chmod +x /etc/init.d/govops-service
+  sudo -S update-rc.d govops-service defaults
+}
 
 ########## INSTALL ELISE ###########
 function install_ELISE(){
@@ -426,21 +424,10 @@ else
 fi
 } # end install_repo
 
-
-function runInstallation(){
-cmd=$1
-
-INFO="SALSA     :$SALSA\nMELA      :$MELA\nrSYBL     :$rSYBL\nrtGovOps  :$rtGovOps\nELISE     :$ELISE\nDashboard :$Dashboard\ndocker    :$docker\nRepository:$repo"
-
-$cmd 2>&1 | dialog \
---keep-window --begin 2 2 --infobox "$INFO" 10 25   \
---and-widget --begin 2 30 --progressbox "$cmd" 40 90
-
-}
+install_jre
 
 if [[ $INSTALL_OPT =~ .*Dashboard.* ]]; then  
   install_Dashboard
-  #runInstallation install_Dashboard
   Dashboard=$STATUS_DONE
 else
   Dashboard=$STATUS_SKIPPED
@@ -448,7 +435,6 @@ fi
 
 if [[ $INSTALL_OPT =~ .*SALSA.* ]]; then
   install_SALSA
-  #runInstallation install_SALSA
   SALSA=$STATUS_DONE
 else
   SALSA=$STATUS_SKIPPED
@@ -456,7 +442,6 @@ fi
 
 if [[ $INSTALL_OPT =~ .*MELA.* ]]; then
   install_MELA
-  #runInstallation install_MELA
   MELA=$STATUS_DONE
 else
   MELA=$STATUS_SKIPPED
@@ -464,7 +449,6 @@ fi
 
 if [[ $INSTALL_OPT =~ .*rSYBL.* ]]; then
   install_rSYBL
-  #runInstallation install_rSYBL
   rSYBL=$STATUS_DONE
 else
   rSYBL=$STATUS_SKIPPED
@@ -472,7 +456,6 @@ fi
 
 if [[ $INSTALL_OPT =~ .*ELISE.* ]]; then
   install_ELISE
-  #runInstallation install_ELISE
   ELISE=$STATUS_DONE
 else
   ELISE=$STATUS_SKIPPED
@@ -481,7 +464,6 @@ fi
 if [[ $INSTALL_OPT =~ .*rtGovOps.* ]]; then
   cp ../installGovOps.sh .
   sudo bash ./installGovOps.sh
-  #runInstallation install_ELISE
   rtGovOps=$STATUS_DONE
   rm ./installGovOps.sh
 else
@@ -490,7 +472,6 @@ fi
 
 if [[ $INSTALL_OPT =~ .*Repository.* ]]; then
   install_repo
-  #runInstallation install_repo
   repo=$STATUS_DONE
 else
   repo=$STATUS_SKIPPED
