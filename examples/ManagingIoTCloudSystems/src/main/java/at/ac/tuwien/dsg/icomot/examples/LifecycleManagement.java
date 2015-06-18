@@ -43,7 +43,7 @@ public class LifecycleManagement {
     private HashMap<String,ServiceTopology> serviceTopologies= new HashMap<String,ServiceTopology>();
     
     //specify service units in terms of software
-    String salsaRepo = "http://128.130.172.215/iCOMOTTutorial/files/ElasticIoTPlatform/";
+    String salsaRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTPlatform/";
     
     public LifecycleManagement(){
         iCOMOTorchestrator = new iCOMOTOrchestrator("localhost");

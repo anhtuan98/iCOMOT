@@ -46,8 +46,8 @@ public class SensorTopology_GPSFlexiant {
 
     public static void main(String[] args) {
 
-        String sensorRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/LocationSensor/LocationSensor-distribution/";
-        String gatewayRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/GPSSensorsGateway/GPSSensorsGateway-distribution/";
+        String sensorRepo = "http://localhost/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/LocationSensor/LocationSensor-distribution/";
+        String gatewayRepo = "http://localhost/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/GPSSensorsGateway/GPSSensorsGateway-distribution/";
 
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())

@@ -39,7 +39,7 @@ public class SensorTopology_Chiller {
 
     public static void main(String[] args) {
 
-        String chillerSensorRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensorData/chiller/";
+        String chillerSensorRepo = "http://localhost/iCOMOTTutorial/files/IoTSensorData/chiller/";
         
         // QueueUnit reference
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
@@ -59,6 +59,7 @@ public class SensorTopology_Chiller {
                         .withBaseImage("7ac2cc53-2301-40d7-a030-910d72f552ff") // this image includes docker, faster spin up
                 );
 
+        
         ServiceUnit evaporator_fouling_ch2a_exv_position = SingleSoftwareUnit("evaporator_fouling_ch2a_exv_position")
                 .requires(Requirement.Variable("brokerIp_Requirement_evaporator_fouling_ch2a_exv_position"))
                 .deployedBy(ServiceArtifact(chillerSensorRepo + "runSensor_evaporator_fouling_ch2a_exv_position.sh"))
@@ -282,7 +283,7 @@ public class SensorTopology_Chiller {
                 }
             }
         }
-       orchestrator.withSalsaIP("128.130.172.215").withSalsaPort(8888);
+       orchestrator.withSalsaIP("localhost").withSalsaPort(8888);
        
        orchestrator.deploy(serviceTemplate);
     }

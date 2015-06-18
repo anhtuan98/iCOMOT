@@ -45,8 +45,8 @@ public class SensorTopology_GPS {
 
     public static void main(String[] args) {
 
-        String sensorRepo  = "http://128.130.172.215/iCOMOTTutorial/files/IoTSensorData/gps";
-        String gatewayRepo = "http://128.130.172.215/iCOMOTTutorial/files/IoTGateway";
+        String sensorRepo  = "http://localhost/iCOMOTTutorial/files/IoTSensorData/gps";
+        String gatewayRepo = "http://localhost/iCOMOTTutorial/files/IoTGateway";
 
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())

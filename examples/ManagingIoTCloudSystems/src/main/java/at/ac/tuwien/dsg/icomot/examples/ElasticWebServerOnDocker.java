@@ -41,7 +41,7 @@ public class ElasticWebServerOnDocker {
     public static void main(String[] args) {
 
         //specify repository holding service software artifacts
-        String salsaRepo = "http://128.130.172.215/repository/files/HelloElasticity/";
+        String salsaRepo = "http://localhost/repository/files/HelloElasticity/";
 
         //define localhost docker 
         OperatingSystemUnit privateVM = OperatingSystemUnit("PersonalLaptop")
@@ -127,7 +127,7 @@ public class ElasticWebServerOnDocker {
                 .withDefaultMetrics();
 
         //instantiate COMOT orchestrator to deploy, monitor and control the service
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("128.130.172.216");
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
         orchestrator.withSalsaPort(8380);
         orchestrator.withRsyblPort(8280);
         

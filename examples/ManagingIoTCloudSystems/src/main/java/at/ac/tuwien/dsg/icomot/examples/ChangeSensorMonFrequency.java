@@ -58,7 +58,7 @@ public class ChangeSensorMonFrequency {
 			}
 		}
 
-		ServiceUnit sensor = new ServiceUnit("Sensor").ofType("FM5300");
+		ServiceUnit sensor = new ServiceUnit("Sensor").ofType("GPSSensors");
 
 		orchestrator.enforceCapabilityOnClassOfUnits(sensor,
 				SensorCapability.START);

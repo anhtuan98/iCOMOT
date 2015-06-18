@@ -41,8 +41,8 @@ public class ElasticIoTPlatformOnFlexiant {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://109.231.126.63/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
-        String miscRepo = "http://109.231.126.63/iCOMOTTutorial/files/Misc/";
+        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
+        String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")

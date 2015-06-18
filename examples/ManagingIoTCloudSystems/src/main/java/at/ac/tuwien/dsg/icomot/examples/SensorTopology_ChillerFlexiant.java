@@ -46,8 +46,8 @@ public class SensorTopology_ChillerFlexiant {
 
     public static void main(String[] args) {
 
-        String chillerSensorRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/ChillerSensor/";
-        String gatewayRepo = "http://109.231.126.63/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/ChillerGateway/ChillerGateway-distribution/";
+        String chillerSensorRepo = "http://localhost/iCOMOTTutorial/files/iCOMOT-simulated-devices/sensors/ChillerSensor/";
+        String gatewayRepo = "http://localhost/iCOMOTTutorial/files/iCOMOT-simulated-devices/gateways/ChillerGateway/ChillerGateway-distribution/";
 
         // QueueUnit reference
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
