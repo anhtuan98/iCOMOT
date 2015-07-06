@@ -8,8 +8,8 @@ cd "/home/ubuntu"
 #sudo echo "Untarred mqttbroker " >> /tmp/salsa.artifact.log
 #sudo chef-solo -c ./chef-mqtt_broker/solo.rb >> /tmp/salsa.artifact.log
 
-sudo apt-get install openjdk-7-jre-headless -y
-sudo wget http://apache-mirror.rbc.ru/pub/apache/activemq/5.10.2/apache-activemq-5.10.2-bin.tar.gz
+sudo apt-get install openjdk-7-jre-headless -yq
+sudo wget -q http://apache-mirror.rbc.ru/pub/apache/activemq/5.10.2/apache-activemq-5.10.2-bin.tar.gz
 sudo tar -xvzf apache-activemq-5.10.2-bin.tar.gz
 sudo  ln -sf ./apache-activemq-5.10.2/bin/activemq /etc/init.d
 
