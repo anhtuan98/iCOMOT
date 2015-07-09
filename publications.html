@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href='https://fonts.googleapis.com/css?family=Architects+Daughter'
+              rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css"
+              media="screen" />
+        <link rel="stylesheet" type="text/css"
+              href="stylesheets/pygment_trac.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/print.css"
+              media="print" />
+
+        <!--[if lt IE 9]>
+                <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+                <![endif]-->
+
+        <title>iCOMOT by tuwiendsg</title>
+
+        <script
+        src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script
+        src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <link rel="stylesheet"
+              href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+        <script>
+            $(function() {
+                $("#codeDescription1").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+						$(function() {
+                $("#codeDescription2").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+            $(function() {
+                $("#codeDescription3").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+            $(function() {
+                $("#deploymentFigures").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+             $(function() {
+                $("#specifySensorTopology").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(
+                    function() {
+                        var top = $('#navibar').offset().top
+                                - parseFloat($('#navibar').css('marginTop').replace(
+                                        /auto/, 100));
+
+                        $(window).scroll(function(event) {
+                            // what the y position of the scroll is
+                            var y = $(this).scrollTop();
+
+                            // whether that's below the form
+                            if (y >= top) {
+                                // if so, ad the fixed class
+                                $('#navibar').addClass('fixed');
+                            } else {
+                                // otherwise remove it
+                                $('#navibar').removeClass('fixed');
+                            }
+                        });
+                    });
+        </script>
+
+   
+
+    </head>
+
+    <body>
+        <header>
+            <div class="inner">
+                <h1>iCOMOT</h1>
+                <!--<h2 style="width:900px">Demo :Programming Elasticity in the Cloud</h2>-->
+                <a href="https://github.com/tuwiendsg/iCOMOT" class="button"><small>View
+                        project on </small> GitHub</a>
+            </div>
+
+            <aside id="navibar">
+
+                <div id="nav">
+                    <ul>
+                        <li><a href="./index.html" id="homenav">Home</a> 
+                            <ul>
+                                 <li><a href="./demo.html"  >iCOMOT Tutorial</a></li>
+                                 <li><div id="currentNav"><a href="./publications.html"  >Publications</a></div></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </br></br></br>
+                    <p class="repo-owner" style="width:300px">Maintained and distributed by </br>
+                        <a href="http://www.infosys.tuwien.ac.at/">Distributed Systems Group</a> 
+                        <a href="http://www.infosys.tuwien.ac.at/"> <img src="images/dsgComplet.png" height="70px" width="300px"></a> 
+
+                        <a href="http://www.tuwien.ac.at/">Vienna University of Technology</a>
+                        <a href="http://www.tuwien.ac.at/"> <img src="images/TU_logo.png" height="70px" width="300px"></a>
+                        <a href="mailto:truong@dsg.tuwien.ac.at">Contact: Hong-Linh Truong</a> for further information
+                    </p>
+                </div>
+            </aside>
+
+
+
+
+
+        </header>
+
+        <div id="horizontalNav">
+            <ul>
+                <li><a href="./index.html" id="homenav">HomE</a>
+                    <ul>
+                        <li><a href="./demo.html"  >iCOMOT Tutorial</a></li>
+                        <li><div id="horizontalNavCurrentNav"><a href="./publications.html"  >Publications</a></div></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div id="content-wrapper">
+
+
+            <div class="inner clearfix">
+
+                <section id="main-content">
+ 		  
+                    <h1>
+                        <a name="publications" class="anchor" href="#publications"><span
+                                class="octicon octicon-link"></span></a>Publications
+                    </h1>
+
+			<h2>Generic IoT Cloud Systems</h2>
+                        <ul>
+                        	<li>
+                        		Hong-Linh Truong, <a href="http://www.slideshare.net/linhsolar/principles-for-engineering-elastic-iot-cloud-systems">Principles for Engineering Elastic IoT Cloud Systems</a>, Invited Talk, SummerSOC 2015, 2nd July 2015.
+                        	</li>
+                            <li>Hong-Linh Truong, Schahram Dustdar,  <a href="http://www.infosys.tuwien.ac.at/Staff/sd/papers/Zeitschriftenartikel%20H.-L.%20Truong%202015%20Principles%20for.pdf">Principles for Engineering IoT Cloud Systems</a>, Cloud Computing, IEEE , vol.2, no.2, pp.68,76, Mar.-Apr. 2015
+doi: 10.1109/MCC.2015.23, <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7116451&isnumber=7116413">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7116451&isnumber=7116413"</a>
+          <li>  Hong-Linh Truong, Georgiana Copil, Schahram Dustdar, Duc-Hung Le, Daniel Moldovan, Stefan Nastic, "iCOMOT - Toolset for Managing IoT Cloud Systems" (PDF), 16th IEEE International Conference on Mobile Data Management, 15-18 June, 2015, Pittsburg, USA. (Demo) </li>
+                        </ul>
+
+			<h2>rSYBL</h2>
+                        <ul>
+                              <li>
+                         Georgiana Copil, Demetris Trihinas, Hong-Linh Truong,Daniel Moldovan, George Pallis, Schahram Dustdar, Marios Dikaiakos, "ADVISE - a Framework for Evaluating Cloud Service Elasticity Behavior", the 12th International Conference on Service Oriented Computing. Paris, France, 3-6 November, 2014. <b>BEST PAPER AWARD</b>, <a href="http://link.springer.com/chapter/10.1007/978-3-662-45391-9_19">http://link.springer.com/chapter/10.1007/978-3-662-45391-9_19</a>, <a href="http://www.slideshare.net/georgiana_copil/advise-41163659">ppt</a></li>
+
+                             <li>
+                        Georgiana Copil, Daniel Moldovan, Hong-Linh Truong, Schahram Dustdar, (Short Paper), "Multi-Level Elasticity Control of Cloud Services", the 11th International Conference on Service Oriented Computing. Berlin, Germany, 2-5 December, 2013 <a href="http://dx.doi.org/10.1007/978-3-642-45005-1_31">http://dx.doi.org/10.1007/978-3-642-45005-1_31</a>.
+                        </li>
+
+                             <li>Georgiana Copil, Daniel Moldovan, Hong-Linh Truong, Schahram Dustdar, "<b>SYBL: an Extensible Language for Controlling Elasticity in Cloud Applications</b>",13th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing (CCGrid), May 14-16, 2013, Delft, the Netherlands,  <a href="http://dx.doi.org/10.1109/CCGrid.2013.42">http://dx.doi.org/10.1109/CCGrid.2013.42</a>, <a href="http://www.slideshare.net/georgiana_copil/sybl-an-extensible-language-for-elasticity-specifications-in-cloud-applications">ppt</a>
+                        </ul>
+			<h2>MELA</h2>
+                        <ul>
+                             <!-- Link catre prezentare -->  
+                             <li>Daniel Moldovan, Georgiana Copil, Hong-Linh Truong, Schahram Dustdar, "On Analyzing Elasticity Relationships of Cloud
+Services", 6th International Conference on Cloud Computing Technology and Science, 15-18 December 2014, Singapore, <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7037701&isnumber=7036227">10.1109/CloudCom.2014.93</a></li>
+                              <li>Daniel Moldovan, Georgiana Copil, Hong-Linh Truong, Schahram Dustdar, "MELA: Elasticity Analytics for Cloud Services", <a href="http://www.inderscience.com/info/ingeneral/forthcoming.php?jcode=ijbdi">International Journal of Big Data Intelligence</a>, Special issue for publishing IEEE CloudCom 2013 selected papers</li>
+                             <li>Daniel Moldovan, Georgiana Copil, Hong-Linh Truong, Schahram Dustdar, "MELA: Monitoring and Analyzing Elasticity of Cloud Services", 5'th International Conference on Cloud Computing, CloudCom, Bristol, UK, 2-5 December, 2013, <a href="http://dx.doi.org/10.1109/CloudCom.2013.18">http://dx.doi.org/10.1109/CloudCom.2013.18</a>, <a href="http://www.slideshare.net/moldovanus/mela-monitoring-and-analyzing-elasticity-of-cloud-services">ppt</a> </li>
+                        </ul>
+                        <h2>SALSA</h2>
+                        <ul>
+                             <li>Duc-Hung Le, Hong-Linh Truong, Georgiana Copil, Stefan Nastic and Schahram Dustdar, "SALSA: a Framework for Dynamic Configuration
+of Cloud Services", 6th International Conference on Cloud Computing Technology and Science, 15-18 December 2014, Singapore, <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7037660&isnumber=7036227">10.1109/CloudCom.2014.99</a></li>
+                        </ul>
+                        <h2>GovOps</h2>
+                        <ul>
+                        <li>Stefan Nastic, Christian Inzinger, Hong-Linh Truong, and Schahram Dustdar.
+                            "GovOps: The Missing Link for Governance in Software-defined IoT Cloud Systems" <a href="http://www.infosys.tuwien.ac.at/research/viecom/papers/rtGovOps-MobileCloud'15.pdf">(PDF)</a>. 
+                            The 10th International Workshop on Engineering Service Oriented Applications (WESOA’14)  in conjunction with ICSOC 2014, 3. November 2014, Paris, France.</li>
+                            <li>Stefan Nastic, Michael Vögler, Christian Inzinger, Hong-Linh Truong, and Schahram Dustdar, "rtGovOps: A Runtime Framework for Governance in Large-scale Software-defined IoT Cloud Systems", 3rd IEEE International Conference on Mobile Cloud Computing, Services, and Engineering, Mar 30 – Apr 3, 2015, San Francisco, CA, USA. <a href="http://dsg.tuwien.ac.at/research/viecom/papers/rtGovOps-MobileCloud%2715.pdf">doi: 10.1109/MobileCloud.2015.38</a> </li>
+
+                        </ul>
+
+
+                </section>
+
+
+
+                <!--
+                        <aside id="sidebar">
+                            <a href="https://github.com/tuwiendsg/MELA/zipball/master" class="button">
+                                <small>Download</small>
+                                .zip file
+                            </a>
+                            <a href="https://github.com/tuwiendsg/MELA/tarball/master" class="button">
+                                <small>Download</small>
+                                .tar.gz file
+                            </a>
+        
+        
+        
+        
+                        </aside>-->
+            </div>
+        </div>
+    </body>
+</html>
