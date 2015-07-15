@@ -25,6 +25,7 @@
 
     <modules>
         <module>examples</module> 
+        <module>iCOMOTOrchestrator</module> 
     </modules>
 
     <build>
