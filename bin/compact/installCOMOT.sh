@@ -73,6 +73,17 @@ if [[ -z $(which ganglia) ]]
     sudo -S apt-get install ganglia-monitor gmetad -y
 fi
 
+#need to configure Ganglia for Unicast to work on public cloud providers where multicast is forbidden
+GANGLIA_IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
+#delete all joins on multicast
+eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
+eval "sed -i 's/host = .*//' /etc/ganglia/gmond.conf"
+#add unicast host destination
+eval "sed -i 's#udp_send_channel {.*#udp_send_channel { \n host = $GANGLIA_IP#' /etc/ganglia/gmond.conf"
+#delete the bind on multicast for receive
+eval "sed -i 's/bind.*//' /etc/ganglia/gmond.conf"
+eval "sed -i 's/send_metadata_interval.*/send_metadata_interval = 30/' /etc/ganglia/gmond.conf"
+
 ########## INSTALL COMPACT iCOMOT ###########
 echo "Deploying iCOMOT"
 echo "Downloading iCOMOT"
