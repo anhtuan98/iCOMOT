@@ -270,7 +270,9 @@ function install_Dashboard(){
     eval "sed -i 's#HOST_IP#$HOST_IP#' $CURRENT_DIR/comot-dashboard-service/config/modules.xml"
     eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/comot-dashboard-service/comot-dashboard-service"
     eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/comot-dashboard-service#' $CURRENT_DIR/comot-dashboard-service/comot-dashboard-service"
-
+    
+    #temporary fix to move the dashboard to another port due to port conflict from Gov Ops
+    eval "sed -i 's#comot_HTTP_PORT=.*#comot_HTTP_PORT=8081#' $CURRENT_DIR/comot-dashboard-service/comot-dashboard-service"
     echo "Configuring COMOT Dashboard"
      
     sudo -S cp ./comot-dashboard-service/comot-dashboard-service /etc/init.d/comot-dashboard-service

@@ -25,7 +25,7 @@ cd ./gangliaPlugIns
 
 sudo -S service ganglia-monitor stop
 
-GANGLIA_IP=109.231.126.63
+GANGLIA_IP=109.231.126.62
 #delete all joins on multicast
 eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
 eval "sed -i 's/host = .*//' /etc/ganglia/gmond.conf"

@@ -42,7 +42,7 @@ cd ./gangliaPlugIns
 ./setupPlugIns.sh
 
 #used in unicast
-GANGLIA_IP=109.231.126.63
+GANGLIA_IP=109.231.126.62
 
 sudo -S service ganglia-monitor stop
 
