@@ -22,7 +22,6 @@ dialog --title "iCOMOT platform installation" \
                    "MELA"       "Monitoring and Analysis" on \
                    "rSYBL"      "Elasticity control" on \
                    "rtGovOps"   "IoT Governance" on \
-                   "ELISE"      "Elasticity Information Service" on \
                    "Repository" "iCOMOT artifact repository" off \
                    "docker"     "For deploying application on this machine" off 2> $TMPDLG
                    
@@ -35,7 +34,6 @@ SALSA=$STATUS_PENDING
 MELA=$STATUS_PENDING
 rSYBL=$STATUS_PENDING
 rtGovOps=$STATUS_PENDING
-ELISE=$STATUS_PENDING
 repo=$STATUS_PENDING
 docker=$STATUS_PENDING
 
@@ -232,26 +230,6 @@ function install_rtGovOps(){
   sudo -S update-rc.d govops-service defaults
 }
 
-########## INSTALL ELISE ###########
-function install_ELISE(){
-    echo "Deploying ELISE"
-    echo "Downloading ELISE"
-    wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/ELISE.tar.gz?raw=true -O ./ELISE.tar.gz
-    tar -xzf ./ELISE.tar.gz
-    rm -rf ./ELISE.tar.gz
-
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-service/1.0/elise-service-1.0-war-exec.jar -O ./ELISE/elise-service-1.0-war-exec.jar
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-salsa/1.0/elise-collector-salsa-1.0.jar -O ./ELISE/extensions/salsa/elise-collector-salsa-1.0.jar
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-govops/1.0/elise-collector-govops-1.0.jar -O ./ELISE/extensions/govops/elise-collector-govops-1.0.jar
-
-    eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/ELISE/elise-service"
-    eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/ELISE#' $CURRENT_DIR/ELISE/elise-service"
-
-    echo "Configuring ELISE service" 
-    sudo -S cp ./ELISE/elise-service /etc/init.d/elise-service
-    sudo -S chmod +x /etc/init.d/elise-service
-    sudo -S update-rc.d elise-service defaults
-}
 
 
 ########## INSTALL DashBoard ###########
@@ -468,12 +446,6 @@ else
   rSYBL=$STATUS_SKIPPED
 fi
 
-if [[ $INSTALL_OPT =~ .*ELISE.* ]]; then
-  install_ELISE
-  ELISE=$STATUS_DONE
-else
-  ELISE=$STATUS_SKIPPED
-fi
 
 if [[ $INSTALL_OPT =~ .*rtGovOps.* ]]; then
   cp ../installGovOps.sh .
@@ -507,7 +479,7 @@ echo "INSTALL_OPT=\"$INSTALL_OPT\"" >> $CONFIG_INFO
 rm $TMPDLG
 
 echo -e "\n\nInstallation complete. Status: \n$INFO"
-echo -e "SALSA     :$SALSA\nMELA      :$MELA\nrSYBL     :$rSYBL\nrtGovOps  :$rtGovOps\nELISE     :$ELISE\nDashboard :$Dashboard\ndocker    :$docker\nRepository:$repo"
+echo -e "SALSA     :$SALSA\nMELA      :$MELA\nrSYBL     :$rSYBL\nrtGovOps  :$rtGovOps\nDashboard :$Dashboard\ndocker    :$docker\nRepository:$repo"
 
 echo -e "\n \niCOMOT deployed. Please run: sudo service icomot-services start|stop " 
 echo " "

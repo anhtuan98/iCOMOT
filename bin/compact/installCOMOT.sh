@@ -96,7 +96,7 @@ rm  ./iCOMOT-Platform.tar.gz
 
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/MELA.war
 #sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/iCOMOT.war
-sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/2.0/salsa-engine-2.0.war ./iCOMOT-Platform/webapps/salsa-engine.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/2.0/salsa-engine-2.0.war -O ./iCOMOT-Platform/webapps/salsa-engine.war
               
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps1/MELA-AnalysisService.war
 
@@ -133,7 +133,6 @@ chmod 0777 $CURRENT_DIR/salsa-engine/
 chmod 0777 $CURRENT_DIR/salsa-pioneer/
 
 eval "sed -i 's#HOST_IP#$HOST_IP#' $CURRENT_DIR/iCOMOT-Platform/config/modules.xml"
-eval "sed -i 's#HOST_IP=localhost#HOST_IP=$HOST_IP#' $CURRENT_DIR/icomot-services"
  
 sudo -S chmod +x ./iCOMOT-Platform/icomot-platform
 sudo -S cp ./iCOMOT-Platform/icomot-platform /etc/init.d/icomot-platform
@@ -195,6 +194,7 @@ done
 
 ######### INSTALL icomot-service script ##########
 wget  https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/compact/icomot-services
+eval "sed -i 's#HOST_IP=localhost#HOST_IP=$HOST_IP#' $CURRENT_DIR/icomot-services"
 sudo -S cp icomot-services /etc/init.d/icomot-services
 sudo -S chmod +x /etc/init.d/icomot-services
 sudo -S update-rc.d icomot-services defaults

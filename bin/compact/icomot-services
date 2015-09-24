@@ -4,7 +4,7 @@
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start/stop all the iCOMOT services: MELA, rSYBL, SALSA and ELISE
+# Short-Description: Start/stop all the iCOMOT services: MELA, rSYBL, SALSA
 # Description:       To start-stop iCOMOT services
 ### END INIT INFO
 
@@ -23,7 +23,6 @@ case "$1" in
 		sudo -S service icomot-platform start
 		sudo -S service ganglia-monitor restart
 		sudo -S service rSYBL-service start
-		sudo -S service elise-service start
 
 		log_daemon_msg "Waiting for services to start before starting dashboard"
 		curl -X GET http://localhost:8080/MELA/REST_WS/elasticservices 2>/dev/null >> /tmp/comot_deployment_status
@@ -44,7 +43,7 @@ exit 0
                 sudo -S service icomot-platform stop
                 sudo -S service ganglia-monitor stop
                 sudo -S service rSYBL-service stop
-                sudo -S service elise-service stop
+
 exit 0
 ;;
 	status)
@@ -52,7 +51,6 @@ exit 0
                 sudo -S service icomot-platform status
                 sudo -S service ganglia-monitor status
                 sudo -S service rSYBL-service status
-                sudo -S service elise-service status
                 
 exit 0
 ;;

@@ -25,7 +25,6 @@ case "$1" in
 		sudo -S service mela-data-service start
 		sudo -S service mela-analysis-service start
 		sudo -S service rSYBL-service start
-		sudo -S service elise-service start
 
 		log_daemon_msg "Waiting for services to start before starting dashboard"
 		curl -X GET http://localhost:8180/MELA/REST_WS/elasticservices 2>/dev/null >> /tmp/comot_deployment_status
@@ -50,7 +49,6 @@ exit 0
                 sudo -S service mela-data-service stop
                 sudo -S service mela-analysis-service stop
                 sudo -S service rSYBL-service stop
-                sudo -S service elise-service stop
                 sudo service comot-dashboard-service stop
 exit 0
 ;;
@@ -61,7 +59,6 @@ exit 0
                 sudo -S service mela-data-service status 
                 sudo -S service mela-analysis-service status
                 sudo -S service rSYBL-service status
-                sudo -S service elise-service status
                 sudo service comot-dashboard-service status
                 
 exit 0
