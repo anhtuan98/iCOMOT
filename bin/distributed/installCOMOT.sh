@@ -90,8 +90,8 @@ function install_SALSA(){
   tar -xzf ./SALSA.tar.gz
   rm  ./SALSA.tar.gz
 
-  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0-exec-war.jar -O  ./SALSA/salsa-engine.jar
-  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-pioneer-vm/1.0/salsa-pioneer-vm-1.0.jar -O  ./SALSA/salsa-pioneer.jar
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/2.0/salsa-engine-2.0-exec-war.jar -O  ./SALSA/salsa-engine.jar
+  sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-pioneer/2.0/salsa-pioneer-2.0.jar -O  ./SALSA/salsa-pioneer.jar
 
   mkdir $CURRENT_DIR/SALSA/workspace
   mkdir $CURRENT_DIR/SALSA/services
@@ -291,7 +291,7 @@ function install_docker() {
 	        sudo -S apt-get -q -y install linux-image-extra-`uname -r` lxc-docker
 	fi
 	#update docker base image
-	sudo -S docker pull leduchung/salsa
+	sudo -S docker pull leduchung/ubuntu:14.04-jre8
 }
 
 ######### INSTALL icomot-service script ##########

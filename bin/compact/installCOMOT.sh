@@ -96,7 +96,8 @@ rm  ./iCOMOT-Platform.tar.gz
 
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-DataService/3.0-SNAPSHOT/MELA-DataService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/MELA.war
 #sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/comot/COMOT-VisualizationService/0.0.1-SNAPSHOT/COMOT-VisualizationService-0.0.1-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps/iCOMOT.war
-sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/1.0/salsa-engine-1.0.war -O  ./iCOMOT-Platform/webapps/salsa-engine.war
+sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-engine/2.0/salsa-engine-2.0.war ./iCOMOT-Platform/webapps/salsa-engine.war
+              
 sudo -S wget  http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/mela/MELA-SpaceAndPathwayAnalysisService/3.0-SNAPSHOT/MELA-SpaceAndPathwayAnalysisService-3.0-SNAPSHOT.war -O  ./iCOMOT-Platform/webapps1/MELA-AnalysisService.war
 
  
@@ -107,7 +108,7 @@ eval "sed -i 's#JAVA_HOME=.*#JAVA_HOME=$CURRENT_DIR/jre1.8.0_45/#' $CURRENT_DIR/
 #get config file for SALSA
 sudo -S https://raw.githubusercontent.com/tuwiendsg/iCOMOT/master/bin/compact/cloudUserParameters.ini -O  /etc/cloudUserParameters.ini
 #get latest salsa pioneer
-sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-pioneer-vm/1.0/salsa-pioneer-vm-1.0.jar -O  $CURRENT_DIR/iCOMOT-Platform/salsa-pioneer.jar
+sudo -S wget http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/cloud/salsa/salsa-pioneer/2.0/salsa-pioneer-2.0.jar -O  $CURRENT_DIR/iCOMOT-Platform/salsa-pioneer.jar
 
 #try to get eth0 IP
 if [[ -n $(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}') ]]
@@ -132,6 +133,7 @@ chmod 0777 $CURRENT_DIR/salsa-engine/
 chmod 0777 $CURRENT_DIR/salsa-pioneer/
 
 eval "sed -i 's#HOST_IP#$HOST_IP#' $CURRENT_DIR/iCOMOT-Platform/config/modules.xml"
+eval "sed -i 's#HOST_IP=localhost#HOST_IP=$HOST_IP#' $CURRENT_DIR/icomot-services"
  
 sudo -S chmod +x ./iCOMOT-Platform/icomot-platform
 sudo -S cp ./iCOMOT-Platform/icomot-platform /etc/init.d/icomot-platform
@@ -164,27 +166,6 @@ sudo -S cp ./rSYBL/rSYBL-service /etc/init.d/rSYBL-service
 sudo -S chmod +x /etc/init.d/rSYBL-service
 sudo -S update-rc.d rSYBL-service defaults
 
-
-
-########## INSTALL ELISE ###########
-
-    echo "Deploying ELISE"
-    echo "Downloading ELISE"
-    wget https://github.com/tuwiendsg/iCOMOT/blob/master/bin/resources/ELISE.tar.gz?raw=true -O ./ELISE.tar.gz
-    tar -xzf ./ELISE.tar.gz
-    rm -rf ./ELISE.tar.gz
-
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-service/1.0/elise-service-1.0-war-exec.jar -O ./ELISE/elise-service-1.0-war-exec.jar
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-salsa/1.0/elise-collector-salsa-1.0.jar -O ./ELISE/extensions/salsa/elise-collector-salsa-1.0.jar
-    wget http://repo.infosys.tuwien.ac.at/artifactory/simple/dev/at/ac/tuwien/dsg/comot/elise/elise-collector-govops/1.0/elise-collector-govops-1.0.jar -O ./ELISE/extensions/govops/elise-collector-govops-1.0.jar
-
-    eval "sed -i 's#JAVA=.*#JAVA=$JAVA#' $CURRENT_DIR/ELISE/elise-service"
-    eval "sed -i 's#DAEMONDIR=.*#DAEMONDIR=$CURRENT_DIR/ELISE#' $CURRENT_DIR/ELISE/elise-service"
-
-    echo "Configuring ELISE service" 
-    sudo -S cp ./ELISE/elise-service /etc/init.d/elise-service
-    sudo -S chmod +x /etc/init.d/elise-service
-    sudo -S update-rc.d elise-service defaults
 
 
 ########## INSTALL DOCKER ###########
