@@ -51,24 +51,24 @@ public class ElasticIoTPlatformOnDocker {
 
         //need to specify details of VM and operating system to deploy the software servide units on
         DockerUnit dataControllerVM = DockerUnit("DataControllerUnitVM")
-                .providedBy(DockerDefault()
+                .providedBy(DockerDefault().addSoftwarePackage("software-properties-common python-software-properties ganglia-monitor gmetad")
                 );
 
         DockerUnit dataNodeVM = DockerUnit("DataNodeUnitVM")
-                .providedBy(DockerDefault()
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
                 );
 
         //finally, we define Vm types for event processing
         DockerUnit loadbalancerVM = DockerUnit("LoadBalancerUnitVM")
-                .providedBy(DockerDefault()
+                .providedBy(DockerDefault().addSoftwarePackage("software-properties-common python-software-properties ganglia-monitor gmetad")
                 );
 
         DockerUnit eventProcessingVM = DockerUnit("EventProcessingUnitVM")
-                .providedBy(DockerDefault()
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
                 );
 
         DockerUnit localProcessingVM = DockerUnit("LocalProcessingUnitVM")
-                .providedBy(DockerDefault()
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
                 );
 
         DockerUnit mqttQueueVM = DockerUnit("MqttQueueVM")
