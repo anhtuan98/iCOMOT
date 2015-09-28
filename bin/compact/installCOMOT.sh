@@ -134,9 +134,9 @@ chmod 0777 $CURRENT_DIR/salsa-pioneer/
 
 eval "sed -i 's#HOST_IP#$HOST_IP#' $CURRENT_DIR/iCOMOT-Platform/config/modules.xml"
 
-# current dir is workspace, so we need ../ instead of ./
-sudo -S chmod +x ../iCOMOT-Platform/icomot-platform
-sudo -S cp ../iCOMOT-Platform/icomot-platform /etc/init.d/icomot-platform
+# current dir is workspace, inside we have ./iCOMOT-Platform
+sudo -S chmod +x ./iCOMOT-Platform/icomot-platform
+sudo -S cp ./iCOMOT-Platform/icomot-platform /etc/init.d/icomot-platform
 sudo -S chmod +x /etc/init.d/icomot-platform
 sudo -S update-rc.d icomot-platform defaults
 
