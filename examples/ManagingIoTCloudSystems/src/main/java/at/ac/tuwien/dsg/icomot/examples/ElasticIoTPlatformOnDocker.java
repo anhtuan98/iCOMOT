@@ -60,7 +60,7 @@ public class ElasticIoTPlatformOnDocker {
 
         //finally, we define Vm types for event processing
         DockerUnit loadbalancerVM = DockerUnit("LoadBalancerUnitVM")
-                .providedBy(DockerDefault().addSoftwarePackage("software-properties-common python-software-properties ganglia-monitor gmetad")
+                .providedBy(DockerDefault().addSoftwarePackage("curl software-properties-common python-software-properties ganglia-monitor gmetad")
                 );
 
         DockerUnit eventProcessingVM = DockerUnit("EventProcessingUnitVM")
