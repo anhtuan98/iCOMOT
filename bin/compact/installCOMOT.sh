@@ -73,6 +73,9 @@ if [[ -z $(which ganglia) ]]
     sudo -S apt-get install ganglia-monitor gmetad -y
 fi
 
+#needed for Docker containers fixed IP
+sudo -S ifconfig lo:0 192.1.1.15
+
 #need to configure Ganglia for Unicast to work on public cloud providers where multicast is forbidden
 GANGLIA_IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
 #delete all joins on multicast
