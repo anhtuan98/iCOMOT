@@ -73,8 +73,32 @@ if [[ -z $(which ganglia) ]]
     sudo -S apt-get install ganglia-monitor gmetad -y
 fi
 
-#need to configure Ganglia for Unicast to work on public cloud providers where multicast is forbidden
-GANGLIA_IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
+sudo -S ifconfig lo:0 192.1.1.15
+
+echo 'Will you use this deployment with Docker?'
+echo 'For Docker specific Ganglia configuration is injected, in which containers push data to a local network interface, making Ganglia unabel to monitor other VMs.'
+echo 'Please select 1(No), 2(Yes)'
+options=("No" "Yes" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+         "${options[0]}")
+            GANGLIA_IP=`ifconfig eth0 | grep -o 'inet addr:[0-9.]*' | grep -o [0-9.]*`
+            break
+            ;;
+         "${options[1]}")
+            GANGLIA_IP='192.1.1.15'
+            echo 'If you restart the machine please execute "sudo -S ifconfig lo:0 192.1.1.15" to bring back the unicast interface used by Ganglia with Docker'
+	    sleep 5
+            break
+            ;;
+        "${options[2]}")
+            exit
+            ;;
+        *) echo invalid option;;
+    esac
+done
+
 #delete all joins on multicast
 eval "sed -i 's/mcast_join.*//' /etc/ganglia/gmond.conf"
 eval "sed -i 's/host = .*//' /etc/ganglia/gmond.conf"
