@@ -358,7 +358,7 @@ else
 
 fi
 
-chown -R www-data $$REPOSITORY
+chown -R www-data $REPOSITORY
 
 echo -e "iCOMOT deployed. Please run: sudo service icomot-services start|stop " 
 echo " "
