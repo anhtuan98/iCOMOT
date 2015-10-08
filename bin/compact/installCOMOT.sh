@@ -333,6 +333,9 @@ else
   sudo -S wget -q http://repo.infosys.tuwien.ac.at/artifactory/simple/comot/at/ac/tuwien/dsg/icomot/ManagingIoTCloudSystems-Tutorial/1.0/ManagingIoTCloudSystems-Tutorial-1.0.tar.gz -P $REPOSITORY/ManagingIoTCloudSystems/
 
 fi
+
+chown -R www-data $$REPOSITORY
+
 echo -e "iCOMOT deployed. Please run: sudo service icomot-services start|stop " 
 echo " "
 
