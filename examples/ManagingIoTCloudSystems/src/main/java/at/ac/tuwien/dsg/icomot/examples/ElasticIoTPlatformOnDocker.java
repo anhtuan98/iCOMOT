@@ -96,7 +96,7 @@ public class ElasticIoTPlatformOnDocker {
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
-                //.provides(dataNodeUnitScaleIn, dataNodeUnitScaleOut)
+                .provides(dataNodeUnitScaleIn, dataNodeUnitScaleOut)
                 //express elasticity strategy: Scale IN Data Node when cpu usage < 40%
                 .controlledBy(Strategy("DN_ST1")
                         .when(Constraint.MetricConstraint("DN_ST1_CO1", new Metric("cpuUsage", "%")).lessThan("40"))
