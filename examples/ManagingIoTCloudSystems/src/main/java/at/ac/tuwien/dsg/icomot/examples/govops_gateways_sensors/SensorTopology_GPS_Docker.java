@@ -1,9 +1,11 @@
+package at.ac.tuwien.dsg.icomot.examples.govops_gateways_sensors;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.ac.tuwien.dsg.icomot.examples;
+
 
 import java.util.Map;
 
@@ -16,22 +18,22 @@ import at.ac.tuwien.dsg.comot.common.model.Capability;
 import at.ac.tuwien.dsg.comot.common.model.CloudService;
 import static at.ac.tuwien.dsg.comot.common.model.CloudService.ServiceTemplate;
 import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.DockerDefault;
-import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.OpenstackSmall;
 import static at.ac.tuwien.dsg.comot.common.model.DockerUnit.DockerUnit;
 import at.ac.tuwien.dsg.comot.common.model.DockerUnit;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.HostedOnRelation;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.ConnectToRelation;
 import at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit;
-import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingSystemUnit;
 import at.ac.tuwien.dsg.comot.common.model.Requirement;
 import static at.ac.tuwien.dsg.comot.common.model.ServiceTopology.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.BASHAction;
+import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.LocalDocker;
 import at.ac.tuwien.dsg.comot.common.model.LifecyclePhase;
+import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingSystemUnit;
 import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import at.ac.tuwien.dsg.comot.common.model.SoftwareNode;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 
@@ -41,27 +43,32 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class SensorTopology_GPS {
+public class SensorTopology_GPS_Docker {
 
     public static void main(String[] args) {
 
-        String sensorRepo  = "http://localhost/iCOMOTTutorial/files/IoTSensorData/gps";
-        String gatewayRepo = "http://localhost/iCOMOTTutorial/files/IoTGateway";
+        String sensorRepo  = "http://localhost/iCOMOTTutorial/files/IoTSensorData/";
+        String gatewayRepo = "http://localhost/iCOMOTTutorial/files/IoTGateway/";
 
-        ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
-                .providedBy(OpenstackSmall())
+        // Reference to instance of the ElasticIoTPlatform
+        ServiceUnit MqttQueuePersonalMachine = OperatingSystemUnit("PersonalMachine")
+                .providedBy(LocalDocker())
+                .andReference("ElasticIoTPlatform/PersonalMachine");
+        
+        ServiceUnit MqttQueueDocker = DockerUnit("MqttQueueVM")
+                .providedBy(DockerDefault())
                 .andReference("ElasticIoTPlatform/MqttQueueVM");
 
         ServiceUnit QueueUnit = SoftwareNode.SingleSoftwareUnit("QueueUnit")
                 .exposes(Capability.Variable("brokerIp_Capability"))
                 .andReference("ElasticIoTPlatform/QueueUnit");
-
+        
+        // Describe one instance of the sensor
         OperatingSystemUnit gatewayVM = OperatingSystemUnit("gatewayVM")
-                .providedBy(OpenstackSmall()
-                        .withBaseImage("7ac2cc53-2301-40d7-a030-910d72f552ff") // this image includes docker, faster spin up
+                .providedBy(LocalDocker()
                 );
 
-        DockerUnit gatewayDocker = DockerUnit("gatewayDocker")
+        DockerUnit gatewayDocker = DockerUnit("gatewayDocker").andMaxInstances(50)
                 .providedBy(DockerDefault())
                 .deployedBy(DockerFileArtifact("dockerFileArtifact", gatewayRepo + "Dockerfile"),
                         MiscArtifact("decommissionScript", gatewayRepo + "decommission"),
@@ -76,7 +83,7 @@ public class SensorTopology_GPS {
 
         ServiceTopology gatewayTopology = ServiceTopology("IoTTopology")
                 .withServiceUnits(sensorUnit, gatewayVM, gatewayDocker)
-                .withServiceUnits(MqttQueueVM, QueueUnit);
+                .withServiceUnits(MqttQueueDocker, QueueUnit, MqttQueuePersonalMachine);
 
         CloudService serviceTemplate = ServiceTemplate("IoTSensors")
                 .consistsOfTopologies(gatewayTopology)
@@ -89,7 +96,10 @@ public class SensorTopology_GPS {
                         .to(gatewayDocker))
                 .andRelationships(HostedOnRelation("QueueUnitOnMqttQueueVM")
                         .from(QueueUnit)
-                        .to(MqttQueueVM))
+                        .to(MqttQueueDocker))
+                .andRelationships(HostedOnRelation("MqttQueueVM_Reference_onVM")
+                        .from(MqttQueueDocker)
+                        .to(MqttQueuePersonalMachine))
                 // note: the ID of connectto relationship for Sensors must be started with "mqtt", the sensor code is hard-coded to read this pattern.
                 .andRelationships(ConnectToRelation("mqtt_broker")
                         .from(QueueUnit.getContext().get("brokerIp_Capability"))

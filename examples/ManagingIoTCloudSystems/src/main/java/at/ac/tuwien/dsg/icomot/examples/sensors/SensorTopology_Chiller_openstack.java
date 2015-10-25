@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.ac.tuwien.dsg.icomot.examples;
+package at.ac.tuwien.dsg.icomot.examples.sensors;
 
 import java.util.Map;
 
@@ -35,7 +35,7 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class SensorTopology_Chiller {
+public class SensorTopology_Chiller_openstack {
 
     public static void main(String[] args) {
 

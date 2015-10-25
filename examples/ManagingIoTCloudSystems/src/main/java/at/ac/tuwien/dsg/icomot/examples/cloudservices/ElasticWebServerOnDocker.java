@@ -1,4 +1,4 @@
-package at.ac.tuwien.dsg.icomot.examples;
+package at.ac.tuwien.dsg.icomot.examples.cloudservices;
 
 
 

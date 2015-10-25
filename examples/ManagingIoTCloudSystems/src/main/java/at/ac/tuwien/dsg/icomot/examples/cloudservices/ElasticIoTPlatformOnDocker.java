@@ -1,25 +1,27 @@
-package at.ac.tuwien.dsg.icomot.examples;
+package at.ac.tuwien.dsg.icomot.examples.cloudservices;
 
 import java.util.Map;
 
-import at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.MiscArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.SingleScriptArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.BASHAction.BASHAction;
 import at.ac.tuwien.dsg.comot.common.model.Capability;
-import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.OpenstackMicro;
-import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.OpenstackSmall;
 import at.ac.tuwien.dsg.comot.common.model.Constraint;
 import at.ac.tuwien.dsg.comot.common.model.Constraint.Metric;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.ConnectToRelation;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.HostedOnRelation;
 import at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit;
-import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingSystemUnit;
 import at.ac.tuwien.dsg.comot.common.model.Requirement;
 import at.ac.tuwien.dsg.comot.common.model.CloudService;
 import static at.ac.tuwien.dsg.comot.common.model.CloudService.ServiceTemplate;
+import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.DockerDefault;
+import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.LocalDocker;
+import static at.ac.tuwien.dsg.comot.common.model.DockerUnit.DockerUnit;
+import at.ac.tuwien.dsg.comot.common.model.DockerUnit;
+
 import at.ac.tuwien.dsg.comot.common.model.ElasticityCapability;
 import at.ac.tuwien.dsg.comot.common.model.LifecyclePhase;
+import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingSystemUnit;
 import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
 import static at.ac.tuwien.dsg.comot.common.model.ServiceTopology.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
@@ -34,7 +36,7 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class ElasticIoTPlatform {
+public class ElasticIoTPlatformOnDocker {
 
     public static void main(String[] args) {
         //specify service units in terms of software
@@ -42,46 +44,45 @@ public class ElasticIoTPlatform {
         String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
         String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
 
-        //need to specify details of VM and operating system to deploy the software servide units on
-        OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
-                .providedBy(OpenstackSmall()
-                        //OS image having JDK and Ganglia preinstalled, for faster deploy time
-                        .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c")
-                        //list of software to add on ubuntu using apt-get
-//                        .addSoftwarePackage("openjdk-7-jre")
-//                        .addSoftwarePackage("ganglia-monitor")
-//                        .addSoftwarePackage("gmetad")
+        //define localhost docker 
+        OperatingSystemUnit personalMachine = OperatingSystemUnit("PersonalMachine")
+                .providedBy(LocalDocker()
                 );
 
-        OperatingSystemUnit dataNodeVM = OperatingSystemUnit("DataNodeUnitVM")
-                .providedBy(OpenstackMicro()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        //need to specify details of VM and operating system to deploy the software servide units on
+        DockerUnit dataControllerVM = DockerUnit("DataControllerUnitVM")
+                .providedBy(DockerDefault().addSoftwarePackage("software-properties-common python-software-properties ganglia-monitor gmetad")
+                );
+
+        DockerUnit dataNodeVM = DockerUnit("DataNodeUnitVM")
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
+                );
 
         //finally, we define Vm types for event processing
-        OperatingSystemUnit loadbalancerVM = OperatingSystemUnit("LoadBalancerUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        DockerUnit loadbalancerVM = DockerUnit("LoadBalancerUnitVM")
+                .providedBy(DockerDefault().addSoftwarePackage("curl software-properties-common python-software-properties ganglia-monitor gmetad")
+                );
 
-        OperatingSystemUnit eventProcessingVM = OperatingSystemUnit("EventProcessingUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        DockerUnit eventProcessingVM = DockerUnit("EventProcessingUnitVM")
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
+                );
 
-        OperatingSystemUnit localProcessingVM = OperatingSystemUnit("LocalProcessingUnitVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        DockerUnit localProcessingVM = DockerUnit("LocalProcessingUnitVM")
+                .providedBy(DockerDefault().addSoftwarePackage("ganglia-monitor gmetad")
+                );
 
-        OperatingSystemUnit mqttQueueVM = OperatingSystemUnit("MqttQueueVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        DockerUnit mqttQueueVM = DockerUnit("MqttQueueVM")
+                .providedBy(DockerDefault()
+                );
 
-        OperatingSystemUnit momVM = OperatingSystemUnit("MoMVM")
-                .providedBy(OpenstackSmall()
-                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
+        DockerUnit momVM = DockerUnit("MoMVM")
+                .providedBy(DockerDefault()
+                );
 
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
                 //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraSeed.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployCassandraSeed.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
                 .exposes(Capability.Variable("DataController_IP_information"));
@@ -91,7 +92,7 @@ public class ElasticIoTPlatform {
 
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraNode.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployCassandraNode.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
@@ -111,7 +112,7 @@ public class ElasticIoTPlatform {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployQueue.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployQueue.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
@@ -119,7 +120,7 @@ public class ElasticIoTPlatform {
 
         //add the service units belonging to the event processing topology
         ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployEventProcessing.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployEventProcessing.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaS-1.0.tar.gz"))
                 //event processing must register in Load Balancer, so it needs the IP
                 .requires(Requirement.Variable("EventProcessingUnit_LoadBalancer_IP_Req"))
@@ -144,61 +145,45 @@ public class ElasticIoTPlatform {
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLoadBalancer.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployLoadBalancer.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/run_mqtt_broker.sh"));
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/run_mqtt_broker.sh"));
 
-        ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
-        ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");
+        ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
+        ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
 
         ServiceUnit localProcessingUnit = SingleSoftwareUnit("LocalProcessingUnit")
                 //load balancer must provide IP
                 .requires(Requirement.Variable("brokerIp_Requirement"))
                 .requires(Requirement.Variable("loadBalancerIp_Requirement"))
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLocalAnalysis.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Docker/deployLocalAnalysis.sh"))
                 .deployedBy(MiscArtifact(miscRepo + "artifacts/jre-7-linux-x64.tar.gz"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/LocalDataAnalysis.tar.gz"));
-
-        //Describe a Data End service topology containing the previous 2 software service units
-        ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
-                .withServiceUnits(dataControllerUnit, dataNodeUnit //add also OS units to topology
-                        , dataControllerVM, dataNodeVM
-                );
-
-        //specify constraints on the data topology
-        //thus, the CPU usage of all Service Unit instances of the data end Topology must be below 80%
-        dataEndTopology.controlledBy(Strategy("EP_ST3")
-                .when(Constraint.MetricConstraint("DET_CO1", new Metric("cpuUsage", "%")).lessThan("80"))
-                .enforce(eventProcessingUnitScaleOut)
-        );
-
-        //define event processing unit topology
-        ServiceTopology eventProcessingTopology = ServiceTopology("EventProcessingTopology")
-                .withServiceUnits(loadbalancerUnit, eventProcessingUnit, momUnit //add vm types to topology
-                        , loadbalancerVM, eventProcessingVM, momVM
-                );
-
-        ServiceTopology localProcessinTopology = ServiceTopology("Gateway")
-                .withServiceUnits(mqttQueueVM, mqttUnit, localProcessingUnit, localProcessingVM
-                );
-
+        
         localProcessingUnit.
                 controlledBy(Strategy("LPT_ST1").when(Constraint.MetricConstraint("LPT_ST1_CO1", new Metric("avgBufferSize", "#")).lessThan("50"))
                         .enforce(localProcessingUnitScaleIn));
         localProcessingUnit.
                 controlledBy(Strategy("LPT_ST2").when(Constraint.MetricConstraint("LPT_ST2_CO1", new Metric("avgBufferSize", "#")).greaterThan("50"))
                         .enforce(localProcessingUnitScaleOut));
+        
+ 
+        ServiceTopology dataEndTopology = ServiceTopology("DataEndTopology")
+                .withServiceUnits(personalMachine, mqttQueueVM, loadbalancerVM,momVM,  dataControllerVM,  dataNodeVM , localProcessingVM, eventProcessingVM,  mqttUnit,  loadbalancerUnit, 
+                        momUnit, dataControllerUnit  , dataNodeUnit 
+                        , eventProcessingUnit,  localProcessingUnit
+                );
+        
+        
 
         //describe the service template which will hold more topologies
         CloudService serviceTemplate = ServiceTemplate("ElasticIoTPlatform")
                 .consistsOfTopologies(dataEndTopology)
-                .consistsOfTopologies(eventProcessingTopology)
-                .consistsOfTopologies(localProcessinTopology)
                 //defining CONNECT_TO and HOSTED_ON relationships
                 .andRelationships(
                         //Data Controller IP send to Data Node
@@ -248,49 +233,69 @@ public class ElasticIoTPlatform {
                         .to(localProcessingVM),
                         HostedOnRelation("mqttToVM")
                         .from(mqttUnit)
-                        .to(mqttQueueVM)
+                        .to(mqttQueueVM),
+                        HostedOnRelation("dataControllerToLaptop")
+                        .from(dataControllerVM)
+                        .to(personalMachine),
+                        HostedOnRelation("dataNodeVMToLaptop")
+                        .from(dataNodeVM)
+                        .to(personalMachine),
+                        HostedOnRelation("loadbalancerVMToLaptop")
+                        .from(loadbalancerVM)
+                        .to(personalMachine),
+                        HostedOnRelation("eventProcessingVMToLaptop")
+                        .from(eventProcessingVM)
+                        .to(personalMachine),
+                        HostedOnRelation("localProcessingVMToLaptop")
+                        .from(localProcessingVM)
+                        .to(personalMachine),
+                        HostedOnRelation("mqttQueueVMToLaptop")
+                        .from(mqttQueueVM)
+                        .to(personalMachine),
+                        HostedOnRelation("momVMToLaptop")
+                        .from(momVM)
+                        .to(personalMachine)
                 )
                 .withDefaultMetrics();
 
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
-        
-     // added to make it easier to run as jar from cmd line
-     		{
-     			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
-     			for (Arg key : argsMap.keySet()) {
-     				switch (key) {
-     				case ORCHESTRATOR_IP:
-     					orchestrator.withIP(argsMap.get(key));
-     					break;
-     				case SALSA_IP:
-     					orchestrator.withSalsaIP(argsMap.get(key));
-     					break;
-     				case SALSA_PORT:
-     					orchestrator.withSalsaPort(Integer.parseInt(argsMap
-     							.get(key)));
-     					break;
-     				case rSYBL_IP:
-     					orchestrator.withRsyblIP(argsMap.get(key));
-     					break;
-     				case rSYBL_PORT:
-     					orchestrator.withRsyblPort(Integer.parseInt(argsMap
-     							.get(key)));
-     					break;
-     				case GovOps_IP:
-     					orchestrator.withGovOpsIP(argsMap.get(key));
-     					break;
-     				case GovOps_PORT:
-     					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
-     							.get(key)));
-     					break;
-     				}
-     			}
-     		}
-        orchestrator.deploy(serviceTemplate);
-        
+        // added to make it easier to run as jar from cmd line
+        {
+            Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+            for (Arg key : argsMap.keySet()) {
+                switch (key) {
+                    case ORCHESTRATOR_IP:
+                        orchestrator.withIP(argsMap.get(key));
+                        break;
+                    case SALSA_IP:
+                        orchestrator.withSalsaIP(argsMap.get(key));
+                        break;
+                    case SALSA_PORT:
+                        orchestrator.withSalsaPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case rSYBL_IP:
+                        orchestrator.withRsyblIP(argsMap.get(key));
+                        break;
+                    case rSYBL_PORT:
+                        orchestrator.withRsyblPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                    case GovOps_IP:
+                        orchestrator.withGovOpsIP(argsMap.get(key));
+                        break;
+                    case GovOps_PORT:
+                        orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+                                .get(key)));
+                        break;
+                }
+            }
+        }
+
+        orchestrator.deployAndControl(serviceTemplate);
+
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
-
         //for updating anything
         //orchestrator.controlExisting(serviceTemplate);
     }

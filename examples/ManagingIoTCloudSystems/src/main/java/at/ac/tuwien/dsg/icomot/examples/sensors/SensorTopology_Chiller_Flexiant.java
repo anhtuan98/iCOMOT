@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.ac.tuwien.dsg.icomot.examples;
+package at.ac.tuwien.dsg.icomot.examples.sensors;
 
 import java.util.Map;
 
@@ -42,7 +42,7 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class SensorTopology_ChillerFlexiant {
+public class SensorTopology_Chiller_Flexiant {
 
     public static void main(String[] args) {
 
@@ -52,11 +52,11 @@ public class SensorTopology_ChillerFlexiant {
         // QueueUnit reference
         ServiceUnit MqttQueueVM = OperatingSystemUnit("MqttQueueVM")
                 .providedBy(OpenstackSmall())
-                .andReference("IoTSensors/MqttQueueVM");
+                .andReference("ElasticIoTPlatform/MqttQueueVM");
 
         ServiceUnit QueueUnit = SoftwareNode.SingleSoftwareUnit("QueueUnit")
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .andReference("IoTSensors/QueueUnit");
+                .andReference("ElasticIoTPlatform/QueueUnit");
 
         ServiceTopology gatewayTopology = ServiceTopology("QueueServiceTopology")
                 .withServiceUnits(MqttQueueVM, QueueUnit);

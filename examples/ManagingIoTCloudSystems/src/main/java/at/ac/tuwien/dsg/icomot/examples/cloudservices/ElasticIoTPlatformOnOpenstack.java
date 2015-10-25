@@ -1,8 +1,7 @@
-package at.ac.tuwien.dsg.icomot.examples;
+package at.ac.tuwien.dsg.icomot.examples.cloudservices;
 
 import java.util.Map;
 
-import at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.MiscArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.SingleScriptArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.BASHAction.BASHAction;
@@ -18,8 +17,6 @@ import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingS
 import at.ac.tuwien.dsg.comot.common.model.Requirement;
 import at.ac.tuwien.dsg.comot.common.model.CloudService;
 import static at.ac.tuwien.dsg.comot.common.model.CloudService.ServiceTemplate;
-import at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification;
-import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.FlexiantSmall;
 import at.ac.tuwien.dsg.comot.common.model.ElasticityCapability;
 import at.ac.tuwien.dsg.comot.common.model.LifecyclePhase;
 import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
@@ -28,6 +25,7 @@ import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
 import static at.ac.tuwien.dsg.comot.common.model.Strategy.Strategy;
 import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 
@@ -36,7 +34,7 @@ import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
  *
  * @author http://dsg.tuwien.ac.at
  */
-public class ElasticIoTPlatformOnFlexiant {
+public class ElasticIoTPlatformOnOpenstack {
 
     public static void main(String[] args) {
         //specify service units in terms of software
@@ -46,50 +44,44 @@ public class ElasticIoTPlatformOnFlexiant {
 
         //need to specify details of VM and operating system to deploy the software servide units on
         OperatingSystemUnit dataControllerVM = OperatingSystemUnit("DataControllerUnitVM")
-                .providedBy(FlexiantSmall()
+                .providedBy(OpenstackSmall()
                         //OS image having JDK and Ganglia preinstalled, for faster deploy time
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                //list of software to add on ubuntu using apt-get
-                //                        .addSoftwarePackage("openjdk-7-jre")
-                //                        .addSoftwarePackage("ganglia-monitor")
-                //                        .addSoftwarePackage("gmetad")
+                        .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c")
+                        //list of software to add on ubuntu using apt-get
+//                        .addSoftwarePackage("openjdk-7-jre")
+//                        .addSoftwarePackage("ganglia-monitor")
+//                        .addSoftwarePackage("gmetad")
                 );
 
         OperatingSystemUnit dataNodeVM = OperatingSystemUnit("DataNodeUnitVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackMicro()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         //finally, we define Vm types for event processing
         OperatingSystemUnit loadbalancerVM = OperatingSystemUnit("LoadBalancerUnitVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackSmall()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         OperatingSystemUnit eventProcessingVM = OperatingSystemUnit("EventProcessingUnitVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackSmall()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         OperatingSystemUnit localProcessingVM = OperatingSystemUnit("LocalProcessingUnitVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackSmall()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         OperatingSystemUnit mqttQueueVM = OperatingSystemUnit("MqttQueueVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackSmall()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         OperatingSystemUnit momVM = OperatingSystemUnit("MoMVM")
-                .providedBy(FlexiantSmall()
-                        .withBaseImage("4ddb13c2-ce8a-36f9-a95f-87f34b1fd64a")
-                );
+                .providedBy(OpenstackSmall()
+                 .withBaseImage("a82e054f-4f01-49f9-bc4c-77a98045739c"));
 
         //start with Data End, and first with Data Controller
         ServiceUnit dataControllerUnit = SingleSoftwareUnit("DataControllerUnit")
                 //software artifacts needed for unit deployment   = software artifact archive and script to deploy Cassandra
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployCassandraSeed.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraSeed.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data controller exposed its IP 
                 .exposes(Capability.Variable("DataController_IP_information"));
@@ -99,7 +91,7 @@ public class ElasticIoTPlatformOnFlexiant {
 
         //specify data node
         ServiceUnit dataNodeUnit = SingleSoftwareUnit("DataNodeUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployCassandraNode.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployCassandraNode.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/ElasticCassandraSetup-1.0.tar.gz"))
                 //data node MUST KNOW the IP of cassandra seed, to connect to it and join data cluster
                 .requires(Requirement.Variable("DataController_IP_Data_Node_Req").withName("requiringDataNodeIP"))
@@ -119,7 +111,7 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit momUnit = SingleSoftwareUnit("MOMUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("MOM_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployQueue.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployQueue.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaSQueue-1.0.tar.gz"));
 
         ElasticityCapability eventProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
@@ -127,7 +119,7 @@ public class ElasticIoTPlatformOnFlexiant {
 
         //add the service units belonging to the event processing topology
         ServiceUnit eventProcessingUnit = SingleSoftwareUnit("EventProcessingUnit")
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployEventProcessing.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployEventProcessing.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/DaaS-1.0.tar.gz"))
                 //event processing must register in Load Balancer, so it needs the IP
                 .requires(Requirement.Variable("EventProcessingUnit_LoadBalancer_IP_Req"))
@@ -152,25 +144,23 @@ public class ElasticIoTPlatformOnFlexiant {
         ServiceUnit loadbalancerUnit = SingleSoftwareUnit("LoadBalancerUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("LoadBalancer_IP_information"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployLoadBalancer.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLoadBalancer.sh"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"));
 
         ServiceUnit mqttUnit = SingleSoftwareUnit("QueueUnit")
                 //load balancer must provide IP
                 .exposes(Capability.Variable("brokerIp_Capability"))
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/run_mqtt_broker.sh"))
-                .deployedBy(MiscArtifact(platformRepo + "artifacts/HAProxySetup-1.0.tar.gz"))
-                ;
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/run_mqtt_broker.sh"));
 
-        ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn();
-        ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut();
+        ElasticityCapability localProcessingUnitScaleIn = ElasticityCapability.ScaleIn().withPrimitiveOperations("Salsa.scaleIn");
+        ElasticityCapability localProcessingUnitScaleOut = ElasticityCapability.ScaleOut().withPrimitiveOperations("Salsa.scaleOut");
 
         ServiceUnit localProcessingUnit = SingleSoftwareUnit("LocalProcessingUnit")
                 //load balancer must provide IP
                 .requires(Requirement.Variable("brokerIp_Requirement"))
                 .requires(Requirement.Variable("loadBalancerIp_Requirement"))
                 .provides(localProcessingUnitScaleIn, localProcessingUnitScaleOut)
-                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/Flexiant/deployLocalAnalysis.sh"))
+                .deployedBy(SingleScriptArtifact(platformRepo + "scripts/OpenStack/deployLocalAnalysis.sh"))
                 .deployedBy(MiscArtifact(miscRepo + "artifacts/jre-7-linux-x64.tar.gz"))
                 .deployedBy(MiscArtifact(platformRepo + "artifacts/LocalDataAnalysis.tar.gz"));
 
@@ -263,43 +253,44 @@ public class ElasticIoTPlatformOnFlexiant {
                 .withDefaultMetrics();
 
         iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
-        orchestrator.withRsyblPort(8280); // added to make it easier to run as jar from cmd line
-        {
-            Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
-            for (Arg key : argsMap.keySet()) {
-                switch (key) {
-                    case ORCHESTRATOR_IP:
-                        orchestrator.withIP(argsMap.get(key));
-                        break;
-                    case SALSA_IP:
-                        orchestrator.withSalsaIP(argsMap.get(key));
-                        break;
-                    case SALSA_PORT:
-                        orchestrator.withSalsaPort(Integer.parseInt(argsMap
-                                .get(key)));
-                        break;
-                    case rSYBL_IP:
-                        orchestrator.withRsyblIP(argsMap.get(key));
-                        break;
-                    case rSYBL_PORT:
-                        orchestrator.withRsyblPort(Integer.parseInt(argsMap
-                                .get(key)));
-                        break;
-                    case GovOps_IP:
-                        orchestrator.withGovOpsIP(argsMap.get(key));
-                        break;
-                    case GovOps_PORT:
-                        orchestrator.withGovOpsPort(Integer.parseInt(argsMap
-                                .get(key)));
-                        break;
-                }
-            }
-        }
-
-        orchestrator.controlExisting(serviceTemplate);
-
+        
+     // added to make it easier to run as jar from cmd line
+     		{
+     			Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
+     			for (Arg key : argsMap.keySet()) {
+     				switch (key) {
+     				case ORCHESTRATOR_IP:
+     					orchestrator.withIP(argsMap.get(key));
+     					break;
+     				case SALSA_IP:
+     					orchestrator.withSalsaIP(argsMap.get(key));
+     					break;
+     				case SALSA_PORT:
+     					orchestrator.withSalsaPort(Integer.parseInt(argsMap
+     							.get(key)));
+     					break;
+     				case rSYBL_IP:
+     					orchestrator.withRsyblIP(argsMap.get(key));
+     					break;
+     				case rSYBL_PORT:
+     					orchestrator.withRsyblPort(Integer.parseInt(argsMap
+     							.get(key)));
+     					break;
+     				case GovOps_IP:
+     					orchestrator.withGovOpsIP(argsMap.get(key));
+     					break;
+     				case GovOps_PORT:
+     					orchestrator.withGovOpsPort(Integer.parseInt(argsMap
+     							.get(key)));
+     					break;
+     				}
+     			}
+     		}
+        orchestrator.deploy(serviceTemplate);
+        
         //only to deploy
         //orchestrator.deploy(serviceTemplate);
+
         //for updating anything
         //orchestrator.controlExisting(serviceTemplate);
     }
