@@ -18,7 +18,7 @@ import static at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit.OperatingS
 import static at.ac.tuwien.dsg.comot.common.model.ServiceTopology.ServiceTopology;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
 import static at.ac.tuwien.dsg.comot.common.model.Strategy.Strategy;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
 import java.util.HashMap;
 
 /**

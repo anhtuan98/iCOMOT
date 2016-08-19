@@ -5,21 +5,16 @@
  */
 package at.ac.tuwien.dsg.icomot.examples.sensors;
 
-import at.ac.tuwien.dsg.icomot.examples.govops_gateways_sensors.*;
 import java.util.Map;
 
 import at.ac.tuwien.dsg.comot.api.ToscaDescriptionBuilder;
 import at.ac.tuwien.dsg.comot.api.ToscaDescriptionBuilderImpl;
-import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.DockerFileArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.MiscArtifact;
 import static at.ac.tuwien.dsg.comot.common.model.ArtifactTemplate.SingleScriptArtifact;
 import at.ac.tuwien.dsg.comot.common.model.Capability;
 import at.ac.tuwien.dsg.comot.common.model.CloudService;
 import static at.ac.tuwien.dsg.comot.common.model.CloudService.ServiceTemplate;
-import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.DockerDefault;
 import static at.ac.tuwien.dsg.comot.common.model.CommonOperatingSystemSpecification.OpenstackSmall;
-import static at.ac.tuwien.dsg.comot.common.model.DockerUnit.DockerUnit;
-import at.ac.tuwien.dsg.comot.common.model.DockerUnit;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.HostedOnRelation;
 import static at.ac.tuwien.dsg.comot.common.model.EntityRelationship.ConnectToRelation;
 import at.ac.tuwien.dsg.comot.common.model.OperatingSystemUnit;
@@ -32,7 +27,7 @@ import at.ac.tuwien.dsg.comot.common.model.ServiceTopology;
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import at.ac.tuwien.dsg.comot.common.model.SoftwareNode;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 

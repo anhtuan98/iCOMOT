@@ -8,8 +8,8 @@ package at.ac.tuwien.dsg.icomot.examples.cloudservices;
 import java.util.Map;
 
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator.SensorCapability;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator.SensorCapability;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 

@@ -27,7 +27,7 @@ import static at.ac.tuwien.dsg.comot.common.model.ServiceTopology.ServiceTopolog
 import at.ac.tuwien.dsg.comot.common.model.ServiceUnit;
 import static at.ac.tuwien.dsg.comot.common.model.SoftwareNode.SingleSoftwareUnit;
 import static at.ac.tuwien.dsg.comot.common.model.Strategy.Strategy;
-import at.ac.tuwien.dsg.comot.orchestrator.interraction.iCOMOTOrchestrator;
+import at.ac.tuwien.dsg.icomot.iCOMOTOrchestrator;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs;
 import at.ac.tuwien.dsg.icomot.util.ProcessArgs.Arg;
 
@@ -41,8 +41,8 @@ public class ElasticIoTPlatformOnDocker {
     public static void main(String[] args) {
         //specify service units in terms of software
 
-        String platformRepo = "http://localhost/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
-        String miscRepo = "http://localhost/iCOMOTTutorial/files/Misc/";
+        String platformRepo = "http://100.96.9.71/iCOMOTTutorial/files/ElasticIoTCloudPlatform/";
+        String miscRepo = "http://100.96.9.71/iCOMOTTutorial/files/Misc/";
 
         //define localhost docker 
         OperatingSystemUnit personalMachine = OperatingSystemUnit("PersonalMachine")
@@ -258,7 +258,7 @@ public class ElasticIoTPlatformOnDocker {
                 )
                 .withDefaultMetrics();
 
-        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("localhost");
+        iCOMOTOrchestrator orchestrator = new iCOMOTOrchestrator("100.96.9.71");
         // added to make it easier to run as jar from cmd line
         {
             Map<Arg, String> argsMap = ProcessArgs.processArgs(args);
